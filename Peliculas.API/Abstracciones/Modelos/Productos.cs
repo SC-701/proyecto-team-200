@@ -28,7 +28,7 @@ namespace Abstracciones.Modelos
     {
         public Guid IdUsuario { get; set; }
         public Guid IdCategoria { get; set; }
-        public Guid IdEstado { get; set; }
+        public int IdEstado { get; set; }
 
 
     }

@@ -11,12 +11,12 @@ namespace Abstracciones.Interfaces.API
     public interface IProductosController
     {
         Task<IActionResult> Obtener();
-        Task<IActionResult> ObtenerPorId(Guid Id);
+        Task<IActionResult> ObtenerPorId(Guid IdProducto);
 
         Task<IActionResult> Agregar(ProductosRequest productos);
 
-        Task<IActionResult> Editar(Guid Id, ProductosRequest productos);
+        Task<IActionResult> Editar(Guid IdProducto, ProductosRequest productos);
 
-        Task<IActionResult> Eliminar(Guid Id);
+        Task<IActionResult> Eliminar(Guid IdProducto);
     }
 }

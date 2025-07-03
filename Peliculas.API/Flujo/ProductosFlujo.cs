@@ -24,24 +24,24 @@ namespace Flujo
             return await _productosDA.Agregar(productos);
         }
 
-        public Task<Guid> Editar(Guid Id, ProductosRequest productos)
+        public async Task<Guid> Editar(Guid IdProducto, ProductosRequest productos)
         {
-            throw new NotImplementedException();
+            return await _productosDA.Editar(IdProducto, productos);
         }
 
-        public Task<Guid> Eliminar(Guid Id)
+        public async Task<Guid> Eliminar(Guid IdProducto)
         {
-            throw new NotImplementedException();
+            return await _productosDA.Eliminar(IdProducto);
         }
 
-        public Task<IEnumerable<ProductosResponse>> Obtener()
+        public async Task<IEnumerable<ProductosResponse>> Obtener()
         {
-            throw new NotImplementedException();
+            return await _productosDA.Obtener();
         }
 
-        public Task<ProductosResponse> ObtenerPorId(Guid Id)
+        public async Task<ProductosResponse> ObtenerPorId(Guid IdProducto)
         {
-            throw new NotImplementedException();
+            return await _productosDA.ObtenerPorId(IdProducto);
         }
     }
 }

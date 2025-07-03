@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[ESTADOS]
+(
+  [ESTADO_ID] int NOT NULL PRIMARY KEY,
+  TIPO NVARCHAR(255) not null,
+  )

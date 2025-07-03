@@ -63,4 +63,20 @@
   <ItemGroup>
     <RefactorLog Include="BD.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\ESTADOS.sql" />
+    <Build Include="dbo\Tables\CATEGORIAS.sql" />
+    <Build Include="dbo\Tables\CATEGORIA_X_CATEGORIA.sql" />
+    <Build Include="dbo\Tables\USUARIOS.sql" />
+    <Build Include="dbo\Tables\PRODUCTOS.sql" />
+    <Build Include="dbo\Tables\CARRITO.sql" />
+    <Build Include="dbo\Tables\CARRITO_PRODUCTO.sql" />
+    <Build Include="dbo\Tables\ROLES.sql" />
+    <Build Include="dbo\Tables\USUARIOS_ROLES.sql" />
+    <Build Include="dbo\Stored Procedures\AGREGAR_PRODUCTO.sql" />
+    <Build Include="dbo\Stored Procedures\EDITAR_PRODUCTO.sql" />
+    <Build Include="dbo\Stored Procedures\ELIMINAR_PRODUCTO.sql" />
+    <Build Include="dbo\Stored Procedures\VER_PRODUCTOS.sql" />
+    <Build Include="dbo\Stored Procedures\VER_PRODUCTO_POR_ID.sql" />
+  </ItemGroup>
 </Project>

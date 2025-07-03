@@ -18,7 +18,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHttpClient();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IRepositorioDapper,RepositorioDapper >();
-
+builder.Services.AddScoped<IProductosFlujo, ProductosFlujo>();
+builder.Services.AddScoped<IProductosDA, ProductosDA>();
 
 
 

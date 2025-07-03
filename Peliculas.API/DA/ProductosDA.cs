@@ -13,7 +13,7 @@ namespace DA
 {
     public class ProductosDA : IProductosDA
     {
-        #region Constructor
+        
         private IRepositorioDapper _repositorioDapper;
         private SqlConnection _sqlConnection;
 
@@ -27,7 +27,7 @@ namespace DA
 
         public async Task<Guid> Agregar(ProductosRequest productos)
         {
-            string query = @"AgregarProducto";
+            string query = @"AGREGAR_PRODUCTO";
             var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
             {
                 IdProducto = Guid.NewGuid(),
@@ -44,24 +44,61 @@ namespace DA
             return resultadoConsulta;
         }
 
-        public Task<Guid> Editar(Guid Id, ProductosRequest productos)
+        public async Task<Guid> Editar(Guid IdProducto, ProductosRequest productos)
         {
-            throw new NotImplementedException();
+            await VerificarProductoExiste(IdProducto);
+
+
+            string query = @"EDITAR_PRODUCTO";
+
+            var resultado = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+                IdProducto = IdProducto,
+                Nombre = productos.Nombre,
+                Precio = productos.Precio,
+                Descripcion = productos.Descripcion,
+                Stock = productos.Stock,
+                ImagenUrl = productos.ImagenUrl,
+                FechaCreacion = DateTime.Now,
+                IdEstado = productos.IdEstado
+            });
+
+            return resultado;
         }
 
-        public Task<Guid> Eliminar(Guid Id)
+        public async Task<Guid> Eliminar(Guid IdProducto)
         {
-            throw new NotImplementedException();
+            await VerificarProductoExiste(IdProducto);
+            string query = @"ELIMINAR_PRODUCTO";
+            var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+                IdProducto = IdProducto
+            });
+            return resultadoConsulta;
         }
 
-        public Task<IEnumerable<ProductosResponse>> Obtener()
+        public async Task<IEnumerable<ProductosResponse>> Obtener()
         {
-            throw new NotImplementedException();
+            string query = @"VER_PRODUCTOS";
+            var resultadoConsulta = await _sqlConnection.QueryAsync<ProductosResponse>(query);
+            return resultadoConsulta;
         }
 
-        public Task<ProductosResponse> ObtenerPorId(Guid Id)
+        public async Task<ProductosResponse> ObtenerPorId(Guid IdProducto)
         {
-            throw new NotImplementedException();
+            string query = @"VER_PRODUCTO_POR_ID";
+            var resultadoConsulta = await _sqlConnection.QueryAsync<ProductosResponse>(query,
+                new { IdProducto = IdProducto });
+            return resultadoConsulta.FirstOrDefault();
         }
+
+
+        private async Task VerificarProductoExiste(Guid IdProducto)
+        {
+            ProductosResponse? resutadoConsultaProducto = await ObtenerPorId(IdProducto);
+            if (resutadoConsultaProducto == null)
+                throw new Exception("no se encontro el producto");
+        }
+
     }
 }
