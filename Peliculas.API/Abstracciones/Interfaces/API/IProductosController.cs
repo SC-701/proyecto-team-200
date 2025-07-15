@@ -18,5 +18,6 @@ namespace Abstracciones.Interfaces.API
         Task<IActionResult> Editar(Guid IdProducto, ProductosRequest productos);
 
         Task<IActionResult> Eliminar(Guid IdProducto);
+        Task<IActionResult> ListarProductosPaginado(int pageIndex, int pageSize);
     }
 }
