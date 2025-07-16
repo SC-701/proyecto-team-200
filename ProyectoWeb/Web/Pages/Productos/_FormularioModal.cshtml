@@ -1,0 +1,59 @@
+﻿@model Abstracciones.Modelos.Productos.ProductoRequest
+@{
+    ViewData.TemplateInfo.HtmlFieldPrefix = "productoCrear";
+}
+
+<form id="formProducto" method="post" asp-page-handler="CrearProducto">
+    <div class="modal-header">
+        <h5 class="modal-title">Crear producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
+    <div class="modal-body">
+        @Html.AntiForgeryToken()
+        <div class="mb-3">
+            <label asp-for="Nombre" class="form-label">Nombre</label>
+            <input asp-for="Nombre"  class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Precio" class="form-label">Precio</label>
+            <input asp-for="Precio"  class="form-control" />
+            <span asp-validation-for="Precio" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Descripcion" class="form-label">Descripcion</label>
+            <input asp-for="Descripcion"  class="form-control" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Stock" class="form-label">Stock</label>
+            <input asp-for="Stock"  class="form-control" />
+            <span asp-validation-for="Stock" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ImagenUrl" class="form-label">ImagenUrl</label>
+            <input asp-for="ImagenUrl"  class="form-control" />
+            <span asp-validation-for="ImagenUrl" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IdUsuario" class="form-label">IdUsuario</label>
+            <input asp-for="IdUsuario"  class="form-control" value="819E3E36-AEB9-4EA0-98A2-824F86A389A5" />
+            <span asp-validation-for="IdUsuario" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IdCategoria" class="form-label">IdCategoria</label>
+            <input asp-for="IdCategoria"  class="form-control" value="0035AEDC-EE97-44ED-B4F6-594F011C2727" />
+            <span asp-validation-for="IdCategoria" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IdEstado" class="form-label">IdEstado</label>
+            <input asp-for="IdEstado" class="form-control" value="1" />
+            <span asp-validation-for="IdEstado" class="text-danger"></span>
+        </div>
+       
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+</form>
