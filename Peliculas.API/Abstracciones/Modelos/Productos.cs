@@ -43,6 +43,8 @@ namespace Abstracciones.Modelos
         public string Estado { get; set; }
 
     }
+    
+
 
 
 

@@ -47,19 +47,8 @@ namespace API.Controllers
 
         public async Task<IActionResult> ListarProductosPaginado([FromRoute] int pageIndex, [FromRoute]  int pageSize)
         {
-            var resultado = await _productosFlujo.Obtener();
-            if (!resultado.Any())
-                return NoContent();
-            var datos = resultado
-                .OrderBy(p => p.IdProducto)
-                .Skip((pageIndex - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
-            var count = resultado.Count();
-            var totalPages = (int)Math.Ceiling((double)count / pageSize);
-
-            var respuesta = new Paginacion<ProductosResponse>(datos, pageIndex, pageSize);
-            return Ok(respuesta);
+            var resultado = await _productosFlujo.ListarProductosPaginado(pageIndex, pageSize);
+            return Ok(resultado);
         }
 
         [HttpGet]

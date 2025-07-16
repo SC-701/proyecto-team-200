@@ -34,6 +34,11 @@ namespace Flujo
             return await _productosDA.Eliminar(IdProducto);
         }
 
+        public Task<Paginacion<ProductosResponse>> ListarProductosPaginado(int pageIndex, int pageSize)
+        {
+            return _productosDA.ListarProductosPaginado(pageIndex, pageSize);
+        }
+
         public async Task<IEnumerable<ProductosResponse>> Obtener()
         {
             return await _productosDA.Obtener();

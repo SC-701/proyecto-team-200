@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DA
 {
@@ -75,6 +76,23 @@ namespace DA
                 IdProducto = IdProducto
             });
             return resultadoConsulta;
+        }
+
+        public async Task<Paginacion<ProductosResponse>> ListarProductosPaginado(int pageIndex, int pageSize)
+        {
+            string query = @"VER_PRODUCTOS_PAGINADO";
+            var consulta = await _sqlConnection.QueryMultipleAsync(query, new
+            {
+                PageIndex= pageIndex,
+                PageSize = pageSize
+            });
+            var productos = (await consulta.ReadAsync<ProductosResponse>()).ToList();
+            var totalRegistros = await consulta.ReadSingleAsync<int>();
+            var totalPages = (int)Math.Ceiling((double)totalRegistros / pageSize);
+
+            var respuesta = new Paginacion<ProductosResponse>(productos, pageIndex, totalPages);
+            return respuesta;
+
         }
 
         public async Task<IEnumerable<ProductosResponse>> Obtener()

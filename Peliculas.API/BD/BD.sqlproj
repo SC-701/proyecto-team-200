@@ -78,5 +78,6 @@
     <Build Include="dbo\Stored Procedures\ELIMINAR_PRODUCTO.sql" />
     <Build Include="dbo\Stored Procedures\VER_PRODUCTOS.sql" />
     <Build Include="dbo\Stored Procedures\VER_PRODUCTO_POR_ID.sql" />
+    <Build Include="dbo\Stored Procedures\VER_PRODUCTOS_PAGINADO.sql" />
   </ItemGroup>
 </Project>
