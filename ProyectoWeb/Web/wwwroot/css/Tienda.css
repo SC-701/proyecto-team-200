@@ -1,0 +1,8 @@
+﻿.img-hover {
+    height: 210px;
+    transition: height 0.3s ease;
+}
+
+    .img-hover:hover {
+        height: 280px;
+    }

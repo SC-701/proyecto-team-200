@@ -1,0 +1,60 @@
+﻿@page
+@model Web.Pages.Cuenta.LoginModel
+@{
+}
+<head>
+    <link href="~/css/login.css" rel="stylesheet" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <div class="container my-auto">
+        <div class="row justify-content-center align-items-center mt-4">
+            <div class="col-lg-8 col-md-10">
+                <div class="row">
+                    <div class="col-md-8 border-end">
+                        <div class="text-center mb-4">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Squarespace_logo.svg/768px-Squarespace_logo.svg.png" alt="Logo" width="40">
+                            <h4 class="mt-3">Inicia session</h4>
+                        </div>
+                        <form method="post">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" id="email" class="form-control input-squarespace" placeholder="name@example.com" asp-for="loginInfo.CorreoElectronico">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <input type="password" id="password" class="form-control input-squarespace" placeholder="Password" asp-for="loginInfo.Password">
+                                    <span class="input-group-text bg-white border-0">
+                                        <i class="bi bi-eye"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            @if (Model.token is not null && Model.token.ValidacionExitosa == false)
+                            {
+                                <div class="alert alert-warning" role="alert">
+                                    Credenciales incorrectas!
+                                </div>
+                            }
+                            <button class="w-100 btn-creative" type="submit">Iniciar session</button>
+                        </form>
+
+                        <div class="text-center mt-3 small">
+                            <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
+                            
+                        </div>
+                    </div>
+
+                    
+                    <div class="col-md-4 d-flex flex-column justify-content-center gap-3 mt-4 mt-md-0">
+                        <a href="#" class="btn-creative">Crea tu cuenta</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+</body>
+

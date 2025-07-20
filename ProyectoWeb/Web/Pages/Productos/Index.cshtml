@@ -1,0 +1,117 @@
+﻿@page
+@model Web.Pages.Productos.IndexModel
+@{
+
+
+}
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+<head>
+    <link href="~/css/tienda.css" rel="stylesheet" />
+</head>
+<h2 class="text-center">Productos</h2>
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormulario" data-url="/Productos/AgregarProducto?handler=FormularioModal">
+    Crear producto
+</button>
+<div class="row text-center justify-content-xl-center mt-4">
+
+
+    <div class="modal fade" id="modalFormulario" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" id="contenidoModal">
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalFormularioEditar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" id="contenidoModalEditar">
+            </div>
+        </div>
+    </div>
+    @if (Model.productos != null && Model.productos.Any())
+    {
+        @foreach (var producto in Model.productos)
+        {
+
+            <div class="col-md-6 col-lg-4 col-xl-3 px-2 my-2">
+
+                <div class="card position-relative p-2">
+
+                    <div class="card-body">
+                        <div class="d-flex justify-content-center align-items-center h-100 px-4">
+
+                            <img src="@Html.DisplayFor(p => producto.ImagenUrl)" alt="..." class="img-hover" onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'" style="cursor:pointer;" />
+
+                        </div>
+                    </div>
+                    <div class="card-body h-100 pt-0 text-start">
+
+                        <h5 class="">@Html.DisplayFor(p => producto.Nombre)</h5>
+
+                        <h5 class="my-2">$@Html.DisplayFor(p => producto.Precio)</h5>
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <a href="#!">
+                                <h5 class=""><i class="fas fa-shopping-cart"></i></h5>
+                            </a>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormulario" data-url="/Productos/EditarProducto?handler=FormularioModalEditar&idProducto=@producto.IdProducto">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert alert-warning" role="alert">
+            Productos no disponibles
+        </div>
+    }
+
+</div>
+<nav aria-label="Paginación de productos">
+    <ul class="pagination justify-content-center">
+        @if (Model.ProductosPaginados.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex - 1)&PageSize=5">Anterior</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Anterior</span>
+            </li>
+        }
+
+        @for (int i = 1; i <= Model.ProductosPaginados.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.ProductosPaginados.PageIndex ? "active" : "")">
+                <a class="page-link" href="?PagesIndex=@i&PageSize=5">@i</a>
+            </li>
+        }
+
+        @if (Model.ProductosPaginados.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex + 1)&PageSize=5">Siguiente</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">Siguiente</span>
+            </li>
+        }
+    </ul>
+</nav>
+@section Scripts {
+    <script src="~/js/crearproducto.js"></script>
+    <script src="~/js/editarproducto.js"></script>
+}
+
+
+
+
