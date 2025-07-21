@@ -18,6 +18,7 @@ namespace Abstracciones.Modelos.Seguridad
         [EmailAddress]
         public string CorreoElectronico { get; set; }
 
+
     }
     public class Usuario : UsuarioBase
     {

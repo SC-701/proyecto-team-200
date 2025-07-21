@@ -20,7 +20,7 @@ namespace DA
         public async Task<Guid> CrearUsuario(Usuario usuario)
         {
             var sql = @"[AgregarUsuario]";
-            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { NombreUsuario = usuario.NombreUsuario, PasswordHash = usuario.PasswordHash, CorreoElectronico = usuario.CorreoElectronico, IdEstado = usuario.IdEstado });
+            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { NombreUsuario = usuario.NombreUsuario, PasswordHash = usuario.PasswordHash, CorreoElectronico = usuario.CorreoElectronico, IdEstado = 1 });
             return resultado;
         }
 

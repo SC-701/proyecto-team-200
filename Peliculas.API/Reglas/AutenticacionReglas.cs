@@ -62,9 +62,13 @@ namespace Reglas
 
         private async Task<List<Claim>> GenerarClaims(Login login)
         {
+            var usuario = await ObtenerUsuario(login);
             List<Claim> claims = new List<Claim>();
             claims.Add(new Claim("usuario", login.NombreUsuario));
             claims.Add(new Claim("servicio", login.IdServicio.ToString()));
+            claims.Add(new Claim("idUsuario", usuario.Id.ToString()));
+            claims.Add(new Claim("correoElectronico", usuario.CorreoElectronico.ToString()));
+
             var perfiles = await ObtenerPerfiles(login);
             foreach (var perfil in perfiles)
             {
@@ -76,6 +80,10 @@ namespace Reglas
         private async Task<IEnumerable<Perfiles>> ObtenerPerfiles(Login login)
         {
             return await _usuarioDA.ObtenerPerfilesUsuario(new Usuario { NombreUsuario = login.NombreUsuario, CorreoElectronico = login.CorreoElectronico });
+        }
+        private async Task<Usuario> ObtenerUsuario(Login login)
+        {
+            return await _usuarioDA.ObtenerUsuario(new Usuario { NombreUsuario = login.NombreUsuario, CorreoElectronico = login.CorreoElectronico });
         }
 
     }

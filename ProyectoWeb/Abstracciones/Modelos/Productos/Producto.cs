@@ -5,7 +5,9 @@
         public Guid IdProducto { get; set; }
         public string NombreProveedor { get; set; }
         public string Categoria { get; set; } 
-        public string Estado { get; set; } 
+        public string Estado { get; set; }
+        public string Marca { get; set; }
+
         public string Nombre { get; set; } 
         public decimal Precio { get; set; }
         public string Descripcion { get; set; } 
@@ -17,10 +19,11 @@
     {
         
 
-        public Guid IdUsuario { get; set; }
+        public Guid IdProveedor { get; set; }
         public Guid IdCategoria { get; set; }
         public int IdEstado { get; set; }
         public string Nombre { get; set; }
+        public string Marca { get; set; }
 
         public decimal Precio { get; set; }
 
@@ -36,8 +39,10 @@
         public Guid? IdProducto { get; set; }
         
 
-        public Guid IdUsuario { get; set; }
+        public Guid IdProveedor { get; set; }
         public Guid IdCategoria { get; set; }
+        public string Marca { get; set; }
+
         public int IdEstado { get; set; }
         public string Nombre { get; set; }
 

@@ -35,7 +35,7 @@ namespace DA
                 IdProveedor = productos.IdProveedor,
                 Marca = productos.Marca,
                 IdCategoria = productos.IdCategoria,
-                IdEstado = productos.IdEstado,
+                IdEstado = 1,
                 Nombre = productos.Nombre,
                 Precio = productos.Precio,
                 Descripcion = productos.Descripcion,
