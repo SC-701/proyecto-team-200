@@ -31,7 +31,18 @@ namespace API.Controllers
         {
             return Ok(await _usuarioFlujo.ObtenerUsuario(usuario));
         }
+        [Authorize(Roles = "2")]
+        [HttpPut("{idUsuario}")]
+        public async Task<IActionResult> EditarUsuario([FromRoute]Guid idUsuario, [FromBody] UsuarioEditar usuario)
+        {
+            return Ok(await _usuarioFlujo.EditarUsuario(idUsuario,usuario));
+        }
+        [Authorize(Roles = "2")]
+        [HttpGet("DetalleUsuario/{idUsuario}")]
 
-
+        public async Task<IActionResult> DetalleUsuario(Guid idUsuario)
+        {
+            return Ok(await _usuarioFlujo.DetalleUsuario(idUsuario));
+        }
     }
 }

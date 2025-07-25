@@ -17,6 +17,10 @@ namespace Abstracciones.Modelos.Seguridad
         [Required]
         [EmailAddress]
         public string CorreoElectronico { get; set; }
+        [Required]
+        public string Telefono { get; set; }
+        [Required]
+        public string Direccion { get; set; }
 
 
     }
@@ -24,6 +28,6 @@ namespace Abstracciones.Modelos.Seguridad
     {
         [Required]
         public string Password { get; set; }
-        public string ConfirmarPassword { get; set; }
+        
     }
 }

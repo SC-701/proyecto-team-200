@@ -7,5 +7,7 @@ namespace Abstracciones.Interfaces.API
     {
         Task<IActionResult> PostAsync([FromBody] Modelos.Usuario usuario);
         Task<IActionResult> ObtenerUsuario([FromBody] Modelos.Usuario usuario);
+        Task<IActionResult> EditarUsuario( Guid idUsuario, [FromBody] Modelos.UsuarioEditar usuario);
+        Task<IActionResult> DetalleUsuario(Guid idUsuario);
     }
 }

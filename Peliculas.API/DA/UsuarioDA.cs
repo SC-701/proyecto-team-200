@@ -20,7 +20,22 @@ namespace DA
         public async Task<Guid> CrearUsuario(Usuario usuario)
         {
             var sql = @"[AgregarUsuario]";
-            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { NombreUsuario = usuario.NombreUsuario, PasswordHash = usuario.PasswordHash, CorreoElectronico = usuario.CorreoElectronico, IdEstado = 1 });
+            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { NombreUsuario = usuario.NombreUsuario, PasswordHash = usuario.PasswordHash, CorreoElectronico = usuario.CorreoElectronico, IdEstado = 1 , Telefono = usuario.Telefono, Direccion = usuario.Direccion});
+            return resultado;
+        }
+
+        public async Task<Usuario> DetalleUsuario(Guid idUsuario)
+        {
+            var sql = @"[DetalleUsuario]";
+            var consulta = await _SqlConnection.QueryAsync<Abstracciones.Modelos.Usuario>(sql, new { IdUsuario = idUsuario });
+            return consulta.FirstOrDefault();
+
+        }
+
+        public async Task<Guid> EditarUsuario(Guid idUsuario, UsuarioEditar usuario)
+        {
+            var sql = @"[EditarUsuario]";
+            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { IdUsuario = idUsuario, NombreUsuario = usuario.NombreUsuario, CorreoElectronico = usuario.CorreoElectronico, Telefono = usuario.Telefono, Direccion = usuario.Direccion });
             return resultado;
         }
 
