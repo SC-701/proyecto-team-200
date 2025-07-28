@@ -16,6 +16,24 @@ namespace Abstracciones.Modelos
 
         [Required]
         public int IdEstado { get; set; }
+        [Required]
+        public string Telefono { get; set; }
+        [Required]
+        public string Direccion { get; set; }
+
+    }
+    public class UsuarioEditar
+    {
+        [Required]
+        public string NombreUsuario { get; set; }
+        [Required]
+        [EmailAddress]
+        public string CorreoElectronico { get; set; }
+
+        [Required]
+        public string Telefono { get; set; }
+        [Required]
+        public string Direccion { get; set; }
 
     }
 }

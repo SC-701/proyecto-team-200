@@ -2,6 +2,8 @@
     @NombreUsuario      VARCHAR(MAX),
     @PasswordHash       VARCHAR(MAX),
     @CorreoElectronico  VARCHAR(MAX),
+    @Telefono VARCHAR(MAX),
+    @Direccion  VARCHAR(MAX),
     @IdEstado int 
 AS
 BEGIN
@@ -17,6 +19,8 @@ BEGIN
         [NombreUsuario],
         [PasswordHash],
         [CorreoElectronico],
+        TELEFONO,
+        DIRECCION,
         estado_id
     )
     VALUES (
@@ -24,6 +28,8 @@ BEGIN
         @NombreUsuario,
         @PasswordHash,
         @CorreoElectronico,
+        @Telefono,
+        @Direccion,
         @IdEstado
     );
 

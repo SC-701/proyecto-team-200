@@ -6,5 +6,7 @@ namespace Abstracciones.Interfaces.Flujo
     {
         Task<Guid> CrearUsuario(Usuario usuario);
         Task<Usuario> ObtenerUsuario(Usuario usuario);
+        Task<Guid> EditarUsuario(Guid idUsuario, UsuarioEditar usuario);
+        Task<Usuario> DetalleUsuario(Guid idUsuario);
     }
 }

@@ -82,5 +82,7 @@
     <Build Include="dbo\Stored Procedures\ObtenerUsuario.sql" />
     <Build Include="dbo\Stored Procedures\ObtenerPerfilesxUsuario.sql" />
     <Build Include="dbo\Stored Procedures\AgregarUsuario.sql" />
+    <Build Include="dbo\Stored Procedures\EditarUsuario.sql" />
+    <Build Include="dbo\Stored Procedures\DetalleUsuario.sql" />
   </ItemGroup>
 </Project>

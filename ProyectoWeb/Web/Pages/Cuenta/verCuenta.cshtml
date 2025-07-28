@@ -1,0 +1,97 @@
+﻿@page
+@model Web.Pages.Cuenta.verCuentaModel
+@{
+}
+<head>
+    <link href="~/css/vercuenta.css" rel="stylesheet" />
+</head>
+<div class="container-xxl py-4">
+    <div class="row g-4">
+        <div class="col-lg-3">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <div class="d-flex align-items-center">
+                        <img src="/placeholder.svg?height=60&width=60" alt="Foto de perfil" class="rounded-circle me-3" width="60" height="60">
+                        <div>
+                            <h6 class="mb-0 fw-semibold">@Html.DisplayFor(modelo => modelo.usuario.NombreUsuario)</h6>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <nav class="nav flex-column">
+                        <a class="nav-link active d-flex align-items-center py-2 px-3 rounded mb-1" href="#personal" data-bs-toggle="tab">
+                            <i class="bi bi-person me-2"></i>
+                            Información Personal
+                        </a>
+                        <a class="nav-link d-flex align-items-center py-2 px-3 rounded mb-1" href="#orders" data-bs-toggle="tab">
+                            <i class="bi bi-cart"></i>
+                            Mi carrito
+                        </a>
+                        <a class="nav-link d-flex align-items-center py-2 px-3 rounded mb-1" href="#addresses" data-bs-toggle="tab">
+                            <i class="bi bi-geo-alt me-2"></i>
+                            Direcciones
+                        </a>
+                        <a class="nav-link d-flex align-items-center py-2 px-3 rounded mb-1" asp-page="/Cuenta/CerrarSession">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Cerrar sesión
+                        </a>
+                      
+                       
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <div class="tab-content">
+                <!-- Información Personal -->
+                <div class="tab-pane fade show active" id="personal">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-1">Información Personal</h5>
+                                    <p class="card-text text-muted mb-0">Actualiza tu información personal y de contacto</p>
+                                </div>
+                                <div class="card-body">
+                                    <form method="post">
+                                        <input type="hidden" asp-for="usuario.NombreUsuario" value="@Model.usuario.NombreUsuario" />
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <label for="firstName" class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" id="firstName" value="María">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="lastName" class="form-label">Apellidos</label>
+                                                <input type="text" class="form-control" id="lastName" value="García López">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="email" class="form-label">Correo Electrónico</label>
+                                                <input type="email" asp-for="usuario.CorreoElectronico" class="form-control" id="email" value="@Model.usuario.CorreoElectronico">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="phone" class="form-label">Teléfono</label>
+                                                <input type="tel" asp-for="usuario.Telefono" class="form-control" id="phone" value="@Model.usuario.Telefono">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="direccion" class="form-label">Direccion</label>
+                                                <input type="tel" asp-for="usuario.Direccion" class="form-control" id="direccion" value="@Model.usuario.Direccion">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="birthdate" class="form-label">Fecha de Nacimiento</label>
+                                                <input type="date" class="form-control" id="birthdate" value="1990-05-15">
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+    </div>
+
+</div>
