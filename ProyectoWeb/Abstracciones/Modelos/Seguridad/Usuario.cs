@@ -21,6 +21,8 @@ namespace Abstracciones.Modelos.Seguridad
         public string Telefono { get; set; }
         [Required]
         public string Direccion { get; set; }
+        [Required]
+        public string Apellido { get; set; }
 
 
     }

@@ -4,7 +4,8 @@
     @CorreoElectronico  VARCHAR(MAX),
     @Telefono VARCHAR(MAX),
     @Direccion  VARCHAR(MAX),
-    @IdEstado int 
+    @IdEstado int,
+    @Apellido VARCHAR(MAX) 
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -21,7 +22,8 @@ BEGIN
         [CorreoElectronico],
         TELEFONO,
         DIRECCION,
-        estado_id
+        estado_id,
+        APELLIDO
     )
     VALUES (
         @Id,
@@ -30,7 +32,8 @@ BEGIN
         @CorreoElectronico,
         @Telefono,
         @Direccion,
-        @IdEstado
+        @IdEstado,
+        @Apellido
     );
 
     -- Insertar relación con perfil 2
