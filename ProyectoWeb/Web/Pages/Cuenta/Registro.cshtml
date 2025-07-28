@@ -2,108 +2,128 @@
 @model Web.Pages.Cuenta.RegistroModel
 @{
 }
+
 <head>
     <link href="~/css/login.css" rel="stylesheet" />
 </head>
+
 <body class="d-flex flex-column min-vh-100" style="background-image: url('/img/fondo.png'); background-size: cover; background-position: center; border-radius:40px">
     <div class="container my-auto">
         <div class="row justify-content-center align-items-center mt-4">
-            <div class="col-lg-8 col-md-10">
-                <div class="row">
-                    <div class="col-md-6 border-end" style="background-color:white; border-radius:20px">
-                        <div class="text-center mb-4">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Squarespace_logo.svg/768px-Squarespace_logo.svg.png" alt="Logo" width="40">
-                            <h4 class="mt-3">Inicia session</h4>
-                        </div>
-                        <form method="post">
-                            <div class="mb-3">
+            
+            
+            <div class="col-8" style="background-color:white; border-radius:20px">
+                <form method="post">
 
-                                <label for="nombreUsuario" class="form-label">Nombre de usuario</label>
-                                <div class="input-group">
-                                    <input type="text" id="nombreUsuario" class="form-control input-squarespace" placeholder="Nombre de usuario" asp-for="usuario.NombreUsuario">
-                                    <span class="input-group-text">
-                                        <i class=" bi bi-person-fill"></i>
-                                    </span>
-                                </div>
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            <label for="nombreUsuario" class="form-label">Nombre de usuario</label>
+                            <div class="input-group">
+                                <input type="text" id="nombreUsuario" class="form-control input-squarespace" placeholder="Nombre de usuario" asp-for="usuario.NombreUsuario" />
+                                <span class="input-group-text">
+                                    <i class="bi bi-person-fill"></i>
+                                </span>
                             </div>
                             <div class="input-group mb-3">
                                 <span asp-validation-for="usuario.NombreUsuario" class="text-danger"></span>
                             </div>
-                            <div class="mb-3">
+                        </div>
 
-                                <label for="email" class="form-label">Correo electronico</label>
-                                <div class="input-group">
-                                    <input type="email" id="email" class="form-control input-squarespace" placeholder="name@example.com" asp-for="usuario.CorreoElectronico">
-                                    <span class="input-group-text">
-                                        <i class=" bi bi-envelope-at-fill"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-
-                                <label for="telefono" class="form-label">Telefono</label>
-                                <div class="input-group">
-                                    <input type="text" id="telefono" class="form-control input-squarespace" placeholder="7225-7088" asp-for="usuario.Telefono">
-                                    
-                                </div>
-                            </div>
-                            <div class="mb-3">
-
-                                <label for="direccion" class="form-label">Direccion</label>
-                                <div class="input-group">
-                                    <input type="text" id="direccion" class="form-control input-squarespace" placeholder="Direccion" asp-for="usuario.Direccion">
-                                    
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <div class="input-group">
-                                    <input type="password" id="password" class="form-control input-squarespace" placeholder="Contraseña" asp-for="usuario.Password">
-                                    <span class="input-group-text bg-white border-0">
-                                        <i class="bi bi-eye"></i>
-                                    </span>
-                                </div>
+                      
+                        <div class="col-md-6">
+                            <label for="apellido" class="form-label">Apellido</label>
+                            <div class="input-group">
+                                <input type="text" id="apellido" class="form-control input-squarespace" placeholder="Apellido" asp-for="usuario.Apellido" />
+                                <span class="input-group-text">
+                                    <i class="bi bi-person-fill"></i>
+                                </span>
                             </div>
                             <div class="input-group mb-3">
-                                <span asp-validation-for="usuario.Password" class="text-danger"></span>
+                                <span asp-validation-for="usuario.Apellido" class="text-danger"></span>
                             </div>
-                            <div class="mb-3">
-                                <label for="Confirmarpassword" class="form-label">Confirmar contraseña</label>
-                                <div class="input-group">
-                                    <input type="password" id="Confirmarpassword" class="form-control input-squarespace" placeholder="Confirmar contraseña" asp-for="usuario.Password">
-                                    <span class="input-group-text bg-white border-0">
-                                        <i class="bi bi-eye"></i>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="input-group mb-3">
-                                <span asp-validation-for="usuario.Password" class="text-danger"></span>
-                            </div>
-                            <div class="form-check d-flex justify-content-center mb-5">
-                                <input class="form-check-input me-2" type="checkbox" value="" id="aceptar" />
-                                He leído y acepto <a href="#!">los términos y condiciones de uso</a>
-
-                            </div>
-
-                            <button class="w-100 btn-creative mb-3" type="submit">Crear cuenta</button>
-                        </form>
-
-                    </div>
-                    <div class="col-md-6 d-flex flex-column justify-content-center gap-3 mt-4 mt-md-2">
-                        <h1 class="text-center text-white">Si ya tienes una cuenta puedes iniciar session aqui</h1>
-
-                        <a href="#" class="btn-creative">Iniciar session</a>
+                        </div>
                     </div>
 
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo electrónico</label>
+                        <div class="input-group">
+                            <input type="email" id="email" class="form-control input-squarespace" placeholder="name@example.com" asp-for="usuario.CorreoElectronico" />
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope-at-fill"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="telefono" class="form-label">Teléfono</label>
+                            <div class="input-group">
+                                <input type="text" id="telefono" class="form-control input-squarespace" placeholder="7225-7088" asp-for="usuario.Telefono" />
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="direccion" class="form-label">Dirección</label>
+                            <div class="input-group">
+                                <input type="text" id="direccion" class="form-control input-squarespace" placeholder="Dirección" asp-for="usuario.Direccion" />
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <div class="input-group">
+                            <input type="password" id="password" class="form-control input-squarespace" placeholder="Contraseña" asp-for="usuario.Password" />
+                            <span class="input-group-text bg-white border-0">
+                                <i class="bi bi-eye"></i>
+                            </span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span asp-validation-for="usuario.Password" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                   
+                    <div class="mb-3">
+                        <label for="Confirmarpassword" class="form-label">Confirmar contraseña</label>
+                        <div class="input-group">
+                            <input type="password" id="Confirmarpassword" class="form-control input-squarespace" placeholder="Confirmar contraseña" />
+                            <span class="input-group-text bg-white border-0">
+                                <i class="bi bi-eye"></i>
+                            </span>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span asp-validation-for="usuario.Password" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                   
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="aceptar" />
+                        <label class="form-check-label" for="terms">
+                            He leído y acepto los <a href="#" class="text-decoration-none">términos y condiciones de uso</a>
+                        </label>
+                    </div>
+
+                    
+                    <button class="w-100 btn-creative mb-3" type="submit">Crear cuenta</button>
+                </form>
+            </div>
+
+          
+            <div class="col-4">
+                <h1 class="text-center text-white">Si ya tienes una cuenta puedes iniciar sesión aquí</h1>
+                <div class="text-center">
+                    <a asp-page="./Login" class="btn-creative">Iniciar sesión</a>
                 </div>
             </div>
         </div>
     </div>
-
-
-
 </body>
+
 @section Scripts {
     <script src="~/js/ValidacionesRegistro.js"></script>
-
 }

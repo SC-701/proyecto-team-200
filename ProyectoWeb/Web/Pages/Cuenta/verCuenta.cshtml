@@ -57,15 +57,15 @@
                                 </div>
                                 <div class="card-body">
                                     <form method="post">
-                                        <input type="hidden" asp-for="usuario.NombreUsuario" value="@Model.usuario.NombreUsuario" />
+                                        
                                         <div class="row g-3">
                                             <div class="col-md-6">
-                                                <label for="firstName" class="form-label">Nombre</label>
-                                                <input type="text" class="form-control" id="firstName" value="María">
+                                                <label for="nombreUsuario" class="form-label">Nombre</label>
+                                                <input type="text" asp-for="usuario.NombreUsuario"  class="form-control" id="nombreUsuario" value="@Model.usuario.NombreUsuario">
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="lastName" class="form-label">Apellidos</label>
-                                                <input type="text" class="form-control" id="lastName" value="García López">
+                                                <label for="apellidos" class="form-label">Apellidos</label>
+                                                <input type="text" asp-for="usuario.Apellido"  class="form-control" id="apellidos" value="@Model.usuario.Apellido">
                                             </div>
                                             <div class="col-12">
                                                 <label for="email" class="form-label">Correo Electrónico</label>

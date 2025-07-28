@@ -20,6 +20,8 @@ namespace Abstracciones.Modelos
         public string Telefono { get; set; }
         [Required]
         public string Direccion { get; set; }
+        [Required]
+        public string Apellido { get; set; }
 
     }
     public class UsuarioEditar
@@ -34,6 +36,8 @@ namespace Abstracciones.Modelos
         public string Telefono { get; set; }
         [Required]
         public string Direccion { get; set; }
+        [Required]
+        public string Apellido { get; set; }
 
     }
 }

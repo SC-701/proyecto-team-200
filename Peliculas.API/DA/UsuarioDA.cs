@@ -20,7 +20,7 @@ namespace DA
         public async Task<Guid> CrearUsuario(Usuario usuario)
         {
             var sql = @"[AgregarUsuario]";
-            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { NombreUsuario = usuario.NombreUsuario, PasswordHash = usuario.PasswordHash, CorreoElectronico = usuario.CorreoElectronico, IdEstado = 1 , Telefono = usuario.Telefono, Direccion = usuario.Direccion});
+            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { NombreUsuario = usuario.NombreUsuario, PasswordHash = usuario.PasswordHash, CorreoElectronico = usuario.CorreoElectronico, IdEstado = 1 , Telefono = usuario.Telefono, Direccion = usuario.Direccion,Apellido=usuario.Apellido});
             return resultado;
         }
 
@@ -35,7 +35,7 @@ namespace DA
         public async Task<Guid> EditarUsuario(Guid idUsuario, UsuarioEditar usuario)
         {
             var sql = @"[EditarUsuario]";
-            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { IdUsuario = idUsuario, NombreUsuario = usuario.NombreUsuario, CorreoElectronico = usuario.CorreoElectronico, Telefono = usuario.Telefono, Direccion = usuario.Direccion });
+            var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { IdUsuario = idUsuario, NombreUsuario = usuario.NombreUsuario, CorreoElectronico = usuario.CorreoElectronico, Telefono = usuario.Telefono, Direccion = usuario.Direccion, Apellido = usuario.Apellido });
             return resultado;
         }
 
