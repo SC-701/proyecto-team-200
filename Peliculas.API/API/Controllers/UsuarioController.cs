@@ -23,7 +23,10 @@ namespace API.Controllers
 
         public async Task<IActionResult> PostAsync([FromBody] Usuario usuario)
         {
-            return Ok(await _usuarioFlujo.CrearUsuario(usuario));
+            var resultado= await _usuarioFlujo.CrearUsuario(usuario);
+            if(resultado==null)
+                return BadRequest(new { existeCorreo= true}); 
+            return Ok(resultado);
         }
         [Authorize(Roles = "2")]
         [HttpPost("ObtenerUsuario")]

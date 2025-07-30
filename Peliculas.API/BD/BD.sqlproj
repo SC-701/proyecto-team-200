@@ -9,8 +9,7 @@
     <ProjectGuid>{773856c6-96c0-4b82-b2aa-0c4a189703d0}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
-    <RootPath>
-    </RootPath>
+    <RootPath />
     <RootNamespace>BD</RootNamespace>
     <AssemblyName>BD</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
@@ -48,7 +47,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
-    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
@@ -84,5 +82,6 @@
     <Build Include="dbo\Stored Procedures\AgregarUsuario.sql" />
     <Build Include="dbo\Stored Procedures\EditarUsuario.sql" />
     <Build Include="dbo\Stored Procedures\DetalleUsuario.sql" />
+    <Build Include="dbo\Stored Procedures\ExisteCorreo.sql" />
   </ItemGroup>
 </Project>

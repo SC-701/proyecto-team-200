@@ -3,6 +3,8 @@ using Abstracciones.Modelos.Seguridad;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Reglas;
+using System.Net;
+using System.Text.Json;
 
 namespace Web.Pages.Cuenta
 {
@@ -11,6 +13,7 @@ namespace Web.Pages.Cuenta
         [BindProperty]
         public Usuario usuario { get; set; } = default!;
         private IConfiguracion _configuracion;
+        public bool ExisteCorreo { get; set; }
         public RegistroModel(IConfiguracion configuracion)
         {
             _configuracion = configuracion;
@@ -25,6 +28,16 @@ namespace Web.Pages.Cuenta
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsSeguridad", "Registro");
             var cliente = new HttpClient();
             var respuesta = await cliente.PostAsJsonAsync<UsuarioBase>(endpoint, usuario);
+
+            if (respuesta.StatusCode == HttpStatusCode.BadRequest)
+            {
+                var resultado = await respuesta.Content.ReadAsStringAsync();
+                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var json = JsonSerializer.Deserialize<Dictionary<string, bool>>(resultado, opciones);
+                ExisteCorreo = json["existeCorreo"];
+                return Page(); 
+            }
+
             respuesta.EnsureSuccessStatusCode();
             return RedirectToPage("../index");
         }

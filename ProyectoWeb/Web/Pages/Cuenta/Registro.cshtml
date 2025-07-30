@@ -110,6 +110,12 @@
 
                     
                     <button class="w-100 btn-creative mb-3" type="submit">Crear cuenta</button>
+                    @if (Model.ExisteCorreo)
+                    {
+                        <div class="alert alert-warning" role="alert">
+                            El correo que ingresaste ya está en uso. Por favor, intenta con otro correo electrónico.
+                        </div>
+                    }
                 </form>
             </div>
 
