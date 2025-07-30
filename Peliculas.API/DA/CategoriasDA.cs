@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abstracciones.Interfaces.DA;
+using Abstracciones.Modelos;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using static Abstracciones.Modelos.Categorias;
@@ -24,23 +25,58 @@ namespace DA
 		}
 
 
-		public async Task<Guid> Agregar(CategoriasRequest categorias)
-		{
-			string query = @"AGREGAR_CATEGORIA";
-			var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
-			{
+		
 
-				IdCategoria = Guid.NewGuid(),
-				Nombre = categorias.Nombre,
-				Descripcion = categorias.Descripcion,
-				FechaCreacion = DateTime.Now,
-				EstadoId = categorias.EstadoId
+        public async Task<Guid> AgregarHija(CategoriasRequestHija categorias)
+        {
+            string query = @"AGREGAR_CATEGORIA_HIJA";
+            var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
 
-			});
-			return resultadoConsulta;
-		}
+                IdCategoria = Guid.NewGuid(),
+                IdCategoriaPadre = categorias.PadreId,
+                Nombre = categorias.Nombre,
+                Descripcion = categorias.Descripcion,
+                FechaCreacion = DateTime.Now,
+                EstadoId = 1
 
-		public async Task<Guid> Editar(Guid IdCategoria, CategoriasRequest categorias)
+            });
+            return resultadoConsulta;
+        }
+
+        public async Task<Guid> AgregarPadre(CategoriasRequestPadre categorias)
+        {
+            string query = @"AGREGAR_CATEGORIA_PADRE";
+            var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+
+                IdCategoria = Guid.NewGuid(),
+                Nombre = categorias.Nombre,
+                Descripcion = categorias.Descripcion,
+                FechaCreacion = DateTime.Now,
+                EstadoId = 1
+
+            });
+            return resultadoConsulta;
+        }
+
+        public async Task<Guid> Desactivar(Guid IdCategoria)
+        {
+            await VerificarExistenciaCategoria(IdCategoria);
+
+
+            string query = @"DESACTIVAR_CATEGORIA";
+
+            var resultado = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+                IdCategoria = IdCategoria,
+                EstadoId = 2,
+            });
+
+            return resultado;
+        }
+
+        public async Task<Guid> Editar(Guid IdCategoria, CategoriasRequestPadre categorias)
 		{
 			await VerificarExistenciaCategoria(IdCategoria);
 
@@ -49,26 +85,41 @@ namespace DA
 
 			var resultado = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
 			{
-				IdCategoria = IdCategoria,
-				Nombre = categorias.Nombre,
-				Descripcion = categorias.Descripcion,
-				FechaCreacion = DateTime.Now,
-				EstadoId = categorias.EstadoId
-			});
+                IdCategoria = IdCategoria,
+                Nombre = categorias.Nombre,
+                Descripcion = categorias.Descripcion
+            });
 
 			return resultado;
 		}
 
-
-
-		public async Task<IEnumerable<CategoriasResponse>> Obtener()
+        
+        public async Task<IEnumerable<CategoriasResponse>> Obtener()
 		{
 			string query = @"VER_CATEGORIAS";
 			var resultadoConsulta = await _sqlConnection.QueryAsync<CategoriasResponse>(query);
 			return resultadoConsulta;
 		}
 
-		public async Task<CategoriasResponse> ObtenerPorId(Guid IdCategoria)
+        public async Task<IEnumerable<CategoriasResponse>> ObtenerHijas(Guid idPadre)
+        {
+            return await _sqlConnection.QueryAsync<CategoriasResponse>(
+                "OBTENER_CATEGORIAS_HIJAS",
+                new { IdPadre = idPadre },
+                commandType: System.Data.CommandType.StoredProcedure
+            );
+        }
+
+        public async Task<IEnumerable<CategoriasResponse>> ObtenerHijasRecursivo(Guid idPadre)
+        {
+            return await _sqlConnection.QueryAsync<CategoriasResponse>(
+             "OBTENER_CATEGORIAS_RECURSIVO",
+             new { IdPadre = idPadre },
+             commandType: System.Data.CommandType.StoredProcedure
+         );
+        }
+
+        public async Task<CategoriasResponse> ObtenerPorId(Guid IdCategoria)
 		{
 			string query = @"VER_CATEGORIA_POR_ID";
 			var resultadoConsulta = await _sqlConnection.QueryAsync<CategoriasResponse>(query,
@@ -81,7 +132,7 @@ namespace DA
 		{
 			CategoriasResponse? resutadoConsultaProducto = await ObtenerPorId(IdCategoria);
 			if (resutadoConsultaProducto == null)
-				throw new Exception("la marca no esta registrada");
+				throw new Exception("la categoria no esta registrada");
 		}
 
 	}

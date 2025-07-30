@@ -2,13 +2,13 @@
 AS
 BEGIN
   SET NOCOUNT ON;
-
-  SELECT 
+   SELECT 
     C.CATEGORIAS_ID AS CategoriasId,
     C.NOMBRE AS Nombre,
+    C.PADRE_ID AS PadreId,
     C.DESCRIPCION AS Descripcion,
     C.FECHA_CREACION AS FechaCreacion,
-    C.ESTADO_ID AS EstadoId  
+    E.TIPO AS Estado
   FROM CATEGORIAS C
   INNER JOIN ESTADOS E ON C.ESTADO_ID = E.ESTADO_ID;
 END;

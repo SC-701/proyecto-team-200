@@ -85,7 +85,7 @@
     <Build Include="dbo\Stored Procedures\EditarUsuario.sql" />
     <Build Include="dbo\Stored Procedures\DetalleUsuario.sql" />
     <Build Include="dbo\Stored Procedures\AGREGAR_CARRITOPRODUCTO.sql" />
-    <Build Include="dbo\Stored Procedures\AGREGAR_CATEGORIA.sql" />
+    <Build Include="dbo\Stored Procedures\AGREGAR_CATEGORIA_PADRE.sql" />
     <Build Include="dbo\Stored Procedures\EDITAR_CARRITOPRODUCTO.sql" />
     <Build Include="dbo\Stored Procedures\EDITAR_CATEGORIA.sql" />
     <Build Include="dbo\Stored Procedures\ELIMINAR_CARRITOPRODUCTO.sql" />
@@ -93,5 +93,9 @@
     <Build Include="dbo\Stored Procedures\VER_CATEGORIAS.sql" />
     <Build Include="dbo\Stored Procedures\VER_CARRITOPRODUCTO_POR_ID.sql" />
     <Build Include="dbo\Stored Procedures\VER_CATEGORIAS_POR_ID.sql" />
+    <Build Include="dbo\Stored Procedures\AGREGAR_CATEGORIA_HIJA.sql" />
+    <Build Include="dbo\Stored Procedures\DESACTIVAR_CATEGORIA.sql" />
+    <Build Include="dbo\Stored Procedures\OBTENER_CATEGORIAS_HIJAS.sql" />
+    <Build Include="dbo\Stored Procedures\OBTENER_CATEGORIAS_RECURSIVO.sql" />
   </ItemGroup>
 </Project>

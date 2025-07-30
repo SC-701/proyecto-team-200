@@ -58,6 +58,9 @@ builder.Services.AddScoped<IAutenticacionFlujo, AutenticacionFlujo>();
 builder.Services.AddScoped<IAutenticacionReglas, AutenticacionReglas>();
 builder.Services.AddScoped<ICarritoProductoFlujo, CarritoProductoFlujo>();
 builder.Services.AddScoped<ICarritoProductoDA, CarritoProductoDA>();
+builder.Services.AddScoped<ICategoriasFlujo, CategoriasFlujo>();
+builder.Services.AddScoped<ICategoriasReglas, CategoriasReglas>();
+builder.Services.AddScoped<ICategoriasDA, CategoriasDA>();
 
 
 builder.Services.AddTransient<IAutorizacionBW, Autorizacion.BW.AutorizacionBW>();

@@ -1,21 +1,17 @@
 ﻿CREATE PROCEDURE EDITAR_CATEGORIA
-  @IdCategoria UNIQUEIDENTIFIER,
+ @IdCategoria UNIQUEIDENTIFIER,
   @Nombre NVARCHAR(255),
-  @Descripcion NVARCHAR(255),
-  @FechaCreacion DATE,
-  @EstadoId INT
+  @Descripcion NVARCHAR(255)
 AS
 BEGIN
   SET NOCOUNT ON;
 
   BEGIN TRANSACTION;
 
-  UPDATE [dbo].[CATEGORIAS]
+ UPDATE dbo.CATEGORIAS
   SET
     NOMBRE = @Nombre,
-    DESCRIPCION = @Descripcion,
-    FECHA_CREACION = @FechaCreacion,
-    ESTADO_ID = @EstadoId
+    DESCRIPCION = @Descripcion
   WHERE CATEGORIAS_ID = @IdCategoria;
 
   COMMIT TRANSACTION;

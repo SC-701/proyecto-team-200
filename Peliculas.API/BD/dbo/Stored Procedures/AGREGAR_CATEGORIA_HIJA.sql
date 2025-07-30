@@ -1,5 +1,6 @@
-﻿CREATE PROCEDURE AGREGAR_CATEGORIA
+﻿CREATE PROCEDURE AGREGAR_CATEGORIA_HIJA
   @IdCategoria UNIQUEIDENTIFIER,
+  @IdCategoriaPadre UNIQUEIDENTIFIER,
   @Nombre NVARCHAR(255),
   @Descripcion NVARCHAR(255),
   @FechaCreacion DATE,
@@ -12,6 +13,7 @@ BEGIN
 
   INSERT INTO [dbo].[CATEGORIAS] (
     CATEGORIAS_ID,
+    PADRE_ID,
     NOMBRE,
     FECHA_CREACION,
     DESCRIPCION,
@@ -19,6 +21,7 @@ BEGIN
   )
   VALUES (
     @IdCategoria,
+    @IdCategoriaPadre, 
     @Nombre,
     @FechaCreacion,
     @Descripcion,

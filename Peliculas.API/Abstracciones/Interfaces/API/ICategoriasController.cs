@@ -13,10 +13,14 @@ namespace Abstracciones.Interfaces.API
 		Task<IActionResult> Obtener();
 		Task<IActionResult> ObtenerPorId(Guid IdCategoria);
 
-		Task<IActionResult> Agregar(CategoriasRequest categorias);
+		Task<IActionResult> AgregarPadre(CategoriasRequestPadre categorias);
 
-		Task<IActionResult> Editar(Guid IdCategoria, CategoriasRequest categorias);
+        Task<IActionResult> AgregarHija(CategoriasRequestHija categorias);
+        Task<IActionResult> Editar(Guid IdCategoria, CategoriasRequestPadre categorias);
+        Task<IActionResult> Desactivar(Guid IdCategoria);
+        Task<IActionResult> ObtenerHijas(Guid idPadre);
+        Task<IActionResult> ObtenerHijasRecursivo(Guid idPadre);
 
 
-	}
+    }
 }

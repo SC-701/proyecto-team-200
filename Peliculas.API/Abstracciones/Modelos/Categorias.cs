@@ -14,15 +14,23 @@ namespace Abstracciones.Modelos
 			public string Descripcion { get; set; }
 			public DateTime FechaCreacion { get; set; }
 		}
-		public class CategoriasRequest : CategoriasBase
+        public class CategoriasRequestPadre : CategoriasBase
+        {
+            public int EstadoId { get; set; }
+        }
+        public class CategoriasRequestHija : CategoriasBase
 		{
 			public int EstadoId { get; set; }
-		}
+			public Guid PadreId { get; set; }
+        }
 
 		public class CategoriasResponse : CategoriasBase
 		{
 			public Guid CategoriasId { get; set; }
-			public int EstadoId { get; set; }
+			public Guid PadreId { get; set; }
+            public string Estado { get; set; }
 		}
-	}
+
+
+    }
 }
