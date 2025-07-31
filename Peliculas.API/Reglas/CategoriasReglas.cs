@@ -11,12 +11,7 @@ namespace Reglas
 {
     public class CategoriasReglas : ICategoriasReglas
     {
-        /// <summary>
-        /// Obtiene todas las categorías hijas recursivamente a partir de una lista de categorías y un IdPadre.
-        /// </summary>
-        /// <param name="todasCategorias">Lista completa de categorías.</param>
-        /// <param name="idPadre">Id de la categoría padre.</param>
-        /// <returns>Lista de todas las categorías hijas (directas e indirectas).</returns>
+      
         public IEnumerable<CategoriasResponse> ObtenerHijasRecursivo(IEnumerable<CategoriasResponse> todasCategorias, Guid idPadre)
         {
             var resultado = new List<CategoriasResponse>();

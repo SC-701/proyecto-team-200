@@ -97,5 +97,10 @@
     <Build Include="dbo\Stored Procedures\DESACTIVAR_CATEGORIA.sql" />
     <Build Include="dbo\Stored Procedures\OBTENER_CATEGORIAS_HIJAS.sql" />
     <Build Include="dbo\Stored Procedures\OBTENER_CATEGORIAS_RECURSIVO.sql" />
+    <Build Include="dbo\Stored Procedures\AGREGAR_CARRITO.sql" />
+    <Build Include="dbo\Stored Procedures\EDITAR_CARRITO.sql" />
+    <Build Include="dbo\Stored Procedures\ELIMINAR_CARRITO.sql" />
+    <Build Include="dbo\Stored Procedures\OBTENER_CARRITO_POR_ID.sql" />
+    <Build Include="dbo\Stored Procedures\OBTENER_CARRITOS_POR_USUARIO.sql" />
   </ItemGroup>
 </Project>

@@ -61,6 +61,8 @@ builder.Services.AddScoped<ICarritoProductoDA, CarritoProductoDA>();
 builder.Services.AddScoped<ICategoriasFlujo, CategoriasFlujo>();
 builder.Services.AddScoped<ICategoriasReglas, CategoriasReglas>();
 builder.Services.AddScoped<ICategoriasDA, CategoriasDA>();
+builder.Services.AddScoped<ICarritoFlujo, CarritoFlujo>();
+builder.Services.AddScoped<ICarritoDA, CarritoDA>();
 
 
 builder.Services.AddTransient<IAutorizacionBW, Autorizacion.BW.AutorizacionBW>();
