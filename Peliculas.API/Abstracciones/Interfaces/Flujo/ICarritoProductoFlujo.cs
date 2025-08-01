@@ -13,9 +13,10 @@ namespace Abstracciones.Interfaces.Flujo
 		Task<CarritoProductoResponse> ObtenerPorID(Guid CarritoProductoId);
 
 
-		Task<Guid> Agregar(CarritoProductoRequest carritoproducto);
+        Task<Guid> Agregar(Guid usuarioId, CarritoProductoRequest carritoProducto);
 
-		Task<Guid> Editar(Guid CarritoProductoId, CarritoProductoRequest carritoproducto);
+
+        Task<Guid> Editar(Guid CarritoProductoId, CarritoProductoRequest carritoproducto);
 
 		Task<Guid> Eliminar(Guid CarritoProductoId);
 	}

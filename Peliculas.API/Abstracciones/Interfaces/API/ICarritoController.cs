@@ -21,5 +21,7 @@ namespace Abstracciones.Interfaces.API
         Task<IActionResult> Editar(Guid CarritoId, CarritoBase carrito);
 
         Task<IActionResult> Eliminar(Guid CarritoId);
+
+        Task<IActionResult> ActualizarTotal(Guid CarritoId);
     }
 }

@@ -2,6 +2,7 @@
 using Abstracciones.Interfaces.DA;
 using Abstracciones.Interfaces.Flujo;
 using Abstracciones.Modelos;
+using Flujo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Abstracciones.Modelos.Carrito;
@@ -36,8 +37,9 @@ namespace API.Controllers
 		[HttpPut("{CarritoId}")]
 		public async Task<IActionResult> Editar([FromRoute] Guid CarritoId, [FromBody] CarritoBase carrito)
 		{
-
-			var resultado = await _carritoFlujo.Editar(CarritoId, carrito);
+            if (!await VerificarExistenciaCarrito(CarritoId))
+                return NotFound("el carrito no existe");
+            var resultado = await _carritoFlujo.Editar(CarritoId, carrito);
 			return Ok(resultado);
 		}
 
@@ -47,8 +49,9 @@ namespace API.Controllers
 		[HttpDelete("{CarritoId}")]
 		public async Task<IActionResult> Eliminar([FromRoute] Guid CarritoId)
 		{
-
-			var resultado = await _carritoFlujo.Eliminar(CarritoId);
+            if (!await VerificarExistenciaCarrito(CarritoId))
+                return NotFound("el carrito no existe");
+            var resultado = await _carritoFlujo.Eliminar(CarritoId);
 			return NoContent();
 		}
 
@@ -57,7 +60,9 @@ namespace API.Controllers
 		public async Task<IActionResult> ObtenerPorUsuario([FromRoute] Guid UsuarioId)
 		{
 			var resultado = await _carritoFlujo.ObtenerPorUsuario(UsuarioId);
-			return Ok(resultado);
+            if (resultado == null)
+                return NotFound();
+            return Ok(resultado);
 		}
 
 
@@ -72,5 +77,22 @@ namespace API.Controllers
 			return Ok(resultado);
 		}
 
-	}
+        [HttpPut("actualizar-total/{CarritoId}")]
+        public async Task<IActionResult> ActualizarTotal(Guid CarritoId)
+        {
+            if (!await VerificarExistenciaCarrito(CarritoId))
+                return NotFound("el carrito no existe");
+            var resultado = await _carritoFlujo.ActualizarTotal(CarritoId);
+            return NoContent();
+        }
+
+        private async Task<bool> VerificarExistenciaCarrito(Guid Id)
+        {
+            var ResultadoValidacion = false;
+            var resultadoCategoriaExiste = await _carritoFlujo.ObtenerPorID(Id);
+            if (resultadoCategoriaExiste != null)
+                ResultadoValidacion = true;
+            return ResultadoValidacion;
+        }
+    }
 }

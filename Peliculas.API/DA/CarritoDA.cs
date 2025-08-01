@@ -25,13 +25,24 @@ namespace DA
             _sqlConnection = _repositorioDapper.ObtenerRepositorio();
             _carritoProductoDA = carritoProductoDA;
         }
+
+        public async Task<Guid> ActualizarTotal(Guid CarritoId)
+        {
+            string query = @"TOTAL_CARRITO";
+            var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+                CarritoId = CarritoId
+            });
+            return resultadoConsulta;
+        }
+
         public async Task<Guid> Agregar(CarritoBase carrito)
         {
             string query = @"AGREGAR_CARRITO";
             var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
             {
 
-                CarritoId = Guid.NewGuid(),
+                CarritoId = carrito.CarritoId,
                 UsuarioId = carrito.UsuarioId,
                 FechaCreacion = DateTime.Now,
                 Total = carrito.Total,
@@ -90,13 +101,13 @@ namespace DA
 
             var carrito = resultadoConsulta.FirstOrDefault();
 
+            if (carrito == null)
+                return null;
 
             carrito.Productos = await _carritoProductoDA.ObtenerPorCarrito(carrito.CarritoId);
 
-
             return carrito;
         }
-
 
         private async Task VerificarCarritoExiste(Guid IdCarrito)
         {

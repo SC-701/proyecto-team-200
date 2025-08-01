@@ -43,5 +43,10 @@ namespace Flujo
         {
             return await _carritoDA.ObtenerPorID(CarritoId);
         }
+
+        public async Task<Guid> ActualizarTotal(Guid CarritoId)
+        {
+            return await _carritoDA.ActualizarTotal(CarritoId);
+        }
     }
 }

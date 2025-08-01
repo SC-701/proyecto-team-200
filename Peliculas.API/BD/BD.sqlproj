@@ -102,5 +102,6 @@
     <Build Include="dbo\Stored Procedures\ELIMINAR_CARRITO.sql" />
     <Build Include="dbo\Stored Procedures\OBTENER_CARRITO_POR_ID.sql" />
     <Build Include="dbo\Stored Procedures\OBTENER_CARRITOS_POR_USUARIO.sql" />
+    <Build Include="dbo\Stored Procedures\TOTAL_CARRITO.sql" />
   </ItemGroup>
 </Project>

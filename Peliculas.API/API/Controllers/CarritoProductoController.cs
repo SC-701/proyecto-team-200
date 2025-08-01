@@ -1,4 +1,5 @@
-﻿using Abstracciones.Interfaces.API;
+﻿using System.Security.Claims;
+using Abstracciones.Interfaces.API;
 using Abstracciones.Interfaces.DA;
 using Abstracciones.Interfaces.Flujo;
 using Abstracciones.Modelos;
@@ -22,17 +23,26 @@ namespace API.Controllers
 			_logger = logger;
 		}
 
-		[HttpPost]
-		public async Task<IActionResult> Agregar([FromBody] CarritoProductoRequest carritoProducto)
-		{
-			var resultado = await _carritoProductoFlujo.Agregar(carritoProducto);
-			return CreatedAtAction(nameof(ObtenerPorID), new { CarritoProductoId = resultado }, null);
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Agregar([FromBody] CarritoProductoRequest carritoProducto)
+        {
+            string idUsuarioStr = HttpContext.User.Claims
+                          .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
 
-		}
+            if (string.IsNullOrEmpty(idUsuarioStr))
+                return Unauthorized();
+
+            if (!Guid.TryParse(idUsuarioStr, out Guid idUsuario))
+                return BadRequest("IdUsuario inválido");
+
+            var resultado = await _carritoProductoFlujo.Agregar(idUsuario, carritoProducto);
+            return CreatedAtAction(nameof(ObtenerPorID), new { CarritoProductoId = resultado }, null);
+        }
 
 
 
-		[HttpPut("{CarritoProductoId}")]
+        [HttpPut("{CarritoProductoId}")]
 		public async Task<IActionResult> Editar([FromRoute] Guid CarritoProductoId, [FromBody] CarritoProductoRequest carritoProducto)
 		{
 

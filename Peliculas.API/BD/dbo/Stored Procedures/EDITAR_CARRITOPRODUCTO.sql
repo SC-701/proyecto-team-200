@@ -9,7 +9,7 @@ BEGIN
 
   DECLARE @Precio DECIMAL(8,2);
  
-
+ DECLARE @ResultadoCarritoId UNIQUEIDENTIFIER;
 
   
   SELECT 
@@ -25,8 +25,12 @@ BEGIN
     TOTAL_LINEA = @Cantidad * @Precio
   WHERE 
     CARRITO_PRODUCTO_ID = @CarritoProductoId;
+ SELECT 
+    @ResultadoCarritoId = CARRITO_ID
+  FROM CARRITO_PRODUCTO
+  WHERE CARRITO_PRODUCTO_ID = @CarritoProductoId;
 
   COMMIT TRANSACTION;
 
-  SELECT @CarritoProductoId AS Resultado;
+  SELECT @ResultadoCarritoId AS Resultado;
 END;
