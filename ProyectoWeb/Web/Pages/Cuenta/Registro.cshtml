@@ -54,6 +54,9 @@
                                 <i class="bi bi-envelope-at-fill"></i>
                             </span>
                         </div>
+                        <div class="input-group mb-3">
+                            <span asp-validation-for="usuario.CorreoElectronico" class="text-danger"></span>
+                        </div>
                     </div>
 
                     
@@ -63,11 +66,17 @@
                             <div class="input-group">
                                 <input type="text" id="telefono" class="form-control input-squarespace" placeholder="7225-7088" asp-for="usuario.Telefono" />
                             </div>
+                            <div class="input-group mb-3">
+                                <span asp-validation-for="usuario.Telefono" class="text-danger"></span>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="direccion" class="form-label">Dirección</label>
                             <div class="input-group">
                                 <input type="text" id="direccion" class="form-control input-squarespace" placeholder="Dirección" asp-for="usuario.Direccion" />
+                            </div>
+                            <div class="input-group mb-3">
+                                <span asp-validation-for="usuario.Direccion" class="text-danger"></span>
                             </div>
                         </div>
                     </div>
@@ -132,4 +141,5 @@
 
 @section Scripts {
     <script src="~/js/ValidacionesRegistro.js"></script>
+    <partial name="_ValidationScriptsPartial" />
 }

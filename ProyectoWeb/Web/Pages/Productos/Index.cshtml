@@ -7,7 +7,89 @@
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 <head>
     <link href="~/css/tienda.css" rel="stylesheet" />
+    <link href="~/css/slider.css" rel="stylesheet" />
+    <style>
+        .sidebar-nav {
+            width: 70px;
+            transition: width 0.3s ease;
+        }
+
+            .sidebar-nav:hover {
+                width: 280px;
+            }
+
+        .nav-text {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-nav:hover .nav-text {
+            opacity: 1;
+        }
+    </style>
 </head>
+<body>
+<div class="position-fixed top-0 start-0 m-3 sidebar-nav bg-white rounded-4 shadow-lg overflow-hidden" style="z-index: 1000; height: 95vh;">
+   
+    <nav class="px-2">
+        
+        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
+            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
+                <i class="fas fa-microchip text-white"></i>
+            </div>
+            <span class="nav-text">Gaming & Tech</span>
+        </a>
+
+        
+        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
+            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
+                <i class="fas fa-gem text-white"></i>
+            </div>
+            <span class="nav-text">Moda & Estilo</span>
+        </a>
+
+       
+        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
+            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
+                <i class="fas fa-robot text-white"></i>
+            </div>
+            <span class="nav-text">Smart Devices</span>
+        </a>
+
+        
+        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
+            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
+                <i class="fas fa-play-circle text-white"></i>
+            </div>
+            <span class="nav-text">Entretenimiento</span>
+        </a>
+
+        
+        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
+            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
+                <i class="fas fa-heartbeat text-white"></i>
+            </div>
+            <span class="nav-text">Salud & Bienestar</span>
+        </a>
+        
+        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
+            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
+                <i class="fas fa-home-alt text-white"></i>
+            </div>
+            <span class="nav-text">Hogar Inteligente</span>
+        </a>
+
+        
+    </nav>
+</div>
+
+   
+
+
+
+
+
+
 <h2 class="text-center">Productos</h2>
 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFormulario" data-url="/Productos/AgregarProducto?handler=FormularioModal">
     Crear producto
@@ -107,6 +189,9 @@
         }
     </ul>
 </nav>
+</body>
+
+
 @section Scripts {
     <script src="~/js/crearproducto.js"></script>
     <script src="~/js/editarproducto.js"></script>
