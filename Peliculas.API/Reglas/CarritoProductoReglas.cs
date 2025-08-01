@@ -66,8 +66,9 @@ namespace Reglas
         {
             if (carritoProducto.Cantidad == 0)
                 return await _carritoProductoDA.Eliminar(carritoProductoId);
-            return await _carritoProductoDA.Editar(carritoProductoId, carritoProducto);
-           
+            var carritoId =  await _carritoProductoDA.Editar(carritoProductoId, carritoProducto);
+            await _carritoDA.ActualizarTotal(carritoId);
+            return carritoId;
         }
 
         public async Task<Guid> Eliminar(Guid carritoProductoId)
