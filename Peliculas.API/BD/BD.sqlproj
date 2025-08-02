@@ -83,5 +83,8 @@
     <Build Include="dbo\Stored Procedures\EditarUsuario.sql" />
     <Build Include="dbo\Stored Procedures\DetalleUsuario.sql" />
     <Build Include="dbo\Stored Procedures\ExisteCorreo.sql" />
+    <Build Include="dbo\Stored Procedures\AGREGAR_PROVEEDOR.sql" />
+    <Build Include="dbo\Stored Procedures\VER_PROVEEDORES.sql" />
+    <Build Include="dbo\Stored Procedures\VER_PROVEEDOR_POR_ID.sql" />
   </ItemGroup>
 </Project>

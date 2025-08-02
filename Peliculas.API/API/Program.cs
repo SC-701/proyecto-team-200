@@ -52,6 +52,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<Abstracciones.Interfaces.DA.IRepositorioDapper,RepositorioDapper>();
 builder.Services.AddScoped<IProductosFlujo, ProductosFlujo>();
 builder.Services.AddScoped<IProductosDA, ProductosDA>();
+builder.Services.AddScoped<IProveedorFlujo, ProveedorFlujo>();
+builder.Services.AddScoped<IProveedorDA, ProveedorDA>();
 builder.Services.AddScoped<IUsuarioDA, UsuarioDA>();
 builder.Services.AddScoped<IUsuarioFlujo, UsuarioFlujo>();
 builder.Services.AddScoped<IAutenticacionFlujo, AutenticacionFlujo>();
