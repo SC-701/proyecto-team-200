@@ -48,29 +48,43 @@ namespace Reglas
                     Productos = new List<CarritoProductoResponse>()
                 };
             }
-           
 
-			var resultado = await _carritoProductoDA.Agregar(new CarritoProductoRequest
+			var validacion = await _carritoProductoDA.ValidarStock(carritoProducto.ProductosId, carritoProducto.Cantidad);
+            if (validacion == true)
             {
-                CarritoId = carritoResponse.CarritoId,
-                ProductosId = carritoProducto.ProductosId,
-                Cantidad = carritoProducto.Cantidad
-            });
-            
-            await _carritoDA.ActualizarTotal(carritoResponse.CarritoId);
+                var resultado = await _carritoProductoDA.Agregar(new CarritoProductoRequest
+                {
+                    CarritoId = carritoResponse.CarritoId,
+                    ProductosId = carritoProducto.ProductosId,
+                    Cantidad = carritoProducto.Cantidad
+                });
+
+                await _carritoDA.ActualizarTotal(carritoResponse.CarritoId);
 
 
-            return resultado;
-        }
+                return resultado;
+            }
+			else
+			{
+				throw new Exception("No hay stock suficiente para realizar la venta");
+			}
+		}
 
         public async Task<Guid> Editar(Guid carritoProductoId, CarritoProductoRequest carritoProducto)
         {
             if (carritoProducto.Cantidad == 0)
                 return await _carritoProductoDA.Eliminar(carritoProductoId);
-            var carritoId =  await _carritoProductoDA.Editar(carritoProductoId, carritoProducto);
-			await _carritoProductoDA.ValidarStock(carritoProducto.ProductosId, carritoProducto.Cantidad);
-			await _carritoDA.ActualizarTotal(carritoId);
-            return carritoId;
+			var validacion = await _carritoProductoDA.ValidarStock(carritoProducto.ProductosId, carritoProducto.Cantidad);
+            if (validacion == true)
+            {
+				var carritoId = await _carritoProductoDA.Editar(carritoProductoId, carritoProducto);
+				await _carritoDA.ActualizarTotal(carritoId);
+				return carritoId;
+			}
+            else{
+				throw new Exception("No hay stock suficiente para realizar la venta");
+			}
+				
         }
 
         public async Task<Guid> Eliminar(Guid carritoProductoId)
