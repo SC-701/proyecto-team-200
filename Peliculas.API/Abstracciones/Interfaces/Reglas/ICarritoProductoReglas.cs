@@ -14,5 +14,6 @@ namespace Abstracciones.Interfaces.Reglas
         Task<Guid> Eliminar(Guid carritoProductoId);
 
         Task<Guid> Editar(Guid carritoProductoId, CarritoProductoRequest carritoProducto);
-    }
+		Task<bool> ValidarStock( Guid ProductoId, int cantidadSolicitada);
+	}
 }

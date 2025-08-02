@@ -3,6 +3,7 @@ using Abstracciones.Interfaces.API;
 using Abstracciones.Interfaces.DA;
 using Abstracciones.Interfaces.Flujo;
 using Abstracciones.Modelos;
+using DA;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Abstracciones.Modelos.CarritoProducto;
@@ -10,8 +11,8 @@ using static Abstracciones.Modelos.CarritoProducto;
 namespace API.Controllers
 {
 
-    [Route("api/[controller]")]
-    [ApiController]
+	[Route("api/[controller]")]
+	[ApiController]
 	public class CarritoProductoController : ControllerBase, ICarritoProductoController
 	{
 		private readonly ICarritoProductoFlujo _carritoProductoFlujo;
@@ -23,26 +24,26 @@ namespace API.Controllers
 			_logger = logger;
 		}
 
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Agregar([FromBody] CarritoProductoRequest carritoProducto)
-        {
-            string idUsuarioStr = HttpContext.User.Claims
-                          .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
+		[Authorize]
+		[HttpPost]
+		public async Task<IActionResult> Agregar([FromBody] CarritoProductoRequest carritoProducto)
+		{
+			string idUsuarioStr = HttpContext.User.Claims
+						  .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
 
-            if (string.IsNullOrEmpty(idUsuarioStr))
-                return Unauthorized();
+			if (string.IsNullOrEmpty(idUsuarioStr))
+				return Unauthorized();
 
-            if (!Guid.TryParse(idUsuarioStr, out Guid idUsuario))
-                return BadRequest("IdUsuario inválido");
+			if (!Guid.TryParse(idUsuarioStr, out Guid idUsuario))
+				return BadRequest("IdUsuario inválido");
 
-            var resultado = await _carritoProductoFlujo.Agregar(idUsuario, carritoProducto);
-            return CreatedAtAction(nameof(ObtenerPorID), new { CarritoProductoId = resultado }, null);
-        }
+			var resultado = await _carritoProductoFlujo.Agregar(idUsuario, carritoProducto);
+			return CreatedAtAction(nameof(ObtenerPorID), new { CarritoProductoId = resultado }, null);
+		}
 
 
 
-        [HttpPut("{CarritoProductoId}")]
+		[HttpPut("{CarritoProductoId}")]
 		public async Task<IActionResult> Editar([FromRoute] Guid CarritoProductoId, [FromBody] CarritoProductoRequest carritoProducto)
 		{
 
@@ -80,5 +81,22 @@ namespace API.Controllers
 			return Ok(resultado);
 		}
 
+		[HttpPost("validarStock")]
+		public async Task<IActionResult> ValidarStock( Guid productoId, int cantidadSolicitada)
+		{
+			try
+			{
+				var resultado = await _carritoProductoFlujo.ValidarStock(productoId, cantidadSolicitada);
+
+				return Ok(resultado);
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+
+		}
+
+		
 	}
 }

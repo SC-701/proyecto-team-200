@@ -14,8 +14,9 @@ namespace Flujo
 	{
         private readonly ICarritoProductoDA _carritoProductoDA;
         private readonly ICarritoProductoReglas _carritoProductoReglas;
+		
 
-        public CarritoProductoFlujo(ICarritoProductoDA carritoProductoDA, ICarritoProductoReglas carritoProductoReglas)
+		public CarritoProductoFlujo(ICarritoProductoDA carritoProductoDA, ICarritoProductoReglas carritoProductoReglas)
         {
             _carritoProductoDA = carritoProductoDA;
             _carritoProductoReglas = carritoProductoReglas;
@@ -51,6 +52,19 @@ namespace Flujo
 			return await _carritoProductoDA.ObtenerPorID(CarritoProductoId);
 		}
 
+		public async Task<bool> ValidarStock( Guid ProductoId, int cantidadSolicitada)
+		{
+		
+			// Validar stock usando las reglas de negocio
+			bool hayStock = await _carritoProductoReglas.ValidarStock( ProductoId, cantidadSolicitada);
+			if (!hayStock)
+			{
+				throw new Exception("No hay stock suficiente para realizar la venta");
+			}
 
+			// Si hay stock, proceder con la venta
+			var resultado = await _carritoProductoDA.ValidarStock( ProductoId, cantidadSolicitada);
+			return resultado;
+		}
 	}
 }

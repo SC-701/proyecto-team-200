@@ -48,14 +48,15 @@ namespace Reglas
                     Productos = new List<CarritoProductoResponse>()
                 };
             }
+           
 
-            var resultado = await _carritoProductoDA.Agregar(new CarritoProductoRequest
+			var resultado = await _carritoProductoDA.Agregar(new CarritoProductoRequest
             {
                 CarritoId = carritoResponse.CarritoId,
                 ProductosId = carritoProducto.ProductosId,
                 Cantidad = carritoProducto.Cantidad
             });
-
+            
             await _carritoDA.ActualizarTotal(carritoResponse.CarritoId);
 
 
@@ -67,7 +68,8 @@ namespace Reglas
             if (carritoProducto.Cantidad == 0)
                 return await _carritoProductoDA.Eliminar(carritoProductoId);
             var carritoId =  await _carritoProductoDA.Editar(carritoProductoId, carritoProducto);
-            await _carritoDA.ActualizarTotal(carritoId);
+			await _carritoProductoDA.ValidarStock(carritoProducto.ProductosId, carritoProducto.Cantidad);
+			await _carritoDA.ActualizarTotal(carritoId);
             return carritoId;
         }
 
@@ -79,5 +81,14 @@ namespace Reglas
 
             return carritoId;
         }
-    }
+
+		
+
+		public async Task<bool> ValidarStock( Guid productoId, int cantidadSolicitada)
+		{
+			var stockDisponible = await _carritoProductoDA.ValidarStock( productoId, cantidadSolicitada);
+			return stockDisponible;
+		}
+
+	}
 }

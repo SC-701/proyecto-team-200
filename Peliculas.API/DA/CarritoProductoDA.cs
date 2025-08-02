@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abstracciones.Interfaces.DA;
+using Abstracciones.Modelos;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using static Abstracciones.Modelos.CarritoProducto;
@@ -90,6 +91,21 @@ namespace DA
 			);
 
 			return resultadoConsulta.FirstOrDefault();
+		}
+
+		public async Task<bool> ValidarStock( Guid ProductoId, int cantidadSolicitada)
+		{
+			string query = "VALIDAR_STOCK_PRODUCTO";
+
+			var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<bool>(
+				query,
+				new
+				{
+					
+					ProductoId = ProductoId,
+					CantidadSolicitada = cantidadSolicitada
+				});
+			return resultadoConsulta;
 		}
 	}
 }
