@@ -21,6 +21,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddHostedService<LimpiezaCarritos>();
 var tokenConfiguration = builder.Configuration.GetSection("Token").Get<TokenConfiguracion>();
 var jwtIssuer = tokenConfiguration.Issuer;
 var jwtAudience = tokenConfiguration.Audience;

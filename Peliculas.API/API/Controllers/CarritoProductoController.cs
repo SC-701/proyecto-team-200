@@ -26,35 +26,48 @@ namespace API.Controllers
 
 		[Authorize]
 		[HttpPost]
-		public async Task<IActionResult> Agregar([FromBody] CarritoProductoRequest carritoProducto)
-		{
-			string idUsuarioStr = HttpContext.User.Claims
-						  .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
+        public async Task<IActionResult> Agregar([FromBody] CarritoProductoRequest carritoProducto)
+        {
+            string idUsuarioStr = HttpContext.User.Claims
+                          .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
 
-			if (string.IsNullOrEmpty(idUsuarioStr))
-				return Unauthorized();
+            if (string.IsNullOrEmpty(idUsuarioStr))
+                return Unauthorized();
 
-			if (!Guid.TryParse(idUsuarioStr, out Guid idUsuario))
-				return BadRequest("IdUsuario inválido");
+            if (!Guid.TryParse(idUsuarioStr, out Guid idUsuario))
+                return BadRequest("IdUsuario inválido");
 
-			var resultado = await _carritoProductoFlujo.Agregar(idUsuario, carritoProducto);
-			return CreatedAtAction(nameof(ObtenerPorID), new { CarritoProductoId = resultado }, null);
-		}
-
-
-
-		[HttpPut("{CarritoProductoId}")]
-		public async Task<IActionResult> Editar([FromRoute] Guid CarritoProductoId, [FromBody] CarritoProductoRequest carritoProducto)
-		{
-
-			var resultado = await _carritoProductoFlujo.Editar(CarritoProductoId, carritoProducto);
-			return Ok(resultado);
-		}
+            try
+            {
+                var resultado = await _carritoProductoFlujo.Agregar(idUsuario, carritoProducto);
+                return CreatedAtAction(nameof(ObtenerPorID), new { CarritoProductoId = resultado }, null);
+            }
+            catch (Exception ex) when (ex.Message.Contains("No hay stock suficiente"))
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
 
 
 
+        [HttpPut("{CarritoProductoId}")]
+        public async Task<IActionResult> Editar([FromRoute] Guid CarritoProductoId, [FromBody] CarritoProductoRequest carritoProducto)
+        {
+            try
+            {
+                var resultado = await _carritoProductoFlujo.Editar(CarritoProductoId, carritoProducto);
+                return Ok(resultado);
+            }
+            catch (Exception ex) when (ex.Message.Contains("No hay stock suficiente"))
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
 
-		[HttpDelete("{CarritoProductoId}")]
+
+
+
+        [HttpDelete("{CarritoProductoId}")]
 		public async Task<IActionResult> Eliminar([FromRoute] Guid CarritoProductoId)
 		{
 

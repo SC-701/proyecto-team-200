@@ -20,6 +20,8 @@ namespace Abstracciones.Interfaces.DA
 
 		Task<Guid> Eliminar(Guid CarritoProductoId);
 		Task<bool> ValidarStock(Guid ProductoId, int cantidadSolicitada);
-	}
+        Task DescontarStock(Guid ProductoId, int cantidadSolicitada);
+        Task DevolverStock(Guid ProductoId, int cantidad);
+    }
 
 }

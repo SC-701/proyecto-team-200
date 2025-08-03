@@ -24,6 +24,9 @@ namespace Abstracciones.Interfaces.DA
 
         Task<Guid> Eliminar(Guid CarritoId);//cuando se elimina se deberia eliminar sus productos tambien
 
+        Task<Guid> EliminarTotal(Guid CarritoId);
+
         Task<Guid> ActualizarTotal(Guid CarritoId);
+        Task<int> EliminarCarritosExpirados(int minutosExpiracion);
     }
 }

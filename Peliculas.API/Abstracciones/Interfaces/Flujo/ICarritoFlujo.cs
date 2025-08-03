@@ -17,7 +17,9 @@ namespace Abstracciones.Interfaces.Flujo
         Task<Guid> Editar(Guid CarritoId, CarritoBase carrito);
 
         Task<Guid> Eliminar(Guid CarritoId);
+        Task<Guid> EliminarTotal(Guid CarritoId);
 
         Task<Guid> ActualizarTotal(Guid CarritoId);
+        Task<int> EliminarCarritosExpirados(int minutosExpiracion);
     }
 }

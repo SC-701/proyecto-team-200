@@ -20,5 +20,10 @@ namespace Abstracciones.Interfaces.Flujo
 
 		Task<Guid> Eliminar(Guid CarritoProductoId);
 		Task<bool> ValidarStock( Guid ProductoId, int cantidadSolicitada);
-	}
+
+        Task DescontarStock(Guid ProductoId, int cantidadSolicitada);
+
+        Task DevolverStock(Guid ProductoId, int cantidad);
+
+    }
 }

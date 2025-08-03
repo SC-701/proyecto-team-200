@@ -102,5 +102,9 @@
     <Build Include="dbo\Stored Procedures\OBTENER_CARRITOS_POR_USUARIO.sql" />
     <Build Include="dbo\Stored Procedures\TOTAL_CARRITO.sql" />
     <Build Include="dbo\Stored Procedures\VALIDAR_STOCK_PRODUCTO.sql" />
+    <Build Include="dbo\Stored Procedures\ELIMINAR_TOTAL.sql" />
+    <Build Include="dbo\Stored Procedures\LIMPIEZA_TOTAL.sql" />
+    <Build Include="dbo\Stored Procedures\DESCONTAR_STOCK.sql" />
+    <Build Include="dbo\Stored Procedures\DEVOLVER_STOCK.sql" />
   </ItemGroup>
 </Project>

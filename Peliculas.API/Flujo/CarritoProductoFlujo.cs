@@ -28,6 +28,16 @@ namespace Flujo
             return await _carritoProductoReglas.Agregar(usuarioId, carritoProducto);
         }
 
+        public async Task DescontarStock(Guid ProductoId, int cantidadSolicitada)
+        {
+            await _carritoProductoDA.DescontarStock(ProductoId, cantidadSolicitada);
+        }
+
+        public async Task DevolverStock(Guid ProductoId, int cantidad)
+        {
+            await _carritoProductoDA.DevolverStock(ProductoId, cantidad);
+        }
+
         public async Task<Guid> Editar(Guid CarritoProductoId, CarritoProductoRequest carritoproducto)
 		{
             return await _carritoProductoReglas.Editar(CarritoProductoId, carritoproducto);

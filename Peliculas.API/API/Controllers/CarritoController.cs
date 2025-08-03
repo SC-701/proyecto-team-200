@@ -94,5 +94,15 @@ namespace API.Controllers
                 ResultadoValidacion = true;
             return ResultadoValidacion;
         }
+
+
+        [HttpDelete("eliminar-total/{CarritoId}")]
+        public async Task<IActionResult> EliminarTotal(Guid CarritoId)
+        {
+            if (!await VerificarExistenciaCarrito(CarritoId))
+                return NotFound("el carrito no existe");
+            var resultado = await _carritoFlujo.EliminarTotal(CarritoId);
+            return NoContent();
+        }
     }
 }

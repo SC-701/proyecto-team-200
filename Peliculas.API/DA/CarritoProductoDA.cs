@@ -39,8 +39,38 @@ namespace DA
 			return resultadoConsulta;
 		}
 
+        public async Task DescontarStock(Guid productoId, int cantidadSolicitada)
+        {
+            string query = "DESCONTAR_STOCK";
 
-		public async Task<Guid> Editar(Guid CarritoProductoId, CarritoProductoRequest carritoProducto)
+            await _sqlConnection.ExecuteAsync(
+                query,
+                new
+                {
+                    ProductoId = productoId,
+                    Cantidad= cantidadSolicitada
+                },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+        public async Task DevolverStock(Guid ProductoId, int cantidad)
+        {
+            string query = "DEVOLVER_STOCK";
+
+            await _sqlConnection.ExecuteAsync(
+                query,
+                new
+                {
+                    ProductoId = ProductoId,
+                    Cantidad = cantidad
+                },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
+
+        public async Task<Guid> Editar(Guid CarritoProductoId, CarritoProductoRequest carritoProducto)
 		{
 
 			string query = @"EDITAR_CARRITOPRODUCTO";

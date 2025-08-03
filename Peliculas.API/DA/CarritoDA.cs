@@ -68,7 +68,29 @@ namespace DA
 
         public async Task<Guid> Eliminar(Guid CarritoId)
         {
+            await VerificarCarritoExiste(CarritoId);
             string query = @"ELIMINAR_CARRITO";
+            var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+                CarritoId = CarritoId
+            });
+            return resultadoConsulta;
+        }
+
+        public async Task<int> EliminarCarritosExpirados(int minutosExpiracion)
+        {
+            string query = @"LIMPIEZA_CARRITOS";
+            var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<int>(query, new
+            {
+                minutosExpiracion = minutosExpiracion
+            });
+            return resultadoConsulta;
+        }
+
+        public async Task<Guid> EliminarTotal(Guid CarritoId)
+        {
+            await VerificarCarritoExiste(CarritoId);
+            string query = @"ELIMINAR_TOTAL";
             var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
             {
                 CarritoId = CarritoId

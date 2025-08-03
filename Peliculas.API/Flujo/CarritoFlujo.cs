@@ -48,5 +48,15 @@ namespace Flujo
         {
             return await _carritoDA.ActualizarTotal(CarritoId);
         }
+
+        public async Task<Guid> EliminarTotal(Guid CarritoId)
+        {
+            return await _carritoDA.EliminarTotal(CarritoId);
+        }
+
+        public async Task<int> EliminarCarritosExpirados(int minutosExpiracion)
+        {
+            return await _carritoDA.EliminarCarritosExpirados(minutosExpiracion);
+        }
     }
 }
