@@ -1,19 +1,50 @@
-﻿.carousel .list .item img{
-    width:50%;
-    position:absolute;
-    right:0;
-    top:50%;
-    transform:translateY(-50%);
-    transition:right 1.5s;
+﻿.img-carousel {
+    height: 250px;
+    object-fit: cover;
+    filter: brightness(0.7);
+    transform: scale(1.05);
+    transition: transform 4s ease-in-out;
 }
-.carousel .list .item .introduce{
-    opacity:0;
-    pointer-events:none;
-    position:absolute;
-    top:50%;
+
+.carousel-item.active .img-carousel {
+    transform: scale(1.1);
 }
-.carousel .list .item.active .introduce {
-    opacity: 1;
-    pointer-events: auto;
-    transition: opacity 1s;
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.7), rgba(0,0,0,0.2));
+    z-index: 1;
+}
+
+.carousel-caption {
+    z-index: 2;
+    bottom: 20%;
+    left: 5%;
+    right: auto;
+}
+
+.animate-text {
+    animation: slideIn 1s ease-in-out forwards;
+    opacity: 0;
+}
+
+.animate-text-delay {
+    animation: slideIn 1s ease-in-out 0.5s forwards;
+    opacity: 0;
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }

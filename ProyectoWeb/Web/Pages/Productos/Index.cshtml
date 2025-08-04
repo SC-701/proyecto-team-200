@@ -8,76 +8,72 @@
 <head>
     <link href="~/css/tienda.css" rel="stylesheet" />
     <link href="~/css/slider.css" rel="stylesheet" />
-    <style>
-        .sidebar-nav {
-            width: 70px;
-            transition: width 0.3s ease;
-        }
-
-            .sidebar-nav:hover {
-                width: 280px;
-            }
-
-        .nav-text {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .sidebar-nav:hover .nav-text {
-            opacity: 1;
-        }
-    </style>
+    <link href="~/css/sidebar.css" rel="stylesheet" />
 </head>
 <body>
-<div class="position-fixed top-0 start-0 m-3 sidebar-nav bg-white rounded-4 shadow-lg overflow-hidden" style="z-index: 1000; height: 95vh;">
+    <div id="carouselInformativo" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="3000">
+        <div class="carousel-inner">
+            <div class="carousel-item active position-relative">
+                <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100 img-carousel" alt="...">
+                <div class="overlay"></div>
+                <div class="carousel-caption text-start text-white">
+                    <h2 class="animate-text">¡Bienvenido!</h2>
+                    <p class="animate-text-delay">Explorá las mejores ofertas del ecommerce</p>
+                </div>
+            </div>
+            <div class="carousel-item position-relative">
+                <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100 img-carousel" alt="...">
+                <div class="overlay"></div>
+                <div class="carousel-caption text-start text-white">
+                    <h2 class="animate-text">Ofertas semanales</h2>
+                    <p class="animate-text-delay">Grandes descuentos en productos seleccionados</p>
+                </div>
+            </div>
+            <div class="carousel-item position-relative">
+                <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100 img-carousel" alt="...">
+                <div class="overlay"></div>
+                <div class="carousel-caption text-start text-white">
+                    <h2 class="animate-text">Envíos gratis</h2>
+                    <p class="animate-text-delay">En compras superiores a ₡25.000</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselInformativo" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselInformativo" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+
+<div class="position-fixed top-0  start-0 sidebar-nav bg-white rounded-4 shadow-lg overflow-hidden" style="z-index: 1000; height: 95vh;">
    
     <nav class="px-2">
         
         <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
-                <i class="fas fa-microchip text-white"></i>
-            </div>
+           
+                <i class="fas fa-microchip "></i>
+            
             <span class="nav-text">Gaming & Tech</span>
         </a>
 
         
         <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
-                <i class="fas fa-gem text-white"></i>
-            </div>
+            
+                <i class="fas fa-gem "></i>
+           
             <span class="nav-text">Moda & Estilo</span>
         </a>
 
        
         <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
-                <i class="fas fa-robot text-white"></i>
-            </div>
+           
+                <i class="fas fa-robot "></i>
+            
             <span class="nav-text">Smart Devices</span>
         </a>
 
-        
-        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
-                <i class="fas fa-play-circle text-white"></i>
-            </div>
-            <span class="nav-text">Entretenimiento</span>
-        </a>
-
-        
-        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
-                <i class="fas fa-heartbeat text-white"></i>
-            </div>
-            <span class="nav-text">Salud & Bienestar</span>
-        </a>
-        
-        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-            <div class="bg-secondary rounded-circle p-2 me-3" style="width: 40px; height: 40px;">
-                <i class="fas fa-home-alt text-white"></i>
-            </div>
-            <span class="nav-text">Hogar Inteligente</span>
-        </a>
 
         
     </nav>
