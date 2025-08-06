@@ -23,5 +23,15 @@ namespace Flujo
         {
             return await _proveedorDA.Agregar(proveedor);
         }
-    }
+
+		public async Task<Guid> Editar(Guid IdProveedor, Proveedores proveedor)
+		{
+			return await _proveedorDA.Editar(IdProveedor, proveedor);
+		}
+
+		public async Task<Guid> Eliminar(Guid IdProveedor)
+		{
+            return await _proveedorDA.Eliminar(IdProveedor);
+		}
+	}
 }
