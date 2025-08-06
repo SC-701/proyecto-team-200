@@ -41,5 +41,33 @@ namespace API.Controllers
             var resultado = await _proveedorFlujo.ObtenerPorId(IdProveedor);
             return Ok(resultado);
         }
-    }
+
+		[HttpPut("{IdProveedor}")]
+		public async Task<IActionResult> Editar([FromRoute] Guid IdProveedor, [FromBody] Proveedores proveedor)
+		{
+			if (!await VerificarExistenciaProveedor(IdProveedor))
+				return NotFound("El proveedor no esta registrado");
+			var resultado = await _proveedorFlujo.Editar(IdProveedor, proveedor);
+			return Ok(resultado);
+		}
+
+		[HttpDelete("{IdProveedor}")]
+		public async Task<IActionResult> Eliminar([FromRoute] Guid IdProveedor)
+		{
+			if (!await VerificarExistenciaProveedor(IdProveedor))
+				return NotFound("El proveedor no esta registrado");
+			var resultado = await _proveedorFlujo.Eliminar(IdProveedor);
+			return NoContent();
+		}
+
+
+		private async Task<bool> VerificarExistenciaProveedor(Guid Id)
+		{
+			var ResultadoValidacion = false;
+			var resultadoVehiculoExiste = await _proveedorFlujo.ObtenerPorId(Id);
+			if (resultadoVehiculoExiste != null)
+				ResultadoValidacion = true;
+			return ResultadoValidacion;
+		}
+	}
 }

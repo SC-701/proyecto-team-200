@@ -95,8 +95,7 @@ namespace Reglas
 
         public async Task<Guid> Editar(Guid carritoProductoId, CarritoProductoRequest carritoProducto)
         {
-            if (carritoProducto.Cantidad == 0)
-                return await _carritoProductoDA.Eliminar(carritoProductoId);
+           
 
             var productoActual = await _carritoProductoDA.ObtenerPorID(carritoProductoId);
 

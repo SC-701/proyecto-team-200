@@ -23,7 +23,7 @@ public class LimpiezaCarritos : BackgroundService
                 var carritoFlujo = scope.ServiceProvider.GetRequiredService<ICarritoFlujo>();
                 int minutosExpiracion = 10;
                 await carritoFlujo.EliminarCarritosExpirados(minutosExpiracion);
-                await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(100), stoppingToken);
             
         }
     }

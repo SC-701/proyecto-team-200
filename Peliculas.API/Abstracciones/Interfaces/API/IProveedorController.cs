@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Abstracciones.Modelos.Carrito;
 
 namespace Abstracciones.Interfaces.API
 {
@@ -13,7 +14,9 @@ namespace Abstracciones.Interfaces.API
         Task<IActionResult> Obtener();
         Task<IActionResult> ObtenerPorId(Guid IdProveedor);
 
-        Task<IActionResult> Agregar(Proveedores proveedor);
-        
-    }
+		Task<IActionResult> Agregar(Proveedores proveedor);
+		Task<IActionResult> Editar(Guid IdProveedor,Proveedores proveedor);
+		Task<IActionResult> Eliminar(Guid IdProveedor);
+
+	}
 }

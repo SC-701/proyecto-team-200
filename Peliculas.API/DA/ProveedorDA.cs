@@ -49,5 +49,46 @@ namespace DA
                 new { IdProveedor = IdProveedor });
             return resultadoConsulta.FirstOrDefault();
         }
-    }
+
+		public async Task<Guid> Editar(Guid IdProveedor, Proveedores proveedor)
+		{
+			await VerificarExistenciaProveedor(IdProveedor);
+
+
+			string query = @"EDITAR_PROVEEDOR";
+
+			var resultado = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+                ProveedorId = IdProveedor,
+                Nombre = proveedor.Nombre_PROVEEDOR,
+				CorreoElectronico = proveedor.Correo_ELECTRONICO,
+				Telefono = proveedor.Telefono,
+				Direccion = proveedor.Direccion,
+				NombreContacto = proveedor.Nombre_Contacto,
+				FechaRegistro = proveedor.Fecha_Registro,
+				Tipo = proveedor.TIPO,
+				EstadoId = proveedor.ESTADO_ID
+			});
+
+			return resultado;
+		}
+
+		public async Task<Guid> Eliminar(Guid IdProveedor)
+		{
+			await VerificarExistenciaProveedor(IdProveedor);
+			string query = @"ELIMINAR_PROVEEDOR";
+			var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+			{
+				IdProveedor = IdProveedor
+			});
+			return resultadoConsulta;
+		}
+
+		private async Task VerificarExistenciaProveedor(Guid IdProveedor)
+		{
+			Proveedores? resutadoConsultaProducto = await ObtenerPorId(IdProveedor);
+			if (resutadoConsultaProducto == null)
+				throw new Exception("no se encontro el producto");
+		}
+	}
 }
