@@ -17,8 +17,12 @@ namespace DA
             _SqlConnection = repositorioDapper.ObtenerRepositorio();
         }
 
-        public async Task<Guid> CrearUsuario(Usuario usuario)
+        public async Task<Guid?> CrearUsuario(Usuario usuario)
         {
+            if (await ExisteCorreo(usuario.CorreoElectronico))
+                return null;
+
+
             var sql = @"[AgregarUsuario]";
             var resultado = await _SqlConnection.ExecuteScalarAsync<Guid>(sql, new { NombreUsuario = usuario.NombreUsuario, PasswordHash = usuario.PasswordHash, CorreoElectronico = usuario.CorreoElectronico, IdEstado = 1 , Telefono = usuario.Telefono, Direccion = usuario.Direccion,Apellido=usuario.Apellido});
             return resultado;
@@ -56,6 +60,18 @@ namespace DA
                 NombreUsuario = usuario.NombreUsuario
             });
             return Convertidor.Convertir<Abstracciones.Entidades.Usuario, Abstracciones.Modelos.Usuario>(consulta.FirstOrDefault());
+        }
+        public async Task<bool> ExisteCorreo(string correo) 
+        { 
+            
+            string sql = @"[ExisteCorreo]";
+                var resultado = await _SqlConnection.ExecuteScalarAsync<int>(sql, new { CorreoElectronico = correo });
+                if (resultado == 1) 
+                {
+                    return true;
+                }
+            return false;
+
         }
     }
 }
