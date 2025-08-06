@@ -82,6 +82,12 @@
     <Build Include="dbo\Stored Procedures\AgregarUsuario.sql" />
     <Build Include="dbo\Stored Procedures\EditarUsuario.sql" />
     <Build Include="dbo\Stored Procedures\DetalleUsuario.sql" />
+
+    <Build Include="dbo\Stored Procedures\ExisteCorreo.sql" />
+    <Build Include="dbo\Stored Procedures\AGREGAR_PROVEEDOR.sql" />
+    <Build Include="dbo\Stored Procedures\VER_PROVEEDORES.sql" />
+    <Build Include="dbo\Stored Procedures\VER_PROVEEDOR_POR_ID.sql" />
+
     <Build Include="dbo\Stored Procedures\AGREGAR_CARRITOPRODUCTO.sql" />
     <Build Include="dbo\Stored Procedures\AGREGAR_CATEGORIA_PADRE.sql" />
     <Build Include="dbo\Stored Procedures\EDITAR_CARRITOPRODUCTO.sql" />
@@ -106,5 +112,6 @@
     <Build Include="dbo\Stored Procedures\LIMPIEZA_TOTAL.sql" />
     <Build Include="dbo\Stored Procedures\DESCONTAR_STOCK.sql" />
     <Build Include="dbo\Stored Procedures\DEVOLVER_STOCK.sql" />
+
   </ItemGroup>
 </Project>
