@@ -1,26 +1,26 @@
 ﻿using Abstracciones.Interfaces.DA;
 using Abstracciones.Interfaces.Flujo;
+using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Flujo
 {
     public class ProductosFlujo : IProductosFlujo
     {
         private readonly IProductosDA _productosDA;
-       
+        private readonly IDocumentoRegla _documentoRegla;
 
-        public ProductosFlujo(IProductosDA productosDA)
+
+        public ProductosFlujo(IProductosDA productosDA, IDocumentoRegla documentoRegla)
         {
             _productosDA = productosDA;
+            _documentoRegla =documentoRegla;
 
         }
-        public async Task<Guid> Agregar(ProductosRequest productos)
+        public async Task<Guid> Agregar(ProductosRequest productos, Documento imagen)
         {
+            var imagenUrl = await _documentoRegla.GuardarDocumento(imagen);
+            productos.ImagenUrl = imagenUrl;
             return await _productosDA.Agregar(productos);
         }
 

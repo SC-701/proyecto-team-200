@@ -13,7 +13,7 @@ namespace Abstracciones.Interfaces.Flujo
         Task<IEnumerable<ProductosResponse>> Obtener();
         Task<ProductosResponse> ObtenerPorId(Guid IdProducto);
 
-        Task<Guid> Agregar(ProductosRequest productos);
+        Task<Guid> Agregar(ProductosRequest productos,Documento imagen);
 
         Task<Guid> Editar(Guid IdProducto, ProductosRequest productos);
 

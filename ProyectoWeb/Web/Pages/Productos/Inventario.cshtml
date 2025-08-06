@@ -1,0 +1,222 @@
+﻿@page
+@model Web.Pages.Productos.InventarioModel
+@{
+}
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+<head>
+    <link href="~/css/tienda.css" rel="stylesheet" />
+    <link href="~/css/slider.css" rel="stylesheet" />
+    <link href="~/css/sidebar.css" rel="stylesheet" />
+    <link href="~/css/modales.css" rel="stylesheet" />
+</head>
+
+
+<body>
+    
+   
+
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <button class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalFormulario"
+                >
+            Crear producto
+        </button>
+
+        <div class="d-flex align-items-center" style="max-width: 28rem; gap: 0.5rem;">
+            <input type="text"
+                   class="form-control"
+                   placeholder="Buscar productos..."
+                   aria-label="Buscar productos" />
+            <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center shadow">
+                <i class="bi bi-search"></i>
+                <span class="visually-hidden">Buscar</span>
+            </button>
+        </div>
+    </div>
+
+    
+        <div class="modal fade" id="modalFormulario" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content" id="contenidoModal">
+                <form id="formProducto" method="post" asp-page-handler="CrearProducto" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Crear producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="productoCrear.Nombre" class="form-label">Nombre</label>
+                                <input asp-for="productoCrear.Nombre" class="form-control input-squarespace" placeholder="nombre del producto" />
+                                <span asp-validation-for="productoCrear.Nombre" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="productoCrear.Marca" class="form-label">Marca</label>
+                                <input asp-for="productoCrear.Marca" class="form-control input-squarespace" placeholder="marca"/>
+                                <span asp-validation-for="productoCrear.Marca" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="productoCrear.Precio" class="form-label">Precio</label>
+                                <input type="number" asp-for="productoCrear.Precio" class="form-control input-squarespace " placeholder="precio"/>
+                                <span asp-validation-for="productoCrear.Precio" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-8">
+                                <label asp-for="productoCrear.Descripcion" class="form-label">Descripción</label>
+                                <input asp-for="productoCrear.Descripcion" class="form-control input-squarespace" placeholder="descripcion"/>
+                                <span asp-validation-for="productoCrear.Descripcion" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="productoCrear.Stock" class="form-label">Stock</label>
+                                <input asp-for="productoCrear.Stock" class="form-control input-squarespace" placeholder="1"/>
+                                <span asp-validation-for="productoCrear.Stock" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="productoCrear.IdProveedor" class="form-label">Proveedor</label>
+                                <select asp-for="productoCrear.IdProveedor" class="form-select" asp-items="Model.proveedores">
+                                    <option value="">Seleccione un proveedor</option>
+                                </select>
+                                <span asp-validation-for="productoCrear.IdProveedor" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="productoCrear.IdCategoria" class="form-label">Categoría</label>
+                                <input asp-for="productoCrear.IdCategoria" class="form-control input-squarespace" value="E3B0C442-98FC-4D2F-A5D6-42FE3D3D7CB1" />
+                                <span asp-validation-for="productoCrear.IdCategoria" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="productoCrear.IdEstado" class="form-label">Estado</label>
+                                <input asp-for="productoCrear.IdEstado" class="form-control input-squarespace" value="1" />
+                                <span asp-validation-for="productoCrear.IdEstado" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-8">
+                                <label for="imagen" class="form-label">Imagen</label>
+                                <input type="file" name="imagen" id="imagen" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+
+                </div>
+            </div>
+        </div>
+    <div class="modal fade" id="modalFormularioEditar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" id="contenidoModalEditar">
+                
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container py-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            @if (Model.productos != null && Model.productos.Any())
+            {
+                foreach (var producto in Model.productos)
+                {
+                    <div class="col">
+                        <div class="position-relative">
+                            <div class="card h-100 text-center shadow-sm">
+                                <img src="@Html.DisplayFor(p => producto.ImagenUrl)"
+                                     alt="Imagen de @Html.DisplayFor(p => producto.Nombre)"
+                                     class="img-hover"
+                                     onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'"
+                                     style="cursor:pointer;" />
+
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title mb-1">@Html.DisplayFor(p => producto.Nombre)</h5>
+                                    <p class="card-text fw-bold text-dark mb-1">
+                                        $@Html.DisplayFor(p => producto.Precio)
+                                    </p>
+                                    <p class="text-muted mb-4 stock-info" data-stock="@producto.Stock">
+                                        Stock: @Html.DisplayFor(p => producto.Stock)
+                                    </p>
+
+                                    <div class="mt-auto d-flex justify-content-between px-4">
+                                        <form method="post" asp-page-handler="EliminarProducto" asp-route-idProducto="@producto.IdProducto" class="d-inline">
+                                            <button type="submit" class="btn btn-outline-danger rounded-circle" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                        <button data-bs-toggle="modal" data-bs-target="#modalFormularioEditar" data-url="/Productos/Inventario?handler=FormularioModalEditar&idProducto=@producto.IdProducto" class="btn btn-outline-secondary rounded-circle">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            @if (producto.Stock < 15)
+                            {
+                                <div class="low-stock-indicator position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-danger rounded-circle p-2">
+                                        <i class="bi bi-exclamation"></i>
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-warning text-center w-100" role="alert">
+                        Productos no disponibles
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <nav aria-label="Paginacion de productos">
+        <ul class="pagination justify-content-center">
+            @if (Model.ProductosPaginados.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex - 1)&PageSize=5">Anterior</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Anterior</span>
+                </li>
+            }
+
+            @for (int i = 1; i <= Model.ProductosPaginados.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.ProductosPaginados.PageIndex ? "active" : "")">
+                    <a class="page-link" href="?PagesIndex=@i&PageSize=5">@i</a>
+                </li>
+            }
+
+            @if (Model.ProductosPaginados.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex + 1)&PageSize=5">Siguiente</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item disabled">
+                    <span class="page-link">Siguiente</span>
+                </li>
+            }
+        </ul>
+    </nav>
+    
+
+</body>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/editarproducto.js"></script>
+}

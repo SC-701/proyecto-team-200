@@ -13,21 +13,17 @@ namespace Web.Pages.Productos
         private IConfiguracion _configuracion;
         public IList<Producto> productos { get; set; } = default!;
 
-        [BindProperty]
-        public Producto producto { get; set; }
+       
         [BindProperty]
         public ProductoPaginado ProductosPaginados { get; set; } = default!;
-        [BindProperty]
-        public ProductoRequest productoCrear { get; set; }
+       
+        
 
         public IndexModel(IConfiguracion configuracion)
         {
             _configuracion = configuracion;
         }
         public async Task OnGet(int PagesIndex = 1, int PageSize = 5)
-
-
-
         {
 
 

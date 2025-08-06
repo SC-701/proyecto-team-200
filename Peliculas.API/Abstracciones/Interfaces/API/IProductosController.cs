@@ -13,7 +13,7 @@ namespace Abstracciones.Interfaces.API
         Task<IActionResult> Obtener();
         Task<IActionResult> ObtenerPorId(Guid IdProducto);
 
-        Task<IActionResult> Agregar(ProductosRequest productos);
+        Task<IActionResult> Agregar(ProductoConImagenRequest request);
 
         Task<IActionResult> Editar(Guid IdProducto, ProductosRequest productos);
 

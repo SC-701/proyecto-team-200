@@ -3,14 +3,15 @@ using Abstracciones.Interfaces.Flujo;
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Interfaces.Servicios;
 using Abstracciones.Modelos;
-using Autorizacion.Abstracciones.BW;
-using Autorizacion.Middleware;
 using Autorizacion.Abstracciones;
+using Autorizacion.Abstracciones.BW;
 using Autorizacion.Abstracciones.DA;
-using Autorizacion.DA;
 using Autorizacion.BW;
+using Autorizacion.DA;
+using Autorizacion.Middleware;
 using DA;
 using DA.Repositorio;
+using DA.Repositorios;
 using Flujo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -58,6 +59,8 @@ builder.Services.AddScoped<IUsuarioDA, UsuarioDA>();
 builder.Services.AddScoped<IUsuarioFlujo, UsuarioFlujo>();
 builder.Services.AddScoped<IAutenticacionFlujo, AutenticacionFlujo>();
 builder.Services.AddScoped<IAutenticacionReglas, AutenticacionReglas>();
+builder.Services.AddScoped<IDocumentoRegla, DocumentoRegla>();
+builder.Services.AddScoped<IRepositorioSistemaArchivos, RepositorioSistemaArchivos>();
 
 builder.Services.AddTransient<IAutorizacionBW, Autorizacion.BW.AutorizacionBW>();
 builder.Services.AddTransient<Autorizacion.Abstracciones.DA.ISeguridadDA, Autorizacion.DA.SeguridadDA>();
@@ -80,5 +83,7 @@ app.UseClaimsPerfiles();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseStaticFiles();
+
 
 app.Run();

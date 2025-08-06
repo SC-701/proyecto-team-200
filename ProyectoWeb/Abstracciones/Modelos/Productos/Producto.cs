@@ -1,58 +1,138 @@
-﻿namespace Abstracciones.Modelos.Productos
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+namespace Abstracciones.Modelos.Productos
 {
+    
+
     public class Producto
     {
         public Guid IdProducto { get; set; }
+
+        [Required(ErrorMessage = "El nombre del proveedor es requerido.")]
         public string NombreProveedor { get; set; }
-        public string Categoria { get; set; } 
+
+        [Required(ErrorMessage = "La categoría es requerida.")]
+        public string Categoria { get; set; }
+
+        [Required(ErrorMessage = "El estado es requerido.")]
         public string Estado { get; set; }
+
+        [Required(ErrorMessage = "La marca es requerida.")]
+        [StringLength(50, ErrorMessage = "La marca no puede tener más de 50 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-]+$", ErrorMessage = "La marca contiene caracteres inválidos.")]
         public string Marca { get; set; }
 
-        public string Nombre { get; set; } 
-        public decimal Precio { get; set; }
-        public string Descripcion { get; set; } 
-        public int Stock { get; set; }
-        public string ImagenUrl { get; set; } 
-
-    }
-    public class ProductoRequest
-    {
-        
-
-        public Guid IdProveedor { get; set; }
-        public Guid IdCategoria { get; set; }
-        public int IdEstado { get; set; }
+        [Required(ErrorMessage = "El nombre es requerido.")]
+        [StringLength(100, ErrorMessage = "El nombre no puede tener más de 100 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-\,\.\']+$", ErrorMessage = "El nombre contiene caracteres inválidos.")]
         public string Nombre { get; set; }
-        public string Marca { get; set; }
 
+        [Required(ErrorMessage = "El precio es requerido.")]
+        [Range(0.01, 999999.99, ErrorMessage = "El precio debe ser mayor que 0.")]
         public decimal Precio { get; set; }
 
+        [Required(ErrorMessage = "La descripción es requerida.")]
+        [StringLength(1000, ErrorMessage = "La descripción no puede tener más de 1000 caracteres.")]
         public string Descripcion { get; set; }
 
+        [Required(ErrorMessage = "El stock es requerido.")]
+        [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser un número positivo.")]
         public int Stock { get; set; }
 
-        public string ImagenUrl { get; set; }
-
+       
+        public string? ImagenUrl { get; set; }
     }
+
+    public class ProductosRequest
+    {
+        [Required(ErrorMessage = "El proveedor es requerido.")]
+        public Guid IdProveedor { get; set; }
+
+        [Required(ErrorMessage = "La categoría es requerida.")]
+        public Guid IdCategoria { get; set; }
+
+        [Required(ErrorMessage = "El estado es requerido.")]
+        [Range(1, int.MaxValue, ErrorMessage = "El estado debe ser un número válido mayor a cero.")]
+        public int IdEstado { get; set; }
+
+        [Required(ErrorMessage = "El nombre es requerido.")]
+        [StringLength(100, ErrorMessage = "El nombre no puede tener más de 100 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-\,\.\']+$", ErrorMessage = "El nombre contiene caracteres inválidos.")]
+        public string Nombre { get; set; }
+
+        [Required(ErrorMessage = "La marca es requerida.")]
+        [StringLength(50, ErrorMessage = "La marca no puede tener más de 50 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-]+$", ErrorMessage = "La marca contiene caracteres inválidos.")]
+        public string Marca { get; set; }
+
+        [Required(ErrorMessage = "El precio es requerido.")]
+        [Range(0.01, 999999.99, ErrorMessage = "El precio debe ser mayor que 0.")]
+        public decimal Precio { get; set; }
+
+        [Required(ErrorMessage = "La descripción es requerida.")]
+        [StringLength(1000, ErrorMessage = "La descripción no puede tener más de 1000 caracteres.")]
+        public string Descripcion { get; set; }
+
+        [Required(ErrorMessage = "El stock es requerido.")]
+        [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser un número positivo.")]
+        public int Stock { get; set; }
+
+        [Url(ErrorMessage = "La URL de la imagen no es válida.")]
+        public string? ImagenUrl { get; set; }
+
+        [Required(ErrorMessage = "La fecha de creación es requerida.")]
+        public DateTime FechaCreacion { get; set; }
+    }
+
     public class ProductoRequestEditar
     {
-        public Guid? IdProducto { get; set; }
-        
+        public Guid? IdProducto { get; set; } 
 
+        [Required(ErrorMessage = "El proveedor es requerido.")]
         public Guid IdProveedor { get; set; }
+
+        [Required(ErrorMessage = "La categoría es requerida.")]
         public Guid IdCategoria { get; set; }
+
+        [Required(ErrorMessage = "La marca es requerida.")]
+        [StringLength(50, ErrorMessage = "La marca no puede tener más de 50 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-]+$", ErrorMessage = "La marca contiene caracteres inválidos.")]
         public string Marca { get; set; }
 
+        [Required(ErrorMessage = "El estado es requerido.")]
+        [Range(1, int.MaxValue, ErrorMessage = "El estado debe ser un número válido mayor a cero.")]
         public int IdEstado { get; set; }
+
+        [Required(ErrorMessage = "El nombre es requerido.")]
+        [StringLength(100, ErrorMessage = "El nombre no puede tener más de 100 caracteres.")]
+        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9\s\-\,\.\']+$", ErrorMessage = "El nombre contiene caracteres inválidos.")]
         public string Nombre { get; set; }
 
+        [Required(ErrorMessage = "El precio es requerido.")]
+        [Range(0.01, 999999.99, ErrorMessage = "El precio debe ser mayor que 0.")]
         public decimal Precio { get; set; }
 
+        [Required(ErrorMessage = "La descripción es requerida.")]
+        [StringLength(1000, ErrorMessage = "La descripción no puede tener más de 1000 caracteres.")]
         public string Descripcion { get; set; }
 
+        [Required(ErrorMessage = "El stock es requerido.")]
+        [Range(0, int.MaxValue, ErrorMessage = "El stock debe ser un número positivo.")]
         public int Stock { get; set; }
 
+        [Required(ErrorMessage = "La URL de la imagen es requerida.")]
+        [Url(ErrorMessage = "La URL de la imagen no es válida.")]
         public string ImagenUrl { get; set; }
-
     }
+
+    public class ProductoConImagenRequest
+    {
+        [Required(ErrorMessage = "La información del producto es requerida.")]
+        public ProductosRequest Productos { get; set; }
+
+        
+        public Documento? Imagen { get; set; }
+    }
+
+
 }

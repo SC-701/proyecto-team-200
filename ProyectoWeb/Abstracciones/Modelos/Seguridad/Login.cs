@@ -9,8 +9,7 @@ namespace Abstracciones.Modelos.Seguridad
 {
     public class LoginBase
     {
-        [Required(ErrorMessage = "El nombre es requerido")]
-        [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$", ErrorMessage = "Solo se permiten letras y espacios")]
+        
         public string? NombreUsuario { get; set; }
 
         public string? PasswordHash { get; set; }

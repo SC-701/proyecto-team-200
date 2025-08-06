@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Abstracciones.Modelos
+namespace Abstracciones.Modelos.Proveedores
 {
-    public class Proveedores
+    public class ProveedoresBase
     {
-        [Required]
-        public Guid PROVEEDOR_ID { get; set; }
+      
         [Required(ErrorMessage = "El nombre es requerido")]
         [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$", ErrorMessage = "Solo se permiten letras y espacios")]
         public string Nombre_PROVEEDOR { get; set; }
@@ -35,6 +29,15 @@ namespace Abstracciones.Modelos
         [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$", ErrorMessage = "Solo se permiten letras y espacios")]
 
         public string Nombre_Contacto { get; set; }
-        //falta el join para el estado
+
+    }
+    public class ProveedoresRequest: ProveedoresBase
+    {
+
+    }
+    public class ProveedoresResponse: ProveedoresBase
+    {
+        [Required]
+        public Guid PROVEEDOR_ID { get; set; }
     }
 }
