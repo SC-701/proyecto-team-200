@@ -10,5 +10,5 @@ BEGIN
         WHERE PROVEEDOR_ID = @ProveedorId;
   COMMIT TRANSACTION;
 
-  SELECT ProveedorId  AS Eliminado;
+  SELECT @ProveedorId  AS Eliminado;
 END;

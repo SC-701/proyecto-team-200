@@ -79,7 +79,7 @@ namespace DA
 			string query = @"ELIMINAR_PROVEEDOR";
 			var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
 			{
-				IdProveedor = IdProveedor
+                ProveedorId = IdProveedor
 			});
 			return resultadoConsulta;
 		}
