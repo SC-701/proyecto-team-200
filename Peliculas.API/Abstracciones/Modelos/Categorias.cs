@@ -28,6 +28,7 @@ namespace Abstracciones.Modelos
 		{
 			public Guid CategoriasId { get; set; }
 			public Guid PadreId { get; set; }
+            public string NombrePadre { get; set; }
             public string Estado { get; set; }
 		}
 
