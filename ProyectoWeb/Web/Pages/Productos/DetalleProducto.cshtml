@@ -1,53 +1,49 @@
-﻿@page
-@model Web.Pages.Productos.DetalleProductoModel
-@{
-}
-<section class="py-5">
-    <div class="container">
-        <div class="row">
-            <!-- Imagen principal -->
-            <div class="col-lg-6">
-                <div class="card p-4 mb-4">
-                    <div class="text-center mb-3">
-                        <img src="@Html.DisplayFor(modelo => modelo.producto.ImagenUrl)" alt="Producto" class="img-fluid w-100 rounded">
+﻿@page "{proveedorId:guid}"
+@model Web.Pages.Proveedor.DetalleProveedorModel
+
+<h1>Detalle Proveedor</h1>
+
+<div class="container">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    @Html.DisplayFor(m => m.proveedor.Nombre_PROVEEDOR)
+                    <small class="text-muted">(@Html.DisplayFor(m => m.proveedor.Correo_ELECTRONICO))</small>
+                </h5>
+
+                <div class="card-text">
+                    <div>
+                        <b>@Html.DisplayNameFor(m => m.proveedor.Telefono):</b>
+                        @Html.DisplayFor(m => m.proveedor.Telefono)
                     </div>
-                   
+                    <div>
+                        <b>@Html.DisplayNameFor(m => m.proveedor.TIPO):</b>
+                        @Html.DisplayFor(m => m.proveedor.TIPO)
+                    </div>
+                    <div>
+                        <b>@Html.DisplayNameFor(m => m.proveedor.Nombre_Contacto):</b>
+                        @Html.DisplayFor(m => m.proveedor.Nombre_Contacto)
+                    </div>
+                    <div>
+                        <b>@Html.DisplayNameFor(m => m.proveedor.Direccion):</b>
+                        @Html.DisplayFor(m => m.proveedor.Direccion)
+                    </div>
                 </div>
-            </div>
 
-            <!-- Detalles del producto -->
-            <div class="col-lg-6">
-                <h2 class="mb-3">@Html.DisplayFor(modelo => modelo.producto.Nombre)</h2>
-                
-                <p class="mb-4 text-secondary">
-                    @Html.DisplayFor(modelo => modelo.producto.Descripcion)
+                <p class="card-text mt-2">
+                    <small class="text-muted">
+                        ID: @Html.DisplayFor(m => m.proveedor.PROVEEDOR_ID)
+                    </small>
                 </p>
-                <h4 class="text-primary fw-bold mb-4">$@Html.DisplayFor(modelo => modelo.producto.Precio)</h4>
-                
-
-                <form>
-
-
-                    <!-- Cantidad -->
-                    <div class="mb-4">
-                        <h6>Quantity</h6>
-                        <div class="input-group" style="max-width: 120px;">
-                            <input type="text" class="form-control text-center" value="1">
-                            <div class="input-group-append d-flex flex-column">
-                                <button class="btn btn-outline-primary py-0" type="button">+</button>
-                                <button class="btn btn-outline-primary py-0" type="button">-</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Botones -->
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-outline-primary w-100">Add to Cart</button>
-                    </div>
-                   
-                </form>
             </div>
         </div>
     </div>
-</section>
 
+    <a class="btn btn-secondary mt-3" asp-page="./Index">Regresar</a>
+    <a class="btn btn-info mt-3"
+       asp-page="./Editar"
+       asp-route-proveedorId="@Model.proveedor.PROVEEDOR_ID">
+        Editar
+    </a>
+</div>
