@@ -119,6 +119,14 @@ namespace DA
             if (resutadoConsultaProducto == null)
                 throw new Exception("no se encontro el producto");
         }
+        public async Task<IEnumerable<ProductosResponse>> ObtenerProductosBuscados(string nombre)
+        {
+            string query = @"BUSCAR_PRODUCTOS";
+            var resultadoConsulta = await _sqlConnection.QueryAsync<ProductosResponse>(query,
+                new { NombreProducto = nombre });
+            return resultadoConsulta;
+        }
 
+       
     }
 }

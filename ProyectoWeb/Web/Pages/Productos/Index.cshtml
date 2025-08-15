@@ -6,159 +6,370 @@
 }
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 <head>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <link href="~/css/tienda.css" rel="stylesheet" />
-    <link href="~/css/slider.css" rel="stylesheet" />
-    <link href="~/css/sidebar.css" rel="stylesheet" />
+
 </head>
-<body>
-    <div id="carouselInformativo" class="carousel slide mb-5" data-bs-ride="carousel" data-bs-interval="3000">
-        <div class="carousel-inner">
-            <div class="carousel-item active position-relative">
-                <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100 img-carousel" alt="...">
-                <div class="overlay"></div>
-                <div class="carousel-caption text-start text-white">
-                    <h2 class="animate-text">¡Bienvenido!</h2>
-                    <p class="animate-text-delay">Explorá las mejores ofertas del ecommerce</p>
+
+<body class="bg-light">
+
+
+    <div class="container-fluid my-4 top-carusel">
+        <div class="row g-3 top-carusel">
+
+            <div class="col-md-6 ">
+                <div id="carousel1" class="carousel slide modern-carousel" data-bs-ride="carousel" data-bs-interval="3000">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active position-relative">
+                            <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100" alt="">
+                            <div class="overlay"></div>
+                            <div class="carousel-caption text-start text-white">
+                                <h4 class="fw-bold">¡Bienvenido!</h4>
+                                <p>Explorá las mejores ofertas del ecommerce</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item position-relative">
+                            <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100" alt="">
+                            <div class="overlay"></div>
+                            <div class="carousel-caption text-start text-white">
+                                <h4 class="fw-bold">Ofertas semanales</h4>
+                                <p>Grandes descuentos en productos seleccionados</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="carousel-item position-relative">
-                <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100 img-carousel" alt="...">
-                <div class="overlay"></div>
-                <div class="carousel-caption text-start text-white">
-                    <h2 class="animate-text">Ofertas semanales</h2>
-                    <p class="animate-text-delay">Grandes descuentos en productos seleccionados</p>
-                </div>
-            </div>
-            <div class="carousel-item position-relative">
-                <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100 img-carousel" alt="...">
-                <div class="overlay"></div>
-                <div class="carousel-caption text-start text-white">
-                    <h2 class="animate-text">Envíos gratis</h2>
-                    <p class="animate-text-delay">En compras superiores a ₡25.000</p>
+
+
+            <div class="col-md-6 ">
+                <div id="carousel2" class="carousel slide modern-carousel" data-bs-ride="carousel" data-bs-interval="3000">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active position-relative">
+                            <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100" alt="">
+                            <div class="overlay"></div>
+                            <div class="carousel-caption text-start text-white">
+                                <h4 class="fw-bold">Envíos gratis</h4>
+                                <p>En compras superiores a ₡25.000</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item position-relative">
+                            <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100" alt="">
+                            <div class="overlay"></div>
+                            <div class="carousel-caption text-start text-white">
+                                <h4 class="fw-bold">Nuevo stock</h4>
+                                <p>Lo último en tecnología para vos</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselInformativo" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselInformativo" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
-        </button>
     </div>
 
 
-<div class="position-fixed top-0  start-0 sidebar-nav bg-white rounded-4 shadow-lg overflow-hidden" style="z-index: 1000; height: 95vh;">
-   
-    <nav class="px-2">
-        
-        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-           
-                <i class="fas fa-microchip "></i>
-            
-            <span class="nav-text">Gaming & Tech</span>
-        </a>
-
-        
-        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-            
-                <i class="fas fa-gem "></i>
-           
-            <span class="nav-text">Moda & Estilo</span>
-        </a>
-
-       
-        <a href="#" class="nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark">
-           
-                <i class="fas fa-robot "></i>
-            
-            <span class="nav-text">Smart Devices</span>
-        </a>
 
 
-        
-    </nav>
-</div>
-    <div class="container py-4">
-        <div class="container-fluid px-4 py-4">
-            <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-5 row-cols-xxl-5 g-3">
-
-
-                @if (Model.productos != null && Model.productos.Any())
+    <div class="container pb-5">
+        <h3 class="fw-bold mb-4 text-center">Nuestros Productos</h3>
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 g-4" id="productos">
+            @if (Model.productos != null && Model.productos.Any())
+            {
+                foreach (var producto in Model.productos)
                 {
-                    foreach (var producto in Model.productos)
-                    {
-                        <div class="col">
-                            <div class="card h-100 text-center shadow-sm">
-                                <img src="@Html.DisplayFor(p => producto.ImagenUrl)" alt="..." class="img-hover" onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'" style="cursor:pointer;" />
-
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title mb-1">@Html.DisplayFor(p => producto.Nombre)</h5>
-                                    <p class="card-text fw-bold text-dark mb-4">$@Html.DisplayFor(p => producto.Precio)</p>
-
-                                    <div class="mt-auto d-flex justify-content-between px-4">
-                                        <button class="btn btn-outline-secondary rounded-circle">
-                                            <i class="bi bi-cart"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                    <div class="col">
+                        <div class="card h-100 text-center shadow-sm border-0">
+                            <img src="@Html.DisplayFor(p => producto.ImagenUrl)" alt="Producto" onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'" style="cursor:pointer;">
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title mb-1">@Html.DisplayFor(p => producto.Nombre)</h6>
+                                <p class="fw-bold text-primary mb-4">$@Html.DisplayFor(p => producto.Precio)</p>
+                                <button class="btn btn-outline-dark mt-auto"><i class="fas fa-cart-plus"></i> Agregar</button>
                             </div>
-                        </div>
-                    }
-                }
-                else
-                {
-                    <div class="col-12">
-                        <div class="alert alert-warning w-100 text-center" role="alert">
-                            Productos no disponibles
                         </div>
                     </div>
                 }
+            }
+            else
+            {
+                <div class="col-12">
+                    <div class="alert alert-warning w-100 text-center" role="alert">
+                        Productos no disponibles
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="btnChat" class="position-fixed bottom-0 end-0 m-4" style="z-index: 1050;">
+        <button class="btn btn-primary rounded-circle shadow-lg" style="width: 60px; height: 60px;">
+            <i class="bi bi-chat-dots fs-3 text-white"></i>
+        </button>
+    </div>
 
+    <div id="chatBox" class="position-fixed bottom-0 end-0 m-4 bg-white rounded shadow" style="width: 350px; height: 450px; display: none; z-index: 1051;">
+
+
+        <div class="bg-primary text-white p-3 d-flex justify-content-between align-items-center rounded-top">
+            <strong>Chat Sumicom</strong>
+            <button class="btn btn-sm btn-light text-primary rounded-circle" onclick="cerrarChat()">&times;</button>
+        </div>
+
+
+        <div id="chatMessages" class="p-3 flex-grow-1 overflow-auto" style="height: 230px;">
+            <div class="bg-light p-3 rounded shadow-sm mb-3">
+                <p class="mb-1">Hola 👋</p>
+                <small>¿En qué podemos ayudarte?</small>
             </div>
 
         </div>
+
+
+        <div class="p-3 border-top d-flex gap-2">
+            <input id="chatInput" type="text" class="form-control" placeholder="Escribe tu mensaje..." aria-label="Mensaje">
+            <button id="sendBtn" class="btn btn-primary d-flex align-items-center">
+                Enviar <i class="bi bi-send-fill ms-2"></i>
+            </button>
+        </div>
+
     </div>
 
 
 
-    
-    
+    <nav aria-label="Paginacion de productos">
+        <ul class="pagination justify-content-center">
+            @if (Model.ProductosPaginados.HasPreviousPage)
+            {
+                <li class="page-item"><a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex - 1)&PageSize=5">Anterior</a></li>
+            }
+            else
+            {
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+            }
+
+            @for (int i = 1; i <= Model.ProductosPaginados.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.ProductosPaginados.PageIndex ? "active" : "")">
+                    <a class="page-link" href="?PagesIndex=@i&PageSize=5">@i</a>
+                </li>
+            }
+
+            @if (Model.ProductosPaginados.HasNextPage)
+            {
+                <li class="page-item"><a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex + 1)&PageSize=5">Siguiente</a></li>
+            }
+            else
+            {
+                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+            }
+        </ul>
+    </nav>
 
 
-<nav aria-label="Paginacion de productos">
-    <ul class="pagination justify-content-center">
-        @if (Model.ProductosPaginados.HasPreviousPage)
-        {
-            <li class="page-item">
-                <a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex - 1)&PageSize=5">Anterior</a>
-            </li>
-        }
-        else
-        {
-            <li class="page-item disabled">
-                <span class="page-link">Anterior</span>
-            </li>
-        }
 
-        @for (int i = 1; i <= Model.ProductosPaginados.TotalPages; i++)
-        {
-            <li class="page-item @(i == Model.ProductosPaginados.PageIndex ? "active" : "")">
-                <a class="page-link" href="?PagesIndex=@i&PageSize=5">@i</a>
-            </li>
-        }
 
-        @if (Model.ProductosPaginados.HasNextPage)
-        {
-            <li class="page-item">
-                <a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex + 1)&PageSize=5">Siguiente</a>
-            </li>
-        }
-        else
-        {
-            <li class="page-item disabled">
-                <span class="page-link">Siguiente</span>
-            </li>
-        }
-    </ul>
-</nav>
 </body>
+
+@section Scripts {
+    <script>
+        const btnChat = document.getElementById("btnChat");
+        const chatBox = document.getElementById("chatBox");
+
+        btnChat.addEventListener("click", () => {
+            chatBox.style.display = "block";
+            btnChat.style.display = "none";
+        });
+
+        function cerrarChat() {
+            chatBox.style.display = "none";
+            btnChat.style.display = "block";
+        }
+    </script>
+    <script>
+                const sidebar = document.getElementById('sidebar');
+        const toggleSidebarBtn = document.getElementById('toggleSidebar');
+        const closeSidebarBtn = document.getElementById('closeSidebar');
+
+        toggleSidebarBtn.addEventListener('click', () => {
+          sidebar.classList.add('show');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+          sidebar.classList.remove('show');
+        });
+    </script>
+
+    
+    <script>
+        $(function () {
+            let debounceTimer;
+            let cache = {};
+            let currentRequest = null;
+
+            $("#buscador").on("input", function () {
+                clearTimeout(debounceTimer);
+                const query = $(this).val().trim();
+
+                debounceTimer = setTimeout(function () {
+                    buscarProductos(query);
+                }, 300); 
+            });
+
+            function buscarProductos(query) {
+                const $resultados = $("#resultadosBusqueda");
+
+                if (query.length < 2) {
+                    $resultados.addClass("d-none").empty();
+                    return;
+                }
+
+               
+                if (cache[query]) {
+                    renderResultados(cache[query]);
+                    return;
+                }
+
+                
+                if (currentRequest) {
+                    currentRequest.abort();
+                }
+
+                currentRequest = $.ajax({
+                    url: `https://localhost:7266/api/Productos/Busqueda/${encodeURIComponent(query)}`,
+                    method: "GET",
+                    
+                    dataType: "json",
+                    success: function (productos) {
+                        cache[query] = productos; 
+                        renderResultados(productos);
+                    },
+                    error: function (xhr, status) {
+                        if (status !== "abort") {
+                            $resultados.html('<div class="p-2 text-danger">Error al buscar productos.</div>').removeClass("d-none");
+                        }
+                    }
+                });
+            }
+
+            function renderResultados(productos) {
+                const $resultados = $("#resultadosBusqueda");
+
+                if (productos.length === 0) {
+                    
+                    return;
+                }
+
+                        const html = productos.slice(0, 5).map(p => `
+            <div class="resultado-item" onclick="window.location='/Productos/DetalleProducto/?IdProducto=${p.idProducto}'">
+                <img src="${p.imagenUrl}" alt="${p.nombre}">
+                <div class="resultado-nombre">${p.nombre}</div>
+                <div class="resultado-precio text-primary">₡${p.precio.toLocaleString()}</div>
+            </div>
+        `).join('') + `
+            <div class="resultado-ver-todos" onclick="window.location='/Productos?busqueda=${encodeURIComponent($('#buscador').val())}'">
+                Ver todos los productos...
+            </div>
+        `;
+
+
+                $resultados.html(html).removeClass("d-none");
+            }
+        });
+    </script>
+
+    <script>
+        $(document).on("submit", "#BusquedaForm", function(e) {
+            e.preventDefault();
+            const $resultados = $("#resultadosBusqueda");
+            $resultados.empty();
+
+            const query = $(this).find("#buscador").val().trim();
+            let $contenedor = $("#productos");
+
+            $.ajax({
+                url: `https://localhost:7266/api/Productos/Busqueda/${encodeURIComponent(query)}`,
+                method: "GET",
+                dataType: "json",
+                success: function(productos) {
+                    renderProductosBuscados(productos);
+                },
+                error: function(xhr, status) {
+                    $contenedor.html('<div class="p-2 text-danger">Error al buscar productos.</div>');
+                }
+            });
+
+                    function renderProductosBuscados(productos) {
+            let $contenedor=$("#productos");
+            $contenedor.empty();
+            $contenedor.innerHTML = "<div class='col-12 text-center'><span>Cargando...</span></div>";
+
+
+
+                    if (productos.length === 0) {
+        $contenedor.html(`
+            <div class="col-12">
+                <div class="alert alert-warning w-100 text-center" role="alert">
+                    Productos no disponibles
+                </div>
+            </div>
+        `);
+        return;
+                                                }
+
+
+
+                    $.each(productos, function (i, p) {
+        $contenedor.append(`
+            <div class="col">
+                <div class="card h-100 text-center shadow-sm border-0">
+                    <img src="${p.imagenUrl}" alt="Producto"
+                         onclick="window.location='/Productos/DetalleProducto/?IdProducto=${p.idProducto}'"
+                         style="cursor:pointer;">
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title mb-1">${p.nombre}</h6>
+                        <p class="fw-bold text-primary mb-4">$${p.precio}</p>
+                        <button class="btn btn-outline-dark mt-auto">
+                            <i class="fas fa-cart-plus"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+                    `);
+                                                       });
+
+        }
+        });
+                $(document).ready(function () {
+           
+            $(document).on('click', function (event) {
+
+                if (!$(event.target).closest('#buscador, #resultadosBusqueda').length) {
+                    $('#resultadosBusqueda').hide(); 
+                }
+            });
+
+           
+            $('#buscador').on('focus', function () {
+                $('#resultadosBusqueda').show();
+            });
+        });
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+}

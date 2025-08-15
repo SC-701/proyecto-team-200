@@ -8,7 +8,9 @@
     .input-squarespace:focus {
         border-bottom: 1px solid #000;
         outline: none;
-        box-shadow: none;
+        border-radius: 15px;
+        border-color: #3E599c;
+        box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
     }
 
 .form-label {
@@ -18,7 +20,6 @@
 }
 
 .modal-content {
-    
     border-radius: 1rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     animation: fadeInUp 0.4s ease-in-out;
@@ -40,13 +41,13 @@
 
 .modal-content select.form-select,
 .modal-content select.form-select:focus {
-    border-color: #6c63ff;
+    border-color: #3E599c;
     box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
 }
 
 
 .modal-header {
-    background-color: #6c63ff;
+    background-color: #3E599c;
     color: white;
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
@@ -58,21 +59,21 @@
 
 
 .modal-footer .btn-primary {
-    background-color: #6c63ff;
+    background-color: #3E599c;
     border: none;
 }
 
     .modal-footer .btn-primary:hover {
-        background-color: #5548d8;
+        background-color: #809DDA;
     }
 
 .modal-footer .btn-secondary {
-    background-color: #adb5bd;
+    background-color: #3E599c;
     border: none;
 }
 
     .modal-footer .btn-secondary:hover {
-        background-color: #868e96;
+        background-color: #809DDA;
     }
 
 

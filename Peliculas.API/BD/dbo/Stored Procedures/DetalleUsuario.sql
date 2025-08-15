@@ -13,7 +13,8 @@ BEGIN
         UsuarioCrea,
         UsuarioModifica,
         TELEFONO,
-        DIRECCION
+        DIRECCION,
+        APELLIDO
     FROM dbo.Usuarios
     WHERE Id = @idUsuario;
 END

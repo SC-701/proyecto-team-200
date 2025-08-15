@@ -11,6 +11,7 @@ namespace Abstracciones.Interfaces.API
     public interface IProductosController
     {
         Task<IActionResult> Obtener();
+        Task<IActionResult> ObtenerProductosBuscados(string nombre);
         Task<IActionResult> ObtenerPorId(Guid IdProducto);
 
         Task<IActionResult> Agregar(ProductoConImagenRequest request);

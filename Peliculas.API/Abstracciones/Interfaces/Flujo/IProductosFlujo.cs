@@ -11,6 +11,7 @@ namespace Abstracciones.Interfaces.Flujo
     {
 
         Task<IEnumerable<ProductosResponse>> Obtener();
+        Task<IEnumerable<ProductosResponse>> ObtenerProductosBuscados(string nombre);
         Task<ProductosResponse> ObtenerPorId(Guid IdProducto);
 
         Task<Guid> Agregar(ProductosRequest productos,Documento imagen);

@@ -112,5 +112,6 @@
     <Build Include="dbo\Stored Procedures\DEVOLVER_STOCK.sql" />
     <Build Include="dbo\Stored Procedures\EDITAR_PROVEEDOR.sql" />
     <Build Include="dbo\Stored Procedures\ELIMINAR_PROVEEDOR.sql" />
+    <Build Include="dbo\Stored Procedures\BUSCAR_PRODUCTOS.sql" />
   </ItemGroup>
 </Project>
