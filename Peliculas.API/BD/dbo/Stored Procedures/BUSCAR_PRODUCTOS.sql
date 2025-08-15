@@ -1,0 +1,14 @@
+﻿CREATE PROCEDURE BUSCAR_PRODUCTOS
+  @NombreProducto varchar(max)
+AS
+BEGIN
+  SET NOCOUNT ON;
+
+SELECT TOP 3
+    PRODUCTOS_ID AS IdProducto,
+    NOMBRE,
+    PRECIO,
+    IMAGEN_URL AS ImagenUrl
+  FROM PRODUCTOS
+  WHERE NOMBRE LIKE '%' + @NombreProducto + '%';
+END;

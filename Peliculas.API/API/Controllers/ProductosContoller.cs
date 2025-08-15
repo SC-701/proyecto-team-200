@@ -69,6 +69,13 @@ namespace API.Controllers
             var resultado = await _productosFlujo.ObtenerPorId(IdProducto);
             return Ok(resultado);
         }
+        [AllowAnonymous]
+        [HttpGet("Busqueda/{nombre}")]
+        public async Task<IActionResult> ObtenerProductosBuscados([FromRoute] string nombre)
+        {
+            var resultado = await _productosFlujo.ObtenerProductosBuscados(nombre);
+            return Ok(resultado);
+        }
 
         private async Task<bool> VerificarProductosExiste(Guid Id)
         {

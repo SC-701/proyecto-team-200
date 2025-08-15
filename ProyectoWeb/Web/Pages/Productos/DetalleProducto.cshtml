@@ -2,10 +2,10 @@
 @model Web.Pages.Productos.DetalleProductoModel
 @{
 }
-<section class="py-5">
+<section class="py-5" style="margin-top: 120px;">
     <div class="container">
         <div class="row">
-            <!-- Imagen principal -->
+            
             <div class="col-lg-6">
                 <div class="card p-4 mb-4">
                     <div class="text-center mb-3">
@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <!-- Detalles del producto -->
+            
             <div class="col-lg-6">
                 <h2 class="mb-3">@Html.DisplayFor(modelo => modelo.producto.Nombre)</h2>
                 
@@ -28,7 +28,7 @@
                 <form>
 
 
-                    <!-- Cantidad -->
+                    
                     <div class="mb-4">
                         <h6>Quantity</h6>
                         <div class="input-group" style="max-width: 120px;">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
 
-                    <!-- Botones -->
+                    
                     <div class="d-flex gap-2 flex-wrap">
                         <button class="btn btn-outline-primary w-100">Add to Cart</button>
                     </div>

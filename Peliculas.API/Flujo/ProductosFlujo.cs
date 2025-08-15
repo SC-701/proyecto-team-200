@@ -48,5 +48,10 @@ namespace Flujo
         {
             return await _productosDA.ObtenerPorId(IdProducto);
         }
+
+        public async Task<IEnumerable<ProductosResponse>> ObtenerProductosBuscados(string nombre)
+        {
+            return await _productosDA.ObtenerProductosBuscados(nombre);
+        }
     }
 }
