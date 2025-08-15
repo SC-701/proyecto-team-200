@@ -4,8 +4,8 @@ namespace Abstracciones.Modelos.Proveedores
 {
     public class ProveedoresBase
     {
-      
-        [Required(ErrorMessage = "El nombre es requerido")]
+		public Guid PROVEEDOR_ID { get; set; }
+		[Required(ErrorMessage = "El nombre es requerido")]
         [RegularExpression(@"^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$", ErrorMessage = "Solo se permiten letras y espacios")]
         public string Nombre_PROVEEDOR { get; set; }
         [Required(ErrorMessage = "El correo electronico es requerido")]
@@ -31,11 +31,13 @@ namespace Abstracciones.Modelos.Proveedores
         public string Nombre_Contacto { get; set; }
 
     }
-    public class ProveedoresRequest: ProveedoresBase
-    {
+	public class ProveedoresRequest : ProveedoresBase
+	{
+		[Required]
+		public Guid PROVEEDOR_ID { get; set; }
+	}
 
-    }
-    public class ProveedoresResponse: ProveedoresBase
+	public class ProveedoresResponse: ProveedoresBase
     {
         [Required]
         public Guid PROVEEDOR_ID { get; set; }
