@@ -19,7 +19,7 @@ namespace Web.Pages.Productos
         private Microsoft.AspNetCore.Hosting.IWebHostEnvironment _environment;
 
         [BindProperty]
-        public ProductosRequest productoCrear { get; set; }
+        public ProductosRequest productoRequest { get; set; }
         [BindProperty]
         public IFormFile imagen { get; set; } = null!;
         public IList<Producto> productos { get; set; } = default!;
@@ -30,8 +30,8 @@ namespace Web.Pages.Productos
 
         [BindProperty]
         public ProductoPaginado ProductosPaginados { get; set; } = default!;
-        [BindProperty]
-        public ProductoRequestEditar productoEditar { get; set; }
+        
+        
         public InventarioModel(IConfiguracion configuracion, Microsoft.AspNetCore.Hosting.IWebHostEnvironment environment)
         {
             _configuracion = configuracion;
@@ -61,32 +61,9 @@ namespace Web.Pages.Productos
         }
         public async Task<IActionResult> OnPostCrearProducto()
         {
-            if (imagen!=null) 
-            {
-                var file = Path.Combine(_environment.ContentRootPath, "Imagenes", imagen.FileName);
-                using (var fileStream = new FileStream(file, FileMode.Create))
-                {
-                    await imagen.CopyToAsync(fileStream);
-                }
+            objetoEnviar= await ActualizarObjetoAEnviar();
 
-                byte[] contenido = System.IO.File.ReadAllBytes(file);
-                Documento documento = new Documento() { Id = Guid.NewGuid(), Nombre = imagen.FileName, Contenido = contenido, Tipo = ObtenerTipo(imagen.FileName) };
-                objetoEnviar = new ProductoConImagenRequest()
-                {
-                    Productos = productoCrear,
-                    Imagen = documento
-                };
 
-            }
-            else
-            {
-
-                objetoEnviar = new ProductoConImagenRequest()
-                {
-                    Productos = productoCrear,
-                    Imagen = null
-                };
-            }
             string endpoint = _configuracion.ObtenerMetodo("EndPointsProductos", "AgregarProducto");
             var cliente = new HttpClient();
             cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
@@ -138,11 +115,11 @@ namespace Web.Pages.Productos
             {
                 var resultado = await respuesta.Content.ReadAsStringAsync();
                 var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                productoEditar = JsonSerializer.Deserialize<ProductoRequestEditar>(resultado, opciones);
-                productoEditar.IdProducto = idProducto;
-                ViewData["Proveedores"] = proveedores;
+                productoRequest = JsonSerializer.Deserialize<ProductosRequest>(resultado, opciones);
+                productoRequest.IdProducto = idProducto;
+                
 
-                return Partial("_FormularioModalEditar", productoEditar);
+                return Partial("_FormularioModalEditar", productoRequest);
             }
             else
             {
@@ -152,11 +129,12 @@ namespace Web.Pages.Productos
         }
         public async Task<ActionResult> OnPostEditarProducto()
         {
+            objetoEnviar = await ActualizarObjetoAEnviar();
 
             string endpoint = _configuracion.ObtenerMetodo("EndPointsProductos", "EditarProducto");
             var cliente = new HttpClient();
             cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
-            var respuesta = await cliente.PutAsJsonAsync<ProductoRequestEditar>(string.Format(endpoint, productoEditar.IdProducto), productoEditar);
+            var respuesta = await cliente.PutAsJsonAsync<ProductoConImagenRequest>(string.Format(endpoint, productoRequest.IdProducto), objetoEnviar);
             respuesta.EnsureSuccessStatusCode();
             return new JsonResult(new { success = true });
 
@@ -171,6 +149,37 @@ namespace Web.Pages.Productos
                 contentType = "application/octet-stream";
             }
             return contentType;
+        }
+        private async Task<ProductoConImagenRequest> ActualizarObjetoAEnviar()
+        {
+
+            if (imagen != null)
+            {
+                var file = Path.Combine(_environment.ContentRootPath, "Imagenes", imagen.FileName);
+                using (var fileStream = new FileStream(file, FileMode.Create))
+                {
+                    await imagen.CopyToAsync(fileStream);
+                }
+
+                byte[] contenido = System.IO.File.ReadAllBytes(file);
+                Documento documento = new Documento() { Id = Guid.NewGuid(), Nombre = imagen.FileName, Contenido = contenido, Tipo = ObtenerTipo(imagen.FileName) };
+                return  new ProductoConImagenRequest()
+                {
+                    Productos = productoRequest,
+                    Imagen = documento
+                };
+
+            }
+            else
+            {
+
+                return new ProductoConImagenRequest()
+                {
+                    Productos = productoRequest,
+                    Imagen = null
+                };
+            }
+
         }
         public async Task<ActionResult> OnPostEliminarProducto(Guid idProducto)
         {

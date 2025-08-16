@@ -62,8 +62,10 @@ namespace DA
                 Descripcion = productos.Descripcion,
                 Stock = productos.Stock,
                 ImagenUrl = productos.ImagenUrl,
-                FechaCreacion = DateTime.Now,
-                IdEstado = productos.IdEstado
+                ProveedorID=productos.IdProveedor,
+                CategoriasId=productos.IdCategoria
+
+
             });
 
             return resultado;

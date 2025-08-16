@@ -16,7 +16,7 @@ namespace Abstracciones.Interfaces.Flujo
 
         Task<Guid> Agregar(ProductosRequest productos,Documento imagen);
 
-        Task<Guid> Editar(Guid IdProducto, ProductosRequest productos);
+        Task<Guid> Editar(Guid IdProducto, ProductosRequest productos, Documento imagen);
 
         Task<Guid> Eliminar(Guid IdProducto);
         Task<Paginacion<ProductosResponse>> ListarProductosPaginado(int pageIndex, int pageSize);

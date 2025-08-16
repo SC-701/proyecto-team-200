@@ -19,52 +19,48 @@
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label asp-for="productoCrear.Nombre" class="form-label">Nombre</label>
-                                <input asp-for="productoCrear.Nombre" class="form-control input-squarespace" placeholder="nombre del producto" />
-                                <span asp-validation-for="productoCrear.Nombre" class="text-danger"></span>
+                                <label asp-for="productoRequest.Nombre" class="form-label">Nombre</label>
+                                <input asp-for="productoRequest.Nombre" class="form-control input-squarespace" placeholder="nombre del producto" />
+                                <span asp-validation-for="productoRequest.Nombre" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="productoCrear.Marca" class="form-label">Marca</label>
-                                <input asp-for="productoCrear.Marca" class="form-control input-squarespace" placeholder="marca"/>
-                                <span asp-validation-for="productoCrear.Marca" class="text-danger"></span>
+                                <label asp-for="productoRequest.Marca" class="form-label">Marca</label>
+                                <input asp-for="productoRequest.Marca" class="form-control input-squarespace" placeholder="marca"/>
+                                <span asp-validation-for="productoRequest.Marca" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoCrear.Precio" class="form-label">Precio</label>
-                                <input type="number" asp-for="productoCrear.Precio" class="form-control input-squarespace " placeholder="precio"/>
-                                <span asp-validation-for="productoCrear.Precio" class="text-danger"></span>
+                                <label asp-for="productoRequest.Precio" class="form-label">Precio</label>
+                                <input type="number" asp-for="productoRequest.Precio" class="form-control input-squarespace " placeholder="precio"/>
+                                <span asp-validation-for="productoRequest.Precio" class="text-danger"></span>
                             </div>
                             <div class="col-md-8">
-                                <label asp-for="productoCrear.Descripcion" class="form-label">Descripción</label>
-                                <input asp-for="productoCrear.Descripcion" class="form-control input-squarespace" placeholder="descripcion"/>
-                                <span asp-validation-for="productoCrear.Descripcion" class="text-danger"></span>
+                                <label asp-for="productoRequest.Descripcion" class="form-label">Descripción</label>
+                                <input asp-for="productoRequest.Descripcion" class="form-control input-squarespace" placeholder="descripcion"/>
+                                <span asp-validation-for="productoRequest.Descripcion" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoCrear.Stock" class="form-label">Stock</label>
-                                <input asp-for="productoCrear.Stock" class="form-control input-squarespace" placeholder="1"/>
-                                <span asp-validation-for="productoCrear.Stock" class="text-danger"></span>
+                                <label asp-for="productoRequest.Stock" class="form-label">Stock</label>
+                                <input asp-for="productoRequest.Stock" class="form-control input-squarespace" placeholder="1"/>
+                                <span asp-validation-for="productoRequest.Stock" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoCrear.IdProveedor" class="form-label">Proveedor</label>
-                                <select asp-for="productoCrear.IdProveedor" class="form-select" asp-items="Model.proveedores">
+                                <label asp-for="productoRequest.IdProveedor" class="form-label">Proveedor</label>
+                                <select asp-for="productoRequest.IdProveedor" class="form-select" asp-items="Model.proveedores">
                                     <option value="">Seleccione un proveedor</option>
                                 </select>
-                                <span asp-validation-for="productoCrear.IdProveedor" class="text-danger"></span>
+                                <span asp-validation-for="productoRequest.IdProveedor" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoCrear.IdCategoria" class="form-label">Categoría</label>
-                                <input asp-for="productoCrear.IdCategoria" class="form-control input-squarespace" value="E3B0C442-98FC-4D2F-A5D6-42FE3D3D7CB1" />
-                                <span asp-validation-for="productoCrear.IdCategoria" class="text-danger"></span>
+                                <label asp-for="productoRequest.IdCategoria" class="form-label">Categoría</label>
+                                <input asp-for="productoRequest.IdCategoria" class="form-control input-squarespace" value="E3B0C442-98FC-4D2F-A5D6-42FE3D3D7CB1" />
+                                <span asp-validation-for="productoRequest.IdCategoria" class="text-danger"></span>
                             </div>
 
-                            <div class="col-md-4">
-                                <label asp-for="productoCrear.IdEstado" class="form-label">Estado</label>
-                                <input asp-for="productoCrear.IdEstado" class="form-control input-squarespace" value="1" />
-                                <span asp-validation-for="productoCrear.IdEstado" class="text-danger"></span>
-                            </div>
+                            
 
                             <div class="col-md-8">
                                 <label for="imagen" class="form-label">Imagen</label>
@@ -100,17 +96,7 @@
                 Crear producto
             </button>
 
-            <form class="d-flex align-items-center position-relative" style="max-width: 350px;">
-                <input type="text"
-                       class="form-control rounded-pill ps-4 pe-5"
-                       placeholder="Buscar productos..."
-                       aria-label="Buscar productos" />
-                <button type="submit"
-                        class="btn btn-primary position-absolute end-0 me-1 top-50 translate-middle-y rounded-pill px-3 shadow-sm"
-                        aria-label="Buscar">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
+
         </div>
 
 
@@ -209,6 +195,14 @@
     </nav>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+      <script>
+         $('#modalFormularioEditar').on('shown.bs.modal', function () {
+    var form = $('#formProductoEditar');
+
+    
+    $.validator.unobtrusive.parse(form);
+});
+      </script>
     <script src="~/js/editarproducto.js"></script>
     <script>
     $(document).ready(function() {
@@ -225,5 +219,36 @@
             }
         });
     });
+
+
+   $('#modalFormularioEditar').on('shown.bs.modal', function () {
+        const selectProveedor = document.getElementById('proveedorSelect');
+        $.ajax({
+    url: `https://localhost:7266/api/Proveedor`,
+    method: "GET",
+    dataType: "json",
+    success: function(proovedores) {
+        console.log(proovedores)
+    selectProveedor.length = 1;
+    renderSelectProveedores(proovedores);
+    }
+});
+function renderSelectProveedores(proovedores)
+{
+    proovedores.forEach(proveedor => {
+                const option = document.createElement('option');
+                option.value = proveedor.proveedoR_ID;
+                option.text = proveedor.nombre_PROVEEDOR;
+                selectProveedor.appendChild(option);
+            });
+
+}
+     
+
+    });
+    
+
+
+
 </script>
 }

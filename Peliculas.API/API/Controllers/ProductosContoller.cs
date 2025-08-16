@@ -29,11 +29,11 @@ namespace API.Controllers
         }
         [Authorize(Roles = "2")]
         [HttpPut("{IdProducto}")]
-        public async Task<IActionResult> Editar([FromRoute] Guid IdProducto, [FromBody] ProductosRequest productos)
+        public async Task<IActionResult> Editar([FromRoute] Guid IdProducto, [FromBody] ProductoConImagenRequest request)
         {
             if (!await VerificarProductosExiste(IdProducto))
                 return NotFound("el producto no existe");
-            var resultado = await _productosFlujo.Editar(IdProducto, productos);
+            var resultado = await _productosFlujo.Editar(IdProducto, request.Productos, request.Imagen);
             return Ok(resultado);
         }
         [Authorize(Roles = "2")]

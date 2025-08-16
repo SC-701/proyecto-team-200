@@ -1,6 +1,6 @@
-﻿@model Abstracciones.Modelos.Productos.ProductoRequestEditar
+﻿@model Abstracciones.Modelos.Productos.ProductosRequest
 @{
-    ViewData.TemplateInfo.HtmlFieldPrefix = "productoEditar";
+    ViewData.TemplateInfo.HtmlFieldPrefix = "productoRequest";
 }
 
 <form id="formProductoEditar" method="post" asp-page-handler="EditarProducto">
@@ -39,17 +39,12 @@
                 <span asp-validation-for="Stock" class="text-danger"></span>
             </div>
 
-            <div class="col-md-8">
-                <label for="imagen" class="form-label">Imagen</label>
-                <input type="file" name="imagen" id="imagen" class="form-control" value="ImagenUrl" />
-            </div>
+            
 
             <div class="col-md-4">
                 <label asp-for="IdProveedor" class="form-label">Proveedor</label>
-                @{
-                    var listaProveedores = (List<SelectListItem>)ViewData["Proveedores"];
-                }
-                <select asp-for="IdProveedor" class="form-select" asp-items="listaProveedores">
+                
+                <select asp-for="IdProveedor" class="form-select" id="proveedorSelect">
                     <option value="">Seleccione un proveedor</option>
                 </select>
                 <span asp-validation-for="IdProveedor" class="text-danger"></span>
@@ -60,12 +55,14 @@
                 <input asp-for="IdCategoria" class="form-control input-squarespace" />
                 <span asp-validation-for="IdCategoria" class="text-danger"></span>
             </div>
-
-            <div class="col-md-4">
-                <label asp-for="IdEstado" class="form-label">Estado</label>
-                <input asp-for="IdEstado" class="form-control input-squarespace" />
-                <span asp-validation-for="IdEstado" class="text-danger"></span>
+            <div class="col-md-8">
+                <label for="imagen" class="form-label">Imagen</label>
+                <input type="file" name="imagen" id="imagen" class="form-control" />
+                
+                <img id="preview" src="@Model.ImagenUrl" alt="Preview" class="img-fluid mt-2" style=" max-height:150px; border-radius:25px;" />
             </div>
+
+            
 
             <input type="hidden" asp-for="IdProducto" />
         </div>

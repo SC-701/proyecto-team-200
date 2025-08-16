@@ -16,7 +16,7 @@ namespace Abstracciones.Interfaces.API
 
         Task<IActionResult> Agregar(ProductoConImagenRequest request);
 
-        Task<IActionResult> Editar(Guid IdProducto, ProductosRequest productos);
+        Task<IActionResult> Editar(Guid IdProducto, ProductoConImagenRequest request);
 
         Task<IActionResult> Eliminar(Guid IdProducto);
         Task<IActionResult> ListarProductosPaginado(int pageIndex, int pageSize);

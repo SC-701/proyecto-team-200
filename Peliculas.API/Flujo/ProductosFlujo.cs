@@ -24,8 +24,10 @@ namespace Flujo
             return await _productosDA.Agregar(productos);
         }
 
-        public async Task<Guid> Editar(Guid IdProducto, ProductosRequest productos)
+        public async Task<Guid> Editar(Guid IdProducto, ProductosRequest productos, Documento imagen)
         {
+            var imagenUrl = await _documentoRegla.GuardarDocumento(imagen);
+            productos.ImagenUrl = imagenUrl;
             return await _productosDA.Editar(IdProducto, productos);
         }
 
