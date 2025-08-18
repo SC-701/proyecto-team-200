@@ -37,13 +37,13 @@ namespace API.Controllers
             return Ok(resultado);
         }
         [Authorize(Roles = "2")]
-        [HttpDelete("{IdProducto}")]
+        [HttpPut("estados-producto/{IdProducto}")]
         public async Task<IActionResult> Eliminar([FromRoute] Guid IdProducto)
         {
             if (!await VerificarProductosExiste(IdProducto))
                 return NotFound("el producto no existe");
             var resultado = await _productosFlujo.Eliminar(IdProducto);
-            return NoContent();
+            return Ok(resultado);
         }
         [AllowAnonymous]
         [HttpGet("ProductosPaginados/{pageIndex}/{pageSize}")]

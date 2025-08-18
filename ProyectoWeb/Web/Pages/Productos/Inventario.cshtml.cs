@@ -178,10 +178,10 @@ namespace Web.Pages.Productos
             string endpoint = _configuracion.ObtenerMetodo("EndPointsProductos", "EliminarProducto");
             var cliente = new HttpClient();
             cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
-            var solicitud = new HttpRequestMessage(HttpMethod.Delete, string.Format(endpoint, idProducto));
+            var solicitud = new HttpRequestMessage(HttpMethod.Put, string.Format(endpoint, idProducto));
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
-            return new JsonResult(new { success = true });
+            return RedirectToPage();
 
 
         }

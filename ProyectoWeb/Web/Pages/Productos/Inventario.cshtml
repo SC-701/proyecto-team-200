@@ -143,10 +143,21 @@
                                     </p>
 
                                     <div class="mt-auto d-flex justify-content-between px-4">
-                                        <form method="post" asp-page-handler="EliminarProducto" asp-route-idProducto="@producto.IdProducto" class="d-inline">
-                                            <button type="submit" class="btn btn-outline-danger rounded-circle" title="Eliminar">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
+                                        <form method="post" asp-page-handler="EliminarProducto"
+                                              asp-route-idProducto="@producto.IdProducto" class="d-inline">
+
+                                            @if (producto.Estado?.Trim().ToLower() == "inactivo")
+                                            {
+                                                <button type="submit" class="btn btn-outline-warning rounded-circle" title="Desactivar">
+                                                    <i class="bi bi-toggle-off"></i>
+                                                </button>
+                                            }
+                                            else if (producto.Estado?.Trim().ToLower() == "activo")
+                                            {
+                                                <button type="submit" class="btn btn-outline-success rounded-circle" title="Activar">
+                                                    <i class="bi bi-toggle-on"></i>
+                                                </button>
+                                            }
                                         </form>
                                         <button data-bs-toggle="modal" data-bs-target="#modalFormularioEditar" data-url="/Productos/Inventario?handler=FormularioModalEditar&idProducto=@producto.IdProducto" class="btn btn-outline-secondary rounded-circle">
                                             <i class="bi bi-pencil"></i>
