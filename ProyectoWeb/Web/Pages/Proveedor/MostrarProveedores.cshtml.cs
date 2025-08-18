@@ -22,7 +22,8 @@ namespace Web.Pages.Proveedor
 		{
 			string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "ObtenerProveedores");
 			var cliente = new HttpClient();
-			var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint));
+          
+            var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint));
 
 			var respuesta = await cliente.SendAsync(solicitud);
 			respuesta.EnsureSuccessStatusCode();

@@ -1,9 +1,10 @@
-﻿function renderProductosBuscados(data) {
+﻿let productosActuales = [];
+function renderProductosBuscados(data) {
+    productosActuales = data;
     let $contenedor = $("#productosInventario");
     $contenedor.empty();
-    $contenedor.innerHTML = "<div class='col-12 text-center'><span>Cargando...</span></div>";
+    $contenedor.html("<div class='col-12 text-center'></div>");
     const productos = Array.isArray(data) ? data : [data];
-
 
     if (productos.length === 0) {
         $contenedor.html(`
@@ -17,10 +18,8 @@
     }
 
 
-
     $.each(productos, function (i, p) {
         let lowStockHtml = "";
-
 
         if (p.stock < 15) {
             lowStockHtml = `
@@ -32,36 +31,76 @@
         `;
         }
 
-        $contenedor.append(`
-            <div class="col">
+        let toggleBtnHtml = p.estado === "Activo"
+            ? `<button class="btn btn-outline-success rounded-circle p-2 shadow-sm toggle-btn" title="Activo" data-id="${p.idProducto}">
+                    <i class="bi bi-toggle-on"></i>
+               </button>`
+            : `<button class="btn btn-outline-danger rounded-circle p-2 shadow-sm toggle-btn" title="Inactivo" data-id="${p.idProducto}">
+                    <i class="bi bi-toggle-off"></i>
+               </button>`;
 
-    <div class="card h-100 shadow-sm rounded-4 overflow-hidden position-relative">
-        <img src="${p.imagenUrl}"
-             alt="Imagen de ${p.nombre}"
-             class="card-img-top producto-img"
-             style="cursor:pointer;" />
-        <div class="card-body d-flex flex-column">
-            <h5 class="card-title mb-1 fw-semibold text-truncate" title="${p.nombre}">${p.nombre}</h5>
-            <p class="card-text fw-bold text-primary mb-1">₡${p.precio.toLocaleString()}</p>
-            <p class="text-muted mb-3 stock-info" >Stock:${p.stock}</p>
-            <div class="mt-auto d-flex justify-content-between gap-2">
-                <form method="post" asp-page-handler="EliminarProducto" asp-route-idProducto="${p.idProducto}" class="d-inline">
-                    <button type="submit" class="btn btn-outline-danger rounded-circle p-2 shadow-sm" title="Eliminar">
-                        <i class="bi bi-trash"></i>
+        $contenedor.append(`
+    <div class="col">
+        <div class="card h-100 shadow-sm rounded-4 overflow-hidden position-relative">
+            <img src="${p.imagenUrl}"
+                 alt="Imagen de ${p.nombre}"
+                 class="card-img-top producto-img"
+                 style="cursor:pointer;" />
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title mb-1 fw-semibold text-truncate" title="${p.nombre}">${p.nombre}</h5>
+                <p class="card-text fw-bold text-primary mb-1">₡${p.precio.toLocaleString()}</p>
+                <p class="text-muted mb-3 stock-info">Stock: ${p.stock}</p>
+                <div class="mt-auto d-flex justify-content-between gap-2">
+             ${toggleBtnHtml}
+                    <button data-bs-toggle="modal"
+                            data-bs-target="#modalFormularioEditar"
+                            data-url="/Productos/Inventario?handler=FormularioModalEditar&idProducto=${p.idProducto}"
+                            class="btn btn-outline-secondary rounded-circle">
+                        <i class="bi bi-pencil"></i>
                     </button>
-                </form>
-                <button data-bs-toggle="modal" data-bs-target="#modalFormularioEditar" data-url="/Productos/Inventario?handler=FormularioModalEditar&idProducto=${p.idProducto}" class="btn btn-outline-secondary rounded-circle">
-                            <i class="bi bi-pencil"></i>
-                </button>
+
+                </div>
             </div>
-        </div>
             ${lowStockHtml}
+        </div>
     </div>
-</div>
-                    `);
+`);
     });
 
+
+    const token = document.querySelector('#__RequestVerificationToken').value;
+
+    $contenedor.find(".toggle-btn").on("click", function (e) {
+        e.preventDefault();
+        const idProducto = $(this).data("id");
+
+        $.ajax({
+            url: "/Productos/Inventario?handler=EliminarProducto", 
+            type: "POST",
+            data: {
+                idProducto: idProducto,
+                __RequestVerificationToken: token
+            },
+            success: function () {
+                productosActuales = productosActuales.map(p => {
+                    if (p.idProducto === idProducto) {
+                        return {
+                            ...p,
+                            estado: p.estado === "Activo" ? "Inactivo" : "Activo"
+                        };
+                    }
+                    return p;
+                });
+                renderProductosBuscados(productosActuales);
+            },
+            error: function (err) {
+                console.error("Error al actualizar:", err);
+            }
+        });
+    });
 }
+
+
 
 $(document).on("submit", "#BusquedaForm", function (e) {
     e.preventDefault();

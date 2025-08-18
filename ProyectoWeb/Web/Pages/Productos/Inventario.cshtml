@@ -7,7 +7,8 @@
     
     <link href="~/css/modales.css" rel="stylesheet" />
 <link href="~/css/inventario.css" rel="stylesheet" />
-</head>    
+</head>
+<input type="hidden" id="__RequestVerificationToken" value="@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken" />
         <div class="modal fade" id="modalFormulario" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content" id="contenidoModal">
@@ -123,7 +124,7 @@
 
                                             @if (producto.Estado?.Trim().ToLower() == "inactivo")
                                             {
-                                                <button type="submit" class="btn btn-outline-warning rounded-circle" title="Desactivar">
+                                                <button type="submit" class="btn btn-outline-danger rounded-circle" title="Desactivar">
                                                     <i class="bi bi-toggle-off"></i>
                                                 </button>
                                             }

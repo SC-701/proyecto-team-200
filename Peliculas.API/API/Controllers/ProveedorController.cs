@@ -27,7 +27,9 @@ namespace API.Controllers
             var resultado = await _proveedorFlujo.Agregar(proveedor);
             return CreatedAtAction(nameof(ObtenerPorId), new { IdProveedor = resultado }, null);
         }
-        [Authorize(Roles = "1")]
+
+
+        [AllowAnonymous]
         [HttpGet]
 
         public async Task<IActionResult> Obtener()
