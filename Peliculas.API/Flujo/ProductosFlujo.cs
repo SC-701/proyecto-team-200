@@ -26,7 +26,7 @@ namespace Flujo
 
         public async Task<Guid> Editar(Guid IdProducto, ProductosRequest productos, Documento imagen)
         {
-            var imagenUrl = await _documentoRegla.GuardarDocumento(imagen);
+            var imagenUrl = await _documentoRegla.GuardarDocumentoEditar(imagen,productos.ImagenUrl);
             productos.ImagenUrl = imagenUrl;
             return await _productosDA.Editar(IdProducto, productos);
         }
@@ -54,6 +54,11 @@ namespace Flujo
         public async Task<IEnumerable<ProductosResponse>> ObtenerProductosBuscados(string nombre)
         {
             return await _productosDA.ObtenerProductosBuscados(nombre);
+        }
+
+        public async Task<Paginacion<ProductosResponse>> ObtenerProductosXCategoria(Guid idCategoria, int pageIndex, int pageSize)
+        {
+            return await _productosDA.ObtenerProductosXCategoria(idCategoria, pageIndex, pageSize);
         }
     }
 }

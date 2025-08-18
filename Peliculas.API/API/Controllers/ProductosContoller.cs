@@ -19,7 +19,7 @@ namespace API.Controllers
             _productosFlujo = productosFlujo;
             _logger = logger;
         }
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "1")]
         [HttpPost]
         public async Task<IActionResult> Agregar([FromBody] ProductoConImagenRequest request)
         {
@@ -27,7 +27,7 @@ namespace API.Controllers
             return CreatedAtAction(nameof(ObtenerPorId), new { IdProducto = resultado }, null); 
 
         }
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "1")]
         [HttpPut("{IdProducto}")]
         public async Task<IActionResult> Editar([FromRoute] Guid IdProducto, [FromBody] ProductoConImagenRequest request)
         {
@@ -36,14 +36,14 @@ namespace API.Controllers
             var resultado = await _productosFlujo.Editar(IdProducto, request.Productos, request.Imagen);
             return Ok(resultado);
         }
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "1")]
         [HttpDelete("{IdProducto}")]
         public async Task<IActionResult> Eliminar([FromRoute] Guid IdProducto)
         {
             if (!await VerificarProductosExiste(IdProducto))
                 return NotFound("el producto no existe");
             var resultado = await _productosFlujo.Eliminar(IdProducto);
-            return NoContent();
+            return Ok(resultado);
         }
         [AllowAnonymous]
         [HttpGet("ProductosPaginados/{pageIndex}/{pageSize}")]
@@ -74,6 +74,14 @@ namespace API.Controllers
         public async Task<IActionResult> ObtenerProductosBuscados([FromRoute] string nombre)
         {
             var resultado = await _productosFlujo.ObtenerProductosBuscados(nombre);
+            return Ok(resultado);
+        }
+        [AllowAnonymous]
+        [HttpGet("ProductosXCategoria/{idCategoria}/{pageIndex}/{pageSize}")]
+
+        public async Task<IActionResult> ObtenerProductosXCategoria([FromRoute] Guid idCategoria, [FromRoute] int pageIndex, [FromRoute] int pageSize)
+        {
+            var resultado = await _productosFlujo.ObtenerProductosXCategoria(idCategoria, pageIndex, pageSize);
             return Ok(resultado);
         }
 

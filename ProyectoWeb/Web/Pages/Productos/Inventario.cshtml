@@ -101,7 +101,7 @@
 
 
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="productosInventario">
              @if (Model.productos != null && Model.productos.Any())
         {
             foreach (var producto in Model.productos)
@@ -118,7 +118,7 @@
                         <p class="card-text fw-bold text-primary mb-1">$@Html.DisplayFor(p => producto.Precio)</p>
                         <p class="text-muted mb-3 stock-info" >Stock: @Html.DisplayFor(p => producto.Stock)</p>
                         <div class="mt-auto d-flex justify-content-between gap-2">
-                            <form method="post" asp-page-handler="EliminarProducto" asp-route-idProducto="@producto.IdProducto" class="d-inline">
+                            <form method="post" asp-page-handler="EliminarProducto" asp-route-idProducto="@producto.IdProducto" class="d-inline form-eliminar">
                                 <button type="submit" class="btn btn-outline-danger rounded-circle p-2 shadow-sm" title="Eliminar">
                                     <i class="bi bi-trash"></i>
                                 </button>
@@ -194,61 +194,15 @@
         </ul>
     </nav>
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-      <script>
-         $('#modalFormularioEditar').on('shown.bs.modal', function () {
-    var form = $('#formProductoEditar');
-
-    
-    $.validator.unobtrusive.parse(form);
-});
-      </script>
-    <script src="~/js/editarproducto.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('#imagen').change(function() {
-            var file = this.files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#preview').attr('src', e.target.result).show();
-                }
-                reader.readAsDataURL(file);
-            } else {
-                $('#preview').attr('src', '#').hide();
-            }
-        });
-    });
-
-
-   $('#modalFormularioEditar').on('shown.bs.modal', function () {
-        const selectProveedor = document.getElementById('proveedorSelect');
-        $.ajax({
-    url: `https://localhost:7266/api/Proveedor`,
-    method: "GET",
-    dataType: "json",
-    success: function(proovedores) {
-        console.log(proovedores)
-    selectProveedor.length = 1;
-    renderSelectProveedores(proovedores);
-    }
-});
-function renderSelectProveedores(proovedores)
-{
-    proovedores.forEach(proveedor => {
-                const option = document.createElement('option');
-                option.value = proveedor.proveedoR_ID;
-                option.text = proveedor.nombre_PROVEEDOR;
-                selectProveedor.appendChild(option);
-            });
-
-}
-     
-
-    });
-    
-
-
-
+<partial name="_ValidationScriptsPartial" />
+<script src="~/js/editarproducto.js"></script>
+<script src="~/js/mostrarpreviewimg.js"></script>
+<script src="~/js/validacionesmodalinventario.js"></script>
+<script src="~/js/llenarselectproveedores.js"></script>
+<script src="~/js/busquedasinventario.js"></script>
+<script src="~/js/validacioneliminar.js"></script>
+<script>
+    window.crearProductoExito = @((TempData["CrearProductoExito"] ?? "null").ToString().ToLower());
 </script>
+<script src="~/js/confirmacionagregarproducto.js"></script>
 }

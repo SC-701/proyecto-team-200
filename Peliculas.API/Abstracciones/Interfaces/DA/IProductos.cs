@@ -13,6 +13,7 @@ namespace Abstracciones.Interfaces.DA
 
         Task<Guid> Eliminar(Guid IdProducto);
         Task<IEnumerable<ProductosResponse>> ObtenerProductosBuscados(string nombre);
+        Task<Paginacion<ProductosResponse>> ObtenerProductosXCategoria(Guid idCategoria, int pageIndex, int pageSize);
         Task<Paginacion<ProductosResponse>> ListarProductosPaginado(int pageIndex, int pageSize);
     }
 }

@@ -29,5 +29,14 @@ namespace Reglas
             File.WriteAllBytes($"{_rutaArchivos}\\{imagen.Id}{extension}", imagen.Contenido);
             return $"{_rutaImagenes}{imagen.Id}{extension}";
         }
+        public async Task<string> GuardarDocumentoEditar(Documento imagen, string urlImagenAnterior)
+        {
+            if (imagen == null)
+                return urlImagenAnterior;
+            var extension = Path.GetExtension(imagen.Nombre);
+            File.WriteAllBytes($"{_rutaArchivos}\\{imagen.Id}{extension}", imagen.Contenido);
+            return $"{_rutaImagenes}{imagen.Id}{extension}";
+        }
+
     }
 }

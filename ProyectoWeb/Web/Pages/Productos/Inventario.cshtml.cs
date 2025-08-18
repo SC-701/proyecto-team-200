@@ -12,7 +12,7 @@ using System.Text.Json;
 
 namespace Web.Pages.Productos
 {
-    [Authorize(Roles = "2")]
+    [Authorize(Roles = "1")]
     public class InventarioModel : PageModel
     {
         private IConfiguracion _configuracion;
@@ -72,10 +72,12 @@ namespace Web.Pages.Productos
 
             if (!respuesta.IsSuccessStatusCode)
             {
+                TempData["CrearProductoExito"] = false;
                 return Page();
             }
 
-            return new JsonResult(new { success = true });
+            TempData["CrearProductoExito"] = true;
+            return Page();
         }
         public async Task ObtenerProveedoresAsync()
         {

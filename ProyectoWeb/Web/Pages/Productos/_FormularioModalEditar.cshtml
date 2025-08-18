@@ -58,12 +58,12 @@
             <div class="col-md-8">
                 <label for="imagen" class="form-label">Imagen</label>
                 <input type="file" name="imagen" id="imagen" class="form-control" />
-                
+                <input type="hidden" asp-for="ImagenUrl" />
                 <img id="preview" src="@Model.ImagenUrl" alt="Preview" class="img-fluid mt-2" style=" max-height:150px; border-radius:25px;" />
             </div>
 
             
-
+           
             <input type="hidden" asp-for="IdProducto" />
         </div>
     </div>

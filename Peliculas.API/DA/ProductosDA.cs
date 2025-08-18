@@ -2,13 +2,6 @@
 using Abstracciones.Modelos;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DA
 {
@@ -129,6 +122,21 @@ namespace DA
             return resultadoConsulta;
         }
 
-       
+        public async Task<Paginacion<ProductosResponse>> ObtenerProductosXCategoria(Guid idCategoria, int pageIndex, int pageSize)
+        {
+            string query = @"ProductosXCategoria";
+            var consulta = await _sqlConnection.QueryMultipleAsync(query, new
+            {
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                idCategoria = idCategoria
+            });
+            var productos = (await consulta.ReadAsync<ProductosResponse>()).ToList();
+            var totalRegistros = await consulta.ReadSingleAsync<int>();
+            var totalPages = (int)Math.Ceiling((double)totalRegistros / pageSize);
+
+            var respuesta = new Paginacion<ProductosResponse>(productos, pageIndex, totalPages);
+            return respuesta;
+        }
     }
 }

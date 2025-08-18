@@ -8,6 +8,7 @@ SELECT TOP 3
     PRODUCTOS_ID AS IdProducto,
     NOMBRE,
     PRECIO,
+    STOCK,
     IMAGEN_URL AS ImagenUrl
   FROM PRODUCTOS
   WHERE NOMBRE LIKE '%' + @NombreProducto + '%';
