@@ -76,11 +76,11 @@ namespace DA
 		public async Task<Guid> Eliminar(Guid IdProveedor)
 		{
 			await VerificarExistenciaProveedor(IdProveedor);
-			string query = @"ELIMINAR_PROVEEDOR";
+			string query = @"ESTADO_PROVEEDOR";
 			var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
 			{
-                ProveedorId = IdProveedor
-			});
+                IdProveedor = IdProveedor
+            });
 			return resultadoConsulta;
 		}
 

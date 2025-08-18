@@ -106,28 +106,49 @@
         {
             foreach (var producto in Model.productos)
             {
-            <div class="col">
 
-                <div class="card h-100 shadow-sm rounded-4 overflow-hidden position-relative">
-                    <img src="@Html.DisplayFor(p => producto.ImagenUrl)"
-                         alt="Imagen de @Html.DisplayFor(p => producto.Nombre)"
-                         class="card-img-top producto-img"
-                         style="cursor:pointer;" />
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title mb-1 fw-semibold text-truncate" title="@Html.DisplayFor(p => producto.Nombre)">@Html.DisplayFor(p => producto.Nombre)</h5>
-                        <p class="card-text fw-bold text-primary mb-1">$@Html.DisplayFor(p => producto.Precio)</p>
-                        <p class="text-muted mb-3 stock-info" >Stock: @Html.DisplayFor(p => producto.Stock)</p>
-                        <div class="mt-auto d-flex justify-content-between gap-2">
-                            <form method="post" asp-page-handler="EliminarProducto" asp-route-idProducto="@producto.IdProducto" class="d-inline form-eliminar">
-                                <button type="submit" class="btn btn-outline-danger rounded-circle p-2 shadow-sm" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                            <button data-bs-toggle="modal" data-bs-target="#modalFormularioEditar" data-url="/Productos/Inventario?handler=FormularioModalEditar&idProducto=@producto.IdProducto" class="btn btn-outline-secondary rounded-circle">
-                                        <i class="bi bi-pencil"></i>
-                            </button>
-                        </div>
-                    </div>
+               
+                    <div class="col">
+                        <div class="position-relative">
+                            <div class="card h-100 text-center shadow-sm">
+                                <img src="@Html.DisplayFor(p => producto.ImagenUrl)"
+                                     alt="Imagen de @Html.DisplayFor(p => producto.Nombre)"
+                                     class="img-hover"
+                                     onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'"
+                                     style="cursor:pointer;" />
+
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title mb-1">@Html.DisplayFor(p => producto.Nombre)</h5>
+                                    <p class="card-text fw-bold text-dark mb-1">
+                                        $@Html.DisplayFor(p => producto.Precio)
+                                    </p>
+                                    <p class="text-muted mb-4 stock-info" data-stock="@producto.Stock">
+                                        Stock: @Html.DisplayFor(p => producto.Stock)
+                                    </p>
+
+                                    <div class="mt-auto d-flex justify-content-between px-4">
+                                        <form method="post" asp-page-handler="EliminarProducto"
+                                              asp-route-idProducto="@producto.IdProducto" class="d-inline">
+
+                                            @if (producto.Estado?.Trim().ToLower() == "inactivo")
+                                            {
+                                                <button type="submit" class="btn btn-outline-warning rounded-circle" title="Desactivar">
+                                                    <i class="bi bi-toggle-off"></i>
+                                                </button>
+                                            }
+                                            else if (producto.Estado?.Trim().ToLower() == "activo")
+                                            {
+                                                <button type="submit" class="btn btn-outline-success rounded-circle" title="Activar">
+                                                    <i class="bi bi-toggle-on"></i>
+                                                </button>
+                                            }
+                                        </form>
+                                        <button data-bs-toggle="modal" data-bs-target="#modalFormularioEditar" data-url="/Productos/Inventario?handler=FormularioModalEditar&idProducto=@producto.IdProducto" class="btn btn-outline-secondary rounded-circle">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                             @if (producto.Stock < 15)
                             {
                     <div class="low-stock-indicator position-absolute top-0 end-0 m-2" title="Stock bajo">

@@ -12,28 +12,123 @@ namespace Web.Pages.Categorias
     {
 
         private IConfiguracion _configuracion;
-        public IList<Categoria> categorias { get; set; } = default!;
+        public IList<Categoria> categorias { get; set; } = new List<Categoria>();
 
+        [BindProperty]
+        public VerificarCategoriaResponse verificar { get; set; } = default!; 
+
+        [BindProperty]
+        public Categoria Categoria { get; set; } = default!;
+        public IList<Categoria> categoriasPadres { get; set; } = new List<Categoria>();
         public CategoriasModel(IConfiguracion configuracion)
         {
             _configuracion = configuracion;
         }
         public async Task OnGet()
         {
-            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ObtenerCategoriasTotales");
             var cliente = new HttpClient();
-            var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint));
+            string endpointTodas = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ObtenerCategoriasTotales");
+            var respuestaTodas = await cliente.GetAsync(endpointTodas);
+            respuestaTodas.EnsureSuccessStatusCode();
+            var resultadoTodas = await respuestaTodas.Content.ReadAsStringAsync();
+            categorias = JsonSerializer.Deserialize<List<Categoria>>(resultadoTodas,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
 
+            string endpointPadres = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "VerPadres");
+            var respuestaPadres = await cliente.GetAsync(endpointPadres);
+            respuestaPadres.EnsureSuccessStatusCode();
+            var resultadoPadres = await respuestaPadres.Content.ReadAsStringAsync();
+            categoriasPadres = JsonSerializer.Deserialize<List<Categoria>>(resultadoPadres,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+        }
+
+
+        public async Task<ActionResult> OnPostAgregarCategoria()
+        {
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "AgregarCategoria");
+            var cliente = new HttpClient();
+
+            var respuesta = await cliente.PostAsJsonAsync(endpoint, Categoria);
+            respuesta.EnsureSuccessStatusCode();
+            return RedirectToPage("./Categorias");
+        }
+
+        public async Task<ActionResult> OnPostEliminar(Guid? id)
+        {
+            if (id == null || id == Guid.Empty)
+                return NotFound();
+
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "DesactivarCategorias");
+            var cliente = new HttpClient();
+
+            var solicitud = new HttpRequestMessage(HttpMethod.Put, string.Format(endpoint, id));
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
-            if (respuesta.StatusCode == HttpStatusCode.OK)
-            {
-                var resultado = await respuesta.Content.ReadAsStringAsync();
-                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                categorias = JsonSerializer.Deserialize<List<Categoria>>(resultado, opciones)!;
-            }
 
+            return RedirectToPage("./Categorias");
         }
+
+        public async Task<IActionResult> OnGetVerificar(Guid id)
+        {
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ContarHijas");
+            var cliente = new HttpClient();
+            var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, id));
+            var respuesta = await cliente.SendAsync(solicitud);
+            respuesta.EnsureSuccessStatusCode();
+
+            var resultado = await respuesta.Content.ReadAsStringAsync();
+            var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var verificar = JsonSerializer.Deserialize<VerificarCategoriaResponse>(resultado, opciones);
+
+            return new JsonResult(verificar);
+        }
+
+        public async Task<IActionResult> OnGetContarHijasTotales(Guid id)
+        {
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "HijasTotales");
+            var cliente = new HttpClient();
+            var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, id));
+            var respuesta = await cliente.SendAsync(solicitud);
+            respuesta.EnsureSuccessStatusCode();
+
+            var resultado = await respuesta.Content.ReadAsStringAsync();
+            var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var verificar = JsonSerializer.Deserialize<VerificarCategoriaResponse>(resultado, opciones);
+
+            return new JsonResult(verificar);
+        }
+
+        public async Task<ActionResult> OnPostActivarPadreHijas(Guid? id, bool activarHijas)
+        {
+            if (id == null || id == Guid.Empty)
+                return NotFound();
+
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ActivarPadreHijas");
+            var cliente = new HttpClient();
+            var url = string.Format(endpoint, id, activarHijas.ToString().ToLower());
+
+            var solicitud = new HttpRequestMessage(HttpMethod.Put, url);
+            var respuesta = await cliente.SendAsync(solicitud);
+            respuesta.EnsureSuccessStatusCode();
+
+            return RedirectToPage("./Categorias");
+        }
+        public async Task<ActionResult> OnPostActivarHijas(Guid? id)
+        {
+            if (id == null || id == Guid.Empty)
+                return NotFound();
+
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ActivarHijas");
+            var cliente = new HttpClient();
+            var url = string.Format(endpoint, id);
+
+            var solicitud = new HttpRequestMessage(HttpMethod.Put, url);
+            var respuesta = await cliente.SendAsync(solicitud);
+            respuesta.EnsureSuccessStatusCode();
+
+            return RedirectToPage("./Categorias");
+        }
+
     }
 }
 

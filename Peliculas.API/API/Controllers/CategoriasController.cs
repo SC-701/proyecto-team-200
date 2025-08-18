@@ -51,14 +51,32 @@ namespace API.Controllers
 		}
 
 
-        [HttpPut("desactivar/{IdCategoria}")]
+        [HttpGet("Verificar/{IdCategoria}")]
+        public async Task<IActionResult> VerificarCategoria([FromRoute] Guid IdCategoria)
+        {
+            if (!await VerificarExistenciaCategoria(IdCategoria))
+                return NotFound("La categoría no existe.");
+
+            int cantidadHijas = await _categoriasFlujo.VerificarSiEsPadre(IdCategoria);
+            bool esPadre = cantidadHijas > 0;
+
+            return Ok(new
+            {
+                IdCategoria = IdCategoria,
+                EsPadre = esPadre,
+                CantidadHijas = cantidadHijas
+            });
+        }
+
+        [HttpPut("Desactivar/{IdCategoria}")]
         public async Task<IActionResult> Desactivar([FromRoute] Guid IdCategoria)
         {
             if (!await VerificarExistenciaCategoria(IdCategoria))
-                return NotFound("la categoria no existe");
+                return NotFound("La categoría no existe.");
             var resultado = await _categoriasFlujo.Desactivar(IdCategoria);
             return Ok(resultado);
         }
+
 
 
         [HttpGet]
@@ -101,6 +119,44 @@ namespace API.Controllers
             var resultado = await _categoriasFlujo.ObtenerHijasRecursivo(idPadre);
             if (!resultado.Any())
                 return NoContent();
+            return Ok(resultado);
+        }
+
+
+        [HttpGet("padres")]
+        public async  Task<IActionResult> ObtenerPadres()
+        {
+            var resultado = await _categoriasFlujo.ObtenerPadres();
+            if (!resultado.Any())
+                return NoContent();
+            return Ok(resultado);
+        }
+
+
+        [HttpGet("hijas-totales/{idPadre}")]
+        public async Task<IActionResult> ObtenerHijasTotales(Guid idPadre)
+        {
+            if (!await VerificarExistenciaCategoria(idPadre))
+                return NotFound("La categoría no existe.");
+            var resultado = await _categoriasFlujo.ObtenerHijasTotales(idPadre);
+            return Ok(resultado);
+        }
+
+        [HttpPut("Activar-padre/{idCategoria}")]
+        public async Task<IActionResult> ActivarPadreHijas(Guid idCategoria, bool activarHijas)
+        {
+            if (!await VerificarExistenciaCategoria(idCategoria))
+                return NotFound("la categoria no existe");
+            var resultado = await _categoriasFlujo.ActivarPadreHijas(idCategoria, activarHijas);
+            return Ok(resultado);
+        }
+
+        [HttpPut("Activar-hijas/{idCategoria}")]
+        public async Task<IActionResult> ActivarHijas(Guid idCategoria)
+        {
+            if (!await VerificarExistenciaCategoria(idCategoria))
+                return NotFound("la categoria no existe");
+            var resultado = await _categoriasFlujo.ActivarHijas(idCategoria);
             return Ok(resultado);
         }
     }

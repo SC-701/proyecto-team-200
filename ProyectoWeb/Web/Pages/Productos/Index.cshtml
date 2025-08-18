@@ -9,7 +9,32 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <link href="~/css/tienda.css" rel="stylesheet" />
+    <link href="~/css/slider.css" rel="stylesheet" />
+    <link href="~/css/sidebar.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@6.2.4/dist/simplebar.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simplebar@6.2.4/dist/simplebar.min.js"></script>
 
+   <style>
+        .hijas-container select {
+            display: block;
+            width: 100%;
+            padding: 0.25rem 0.5rem; /* compacto */
+            font-size: 0.875rem;
+            border-radius: 0.5rem; /* más redondeado */
+            border: 1px solid #ccc;
+            background-color: #fff; /* limpio */
+            color: #333;
+            appearance: none; /* quita flecha por defecto si quieres un estilo más minimal */
+            cursor: pointer;
+        }
+
+            .hijas-container select:focus {
+                outline: none;
+                border-color: #6f42c1; /* color morado al enfocar */
+                box-shadow: 0 0 0 0.2rem rgba(111,66,193,0.25);
+            }
+
+   </style>
 </head>
 
 <body class="bg-light">
@@ -67,6 +92,17 @@
         </div>
     </div>
 
+
+
+    <div class="position-fixed top-0 start-0 sidebar-nav bg-white rounded-4 shadow-lg" 
+     style="z-index: 1000; height: 100vh; overflow-x: hidden; overflow-y: auto;">
+    <nav class="px-2">
+        <!-- Categorías -->
+    </nav>
+</div>
+    <div class="container py-4">
+        <div class="container-fluid px-4 py-4">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-5 row-cols-xxl-5 g-3">
 
 
 
@@ -171,4 +207,86 @@
 @section Scripts {
     <script src="~/js/chatbox.js"></script>
     <script src="~/js/busquedasindex.js"></script>
+      <script>
+         document.addEventListener('DOMContentLoaded', async () => {
+        const sidebar = document.querySelector('.sidebar-nav nav');
+
+            const rPadres = await fetch('/Productos/Index?handler=ObtenerCategoriasPadres');
+            const padres = await rPadres.json();
+            console.log("Categorías padre:", padres);
+
+            padres.forEach(padre => {
+                const padreLink = document.createElement('a');
+                padreLink.className = 'nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark';
+                padreLink.href = '#';
+                padreLink.dataset.padreId = padre.categoriasId;
+
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-circle me-2';
+                padreLink.appendChild(icon);
+
+                const spanText = document.createElement('span');
+                spanText.className = 'nav-text';
+                spanText.textContent = padre.nombre;
+                padreLink.appendChild(spanText);
+                const hijasContainer = document.createElement('div');
+                hijasContainer.className = 'hijas-container mt-1 ps-3';
+                hijasContainer.style.display = 'none';
+
+                padreLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
+
+                    document.querySelectorAll('.hijas-container').forEach(div => {
+                        if (div !== hijasContainer) div.style.display = 'none';
+                    });
+
+                    if (hijasContainer.style.display === 'none') {
+                        if (!hijasContainer.hasChildNodes()) {
+                            const rHijas = await fetch(`/Productos/Index?handler=ObtenerCategoriasHijas&id=${padre.categoriasId}`);
+                            const hijas = await rHijas.json();
+                            console.log(`Hijas de ${padre.nombre}:`, hijas);
+
+                            if (hijas.length > 0) {
+                                const select = document.createElement('select');
+                                select.className = 'form-select form-select-sm mb-2';
+                                select.innerHTML = `<option value="" disabled selected>—</option>`;
+
+                                hijas.forEach(hija => {
+                                    const option = document.createElement('option');
+                                    option.value = hija.categoriasId;
+                                    option.textContent = hija.nombre;
+                                    select.appendChild(option);
+                                });
+
+                                select.addEventListener('change', (e) => {
+                                    const subId = e.target.value;
+                                    if (subId) {
+                                        window.location.href = `/Productos/Filtro?categoriaId=${subId}`;
+                                    }
+                                });
+
+                                hijasContainer.appendChild(select);
+                            } else {
+                               window.location.href = `/Productos/Filtro?categoriaId=${padre.categoriasId}`;
+                            }
+                        }
+                        hijasContainer.style.display = 'block';
+                    } else {
+                        hijasContainer.style.display = 'none';
+                    }
+                });
+
+                sidebar.appendChild(padreLink);
+                sidebar.appendChild(hijasContainer);
+            });
+            sidebar.addEventListener('mouseleave', () => {
+                document.querySelectorAll('.hijas-container').forEach(div => {
+                    div.style.display = 'none';
+                });
+            });
+
+    });
+</script>
 }
+
+

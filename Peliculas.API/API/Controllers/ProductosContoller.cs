@@ -36,8 +36,10 @@ namespace API.Controllers
             var resultado = await _productosFlujo.Editar(IdProducto, request.Productos, request.Imagen);
             return Ok(resultado);
         }
+
         [Authorize(Roles = "1")]
-        [HttpDelete("{IdProducto}")]
+        [HttpPut("estados-producto/{IdProducto}")]
+
         public async Task<IActionResult> Eliminar([FromRoute] Guid IdProducto)
         {
             if (!await VerificarProductosExiste(IdProducto))

@@ -21,7 +21,7 @@ namespace Abstracciones.Modelos
         public class CategoriasRequestHija : CategoriasBase
 		{
 			public int EstadoId { get; set; }
-			public Guid PadreId { get; set; }
+			public Guid? PadreId { get; set; }
         }
 
 		public class CategoriasResponse : CategoriasBase
@@ -32,6 +32,14 @@ namespace Abstracciones.Modelos
             public string Estado { get; set; }
 		}
 
+        public class VerificarCategoriaResponse
+        {
+            public Guid IdCategoria { get; set; }
+            public bool EsPadre { get; set; }
+            public int CantidadHijas { get; set; }
+            public Guid? PadreId { get; set; }
+            public bool PadreActivo { get; set; }
+        }
 
     }
 }

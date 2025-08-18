@@ -17,5 +17,7 @@ namespace Abstracciones.Interfaces.Reglas
         /// <param name="idPadre">Id de la categoría padre.</param>
         /// <returns>Lista de todas las categorías hijas (directas e indirectas).</returns>
         IEnumerable<CategoriasResponse> ObtenerHijasRecursivo(IEnumerable<CategoriasResponse> todasCategorias, Guid idPadre);
+
+    
     }
 }
