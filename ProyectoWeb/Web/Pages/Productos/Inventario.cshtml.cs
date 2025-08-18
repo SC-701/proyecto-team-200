@@ -83,6 +83,7 @@ namespace Web.Pages.Productos
         {
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "ObtenerProveedores");
             var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
             var respuesta = await cliente.SendAsync(solicitud);
