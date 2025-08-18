@@ -37,7 +37,7 @@ namespace API.Controllers
             return Ok(resultado);
         }
         [Authorize(Roles = "1")]
-        [HttpDelete("{IdProducto}")]
+        [HttpPut("estados-producto/{IdProducto}")]
         public async Task<IActionResult> Eliminar([FromRoute] Guid IdProducto)
         {
             if (!await VerificarProductosExiste(IdProducto))

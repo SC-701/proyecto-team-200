@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abstracciones.Interfaces.DA;
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos;
 using static Abstracciones.Modelos.Categorias;
@@ -10,8 +11,16 @@ using static Abstracciones.Modelos.Categorias;
 namespace Reglas
 {
     public class CategoriasReglas : ICategoriasReglas
+
     {
-      
+        private readonly ICategoriasDA _categoriasDA;
+
+        public CategoriasReglas(ICategoriasDA categoriasDA)
+        {
+            _categoriasDA = categoriasDA;
+        }
+
+       
         public IEnumerable<CategoriasResponse> ObtenerHijasRecursivo(IEnumerable<CategoriasResponse> todasCategorias, Guid idPadre)
         {
             var resultado = new List<CategoriasResponse>();

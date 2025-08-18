@@ -11,7 +11,8 @@ namespace Abstracciones.Interfaces.API
 	public interface ICategoriasController
 	{
 		Task<IActionResult> Obtener();
-		Task<IActionResult> ObtenerPorId(Guid IdCategoria);
+        Task<IActionResult> ObtenerPadres();
+        Task<IActionResult> ObtenerPorId(Guid IdCategoria);
 
 		Task<IActionResult> AgregarPadre(CategoriasRequestPadre categorias);
 
@@ -20,6 +21,16 @@ namespace Abstracciones.Interfaces.API
         Task<IActionResult> Desactivar(Guid IdCategoria);
         Task<IActionResult> ObtenerHijas(Guid idPadre);
         Task<IActionResult> ObtenerHijasRecursivo(Guid idPadre);
+
+        Task<IActionResult> VerificarCategoria(Guid IdCategoria);
+
+
+        Task<IActionResult> ObtenerHijasTotales(Guid idPadre);
+
+        Task<IActionResult> ActivarPadreHijas(Guid idCategoria, bool activarHijas);
+
+        Task<IActionResult> ActivarHijas(Guid idCategoria);
+
 
 
     }

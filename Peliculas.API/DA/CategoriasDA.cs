@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +25,37 @@ namespace DA
 			_sqlConnection = _repositorioDapper.ObtenerRepositorio();
 		}
 
+        public async Task<Guid> ActivarHijas(Guid idCategoria)
+        {
+            await VerificarExistenciaCategoria(idCategoria);
 
-		
+
+            string query = @"ACTIVAR_HIJA_Y_PADRE";
+
+            var resultado = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+                IdHija = idCategoria
+             
+            });
+
+            return resultado;
+        }
+
+        public async Task<Guid> ActivarPadreHijas(Guid idCategoria, bool activarHijas)
+        {
+            await VerificarExistenciaCategoria(idCategoria);
+
+
+            string query = @"ACTIVAR_PADRE_Y_HIJAS";
+
+            var resultado = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
+            {
+                IdCategoria = idCategoria,
+                ActivarHijas = activarHijas,
+            });
+
+            return resultado;
+        }
 
         public async Task<Guid> AgregarHija(CategoriasRequestHija categorias)
         {
@@ -119,6 +149,21 @@ namespace DA
          );
         }
 
+        public async Task<VerificarCategoriaResponse> ObtenerHijasTotales(Guid IdCategoria)
+        {
+            string query = @"CONTAR_HIJAS_TOTALES";
+            var resultadoConsulta = await _sqlConnection.QueryAsync<VerificarCategoriaResponse>(query,
+                new { IdCategoria = IdCategoria });
+            return resultadoConsulta.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<CategoriasResponse>> ObtenerPadres()
+        {
+            string query = @"VER_CATEGORIAS_PADRES";
+            var resultadoConsulta = await _sqlConnection.QueryAsync<CategoriasResponse>(query);
+            return resultadoConsulta;
+        }
+
         public async Task<CategoriasResponse> ObtenerPorId(Guid IdCategoria)
 		{
 			string query = @"VER_CATEGORIA_POR_ID";
@@ -127,8 +172,17 @@ namespace DA
 			return resultadoConsulta.FirstOrDefault();
 		}
 
+        public async  Task<int> TieneHijas(Guid IdCategoria)
+        {
+            var count = await _sqlConnection.ExecuteScalarAsync<int>(
+       "CONTAR_HIJAS_ACTIVAS",
+       new { IdCategoria = IdCategoria },
+       commandType: CommandType.StoredProcedure
+   );
+            return count;
+        }
 
-		private async Task VerificarExistenciaCategoria(Guid IdCategoria)
+        private async Task VerificarExistenciaCategoria(Guid IdCategoria)
 		{
 			CategoriasResponse? resutadoConsultaProducto = await ObtenerPorId(IdCategoria);
 			if (resutadoConsultaProducto == null)

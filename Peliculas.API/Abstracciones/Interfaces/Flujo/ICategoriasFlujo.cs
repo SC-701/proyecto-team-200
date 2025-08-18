@@ -11,7 +11,8 @@ namespace Abstracciones.Interfaces.Flujo
 	public interface ICategoriasFlujo
 	{
 		Task<IEnumerable<CategoriasResponse>> Obtener();
-		Task<CategoriasResponse> ObtenerPorId(Guid IdCategoria);
+        Task<IEnumerable<CategoriasResponse>> ObtenerPadres();
+        Task<CategoriasResponse> ObtenerPorId(Guid IdCategoria);
 
 		Task<Guid> AgregarPadre(CategoriasRequestPadre categorias);
 
@@ -20,9 +21,13 @@ namespace Abstracciones.Interfaces.Flujo
         Task<Guid> Editar(Guid IdCategoria, CategoriasRequestPadre categorias);
 
         Task<Guid> Desactivar(Guid IdCategoria);
+        Task<int> VerificarSiEsPadre(Guid IdCategoria);
         Task<IEnumerable<CategoriasResponse>> ObtenerHijas(Guid idPadre);
         Task<IEnumerable<CategoriasResponse>> ObtenerHijasRecursivo(Guid idPadre);
 
+        Task <VerificarCategoriaResponse> ObtenerHijasTotales(Guid IdCategoria);
 
+        Task<Guid> ActivarPadreHijas(Guid idCategoria, bool activarHijas);
+        Task<Guid> ActivarHijas(Guid idCategoria);
     }
 }
