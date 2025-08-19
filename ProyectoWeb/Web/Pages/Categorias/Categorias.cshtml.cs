@@ -129,6 +129,36 @@ namespace Web.Pages.Categorias
             return RedirectToPage("./Categorias");
         }
 
+        public async Task<IActionResult> OnGetObtenerPorId(Guid? id)
+        {
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ObtenerCategoria");
+            var cliente = new HttpClient();
+
+            var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, id));
+            var respuesta = await cliente.SendAsync(solicitud);
+            respuesta.EnsureSuccessStatusCode();
+
+            if (respuesta.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var resultado = await respuesta.Content.ReadAsStringAsync();
+                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                Categoria = JsonSerializer.Deserialize<Categoria>(resultado, opciones);
+
+                return new JsonResult(Categoria);
+            }
+            return NotFound();
+        }
+        public async Task<IActionResult> OnPostEditarCategoria(Guid id)
+        {
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "EditarCategoria");
+            var cliente = new HttpClient();
+            var url = string.Format(endpoint, id);
+
+            var respuesta = await cliente.PutAsJsonAsync(url, Categoria);
+            respuesta.EnsureSuccessStatusCode();
+
+            return RedirectToPage("./Categorias");
+        }
     }
 }
 

@@ -19,22 +19,51 @@
         .hijas-container select {
             display: block;
             width: 100%;
-            padding: 0.25rem 0.5rem; /* compacto */
+            padding: 0.25rem 0.5rem; 
             font-size: 0.875rem;
-            border-radius: 0.5rem; /* más redondeado */
+            border-radius: 0.5rem; 
             border: 1px solid #ccc;
-            background-color: #fff; /* limpio */
+            background-color: #fff; 
             color: #333;
-            appearance: none; /* quita flecha por defecto si quieres un estilo más minimal */
+            appearance: none; 
             cursor: pointer;
         }
 
             .hijas-container select:focus {
                 outline: none;
-                border-color: #6f42c1; /* color morado al enfocar */
+                border-color: #6f42c1; 
                 box-shadow: 0 0 0 0.2rem rgba(111,66,193,0.25);
             }
 
+        .sidebar-nav {
+            margin-top: 59px;
+            width: 64px; 
+            overflow-x: hidden;
+            transition: width 0.3s ease;
+        }
+
+            .sidebar-nav:hover {
+                width: 250px;
+            }
+
+            .sidebar-nav nav .nav-text {
+                opacity: 0;
+                display: inline-block;
+                transition: opacity 0.3s ease;
+                margin-left: 10px;
+            }
+
+            .sidebar-nav:hover nav .nav-text {
+                opacity: 1;
+            }
+
+            .sidebar-nav nav .hijas-container {
+                display: none;
+            }
+
+            .sidebar-nav:hover nav .hijas-container {
+                display: block;
+            }
    </style>
 </head>
 
@@ -94,12 +123,12 @@
     </div>
 
 
-    <div class="position-fixed top-0 start-0 sidebar-nav bg-white rounded-4 shadow-lg" 
-     style="z-index: 1000; height: 100vh; overflow-x: hidden; overflow-y: auto;">
-    <nav class="px-2">
-        <!-- Categorías -->
-    </nav>
-</div>
+    <div class="position-fixed top-0 start-0 sidebar-nav bg-white rounded-4 shadow-lg"
+         style="z-index: 1000; height: 100vh; overflow-x: hidden; overflow-y: auto;">
+        <nav class="px-2">
+        </nav>
+    </div>
+
     <div class="container py-4">
         <div class="container-fluid px-4 py-4">
             <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-5 row-cols-xxl-5 g-3" id="productos">

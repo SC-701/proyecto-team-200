@@ -18,6 +18,7 @@ namespace Abstracciones.Modelos.Carrito
         public decimal TotalLinea { get; set; }
         public string ImagenUrl { get; set; }
         public string Descripcion { get; set; }
+        public int StockDisponible { get; set; }
 
     }
 }
