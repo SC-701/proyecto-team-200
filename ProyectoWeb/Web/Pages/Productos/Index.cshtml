@@ -19,19 +19,19 @@
         .hijas-container select {
             display: block;
             width: 100%;
-            padding: 0.25rem 0.5rem; /* compacto */
+            padding: 0.25rem 0.5rem; 
             font-size: 0.875rem;
-            border-radius: 0.5rem; /* más redondeado */
+            border-radius: 0.5rem; 
             border: 1px solid #ccc;
-            background-color: #fff; /* limpio */
+            background-color: #fff; 
             color: #333;
-            appearance: none; /* quita flecha por defecto si quieres un estilo más minimal */
+            appearance: none; 
             cursor: pointer;
         }
 
             .hijas-container select:focus {
                 outline: none;
-                border-color: #6f42c1; /* color morado al enfocar */
+                border-color: #6f42c1; 
                 box-shadow: 0 0 0 0.2rem rgba(111,66,193,0.25);
             }
 
@@ -115,11 +115,11 @@
 
                                 <div class="card-body d-flex flex-column">
                                     <h5 class="card-title mb-1">@Html.DisplayFor(p => producto.Nombre)</h5>
-                                    <p class="card-text fw-bold text-dark mb-4">$@Html.DisplayFor(p => producto.Precio)</p>
+                                    <p class="card-text fw-bold text-dark mb-4">Precio:$@Html.DisplayFor(p => producto.Precio)</p>
 
                                     <div class="mt-auto d-flex justify-content-between px-4">
-                                        <button class="btn btn-outline-secondary rounded-circle">
-                                            <i class="bi bi-cart"></i>
+                                        <button class="btn detalle-btn" onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'">
+                                            ver detalle producto
                                         </button>
                                     </div>
                                 </div>

@@ -114,4 +114,26 @@ body {
     font-family: 'Segoe UI', sans-serif;
     background-color: #f4f6f9;
 }
+.detalle-btn {
+    background: linear-gradient(135deg, #4a90e2, #357ab8); 
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    font-weight: 500;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
 
+    .detalle-btn:hover {
+        background: linear-gradient(135deg, #357ab8, #4a90e2); 
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+        cursor: pointer;
+    }
+
+    .detalle-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
