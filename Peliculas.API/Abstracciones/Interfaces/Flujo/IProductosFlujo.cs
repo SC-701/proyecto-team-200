@@ -12,11 +12,12 @@ namespace Abstracciones.Interfaces.Flujo
 
         Task<IEnumerable<ProductosResponse>> Obtener();
         Task<IEnumerable<ProductosResponse>> ObtenerProductosBuscados(string nombre);
+        Task<Paginacion<ProductosResponse>> ObtenerProductosXCategoria(Guid idCategoria, int pageIndex, int pageSize);
         Task<ProductosResponse> ObtenerPorId(Guid IdProducto);
 
         Task<Guid> Agregar(ProductosRequest productos,Documento imagen);
 
-        Task<Guid> Editar(Guid IdProducto, ProductosRequest productos);
+        Task<Guid> Editar(Guid IdProducto, ProductosRequest productos, Documento imagen);
 
         Task<Guid> Eliminar(Guid IdProducto);
         Task<Paginacion<ProductosResponse>> ListarProductosPaginado(int pageIndex, int pageSize);

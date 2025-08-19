@@ -37,8 +37,8 @@ namespace Abstracciones.Modelos
         
         public string? ImagenUrl { get; set; }
 
-        [Required(ErrorMessage = "La fecha de creación es requerida.")]
-        public DateTime FechaCreacion { get; set; }
+        
+        public DateTime? FechaCreacion { get; set; }
     }
 
     public class ProductosRequest : ProductosBase
@@ -48,10 +48,10 @@ namespace Abstracciones.Modelos
 
         [Required(ErrorMessage = "La categoría es requerida.")]
         public Guid IdCategoria { get; set; }
+        public Guid? IdProducto { get; set; }
 
-        [Required(ErrorMessage = "El estado es requerido.")]
-        [Range(1, int.MaxValue, ErrorMessage = "El estado debe ser un número válido mayor a cero.")]
-        public int IdEstado { get; set; }
+
+        public int? IdEstado { get; set; }
     }
 
     public class ProductosResponse : ProductosBase

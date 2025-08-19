@@ -42,6 +42,7 @@ namespace Abstracciones.Modelos
 			public decimal PrecioUnitario { get; set; }
 			public string ImagenUrl { get; set; }
 			public string Descripcion { get; set; }
-		}
+            public int StockDisponible { get; set; }
+        }
 	}
 }

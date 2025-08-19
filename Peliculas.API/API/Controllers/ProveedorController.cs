@@ -4,9 +4,11 @@ using Abstracciones.Modelos;
 using DA;
 using Flujo;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProveedorController : ControllerBase, IProveedorController
@@ -18,13 +20,16 @@ namespace API.Controllers
             _proveedorFlujo = proveedorFlujo;
             _logger = logger;
         }
-
+        [Authorize(Roles = "1")]
         [HttpPost]
         public async Task<IActionResult> Agregar([FromBody] Proveedores proveedor)
         {
             var resultado = await _proveedorFlujo.Agregar(proveedor);
             return CreatedAtAction(nameof(ObtenerPorId), new { IdProveedor = resultado }, null);
         }
+
+
+        [AllowAnonymous]
         [HttpGet]
 
         public async Task<IActionResult> Obtener()
@@ -34,6 +39,7 @@ namespace API.Controllers
                 return NoContent();
             return Ok(resultado);
         }
+        [Authorize(Roles = "1")]
         [HttpGet("{IdProveedor}")]
 
         public async Task<IActionResult> ObtenerPorId([FromRoute] Guid IdProveedor)
@@ -41,8 +47,8 @@ namespace API.Controllers
             var resultado = await _proveedorFlujo.ObtenerPorId(IdProveedor);
             return Ok(resultado);
         }
-
-		[HttpPut("{IdProveedor}")]
+        [Authorize(Roles = "1")]
+        [HttpPut("{IdProveedor}")]
 		public async Task<IActionResult> Editar([FromRoute] Guid IdProveedor, [FromBody] Proveedores proveedor)
 		{
 			if (!await VerificarExistenciaProveedor(IdProveedor))
@@ -51,14 +57,16 @@ namespace API.Controllers
 			return Ok(resultado);
 		}
 
+        [Authorize(Roles = "1")]
 		[HttpPut("desactivar-proveedor/{IdProveedor}")]
 		public async Task<IActionResult> Eliminar([FromRoute] Guid IdProveedor)
 		{
 			if (!await VerificarExistenciaProveedor(IdProveedor))
 				return NotFound("El proveedor no esta registrado");
 			var resultado = await _proveedorFlujo.Eliminar(IdProveedor);
-			return Ok(resultado);
-		}
+            return Ok(resultado);
+        }
+
 
 
 		private async Task<bool> VerificarExistenciaProveedor(Guid Id)

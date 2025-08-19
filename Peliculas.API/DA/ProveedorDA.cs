@@ -79,8 +79,8 @@ namespace DA
 			string query = @"ESTADO_PROVEEDOR";
 			var resultadoConsulta = await _sqlConnection.ExecuteScalarAsync<Guid>(query, new
 			{
-				IdProveedor = IdProveedor
-			});
+                IdProveedor = IdProveedor
+            });
 			return resultadoConsulta;
 		}
 

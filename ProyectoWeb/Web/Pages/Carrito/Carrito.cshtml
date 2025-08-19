@@ -70,12 +70,15 @@
                             <h5 class="mb-0">Productos en tu carrito (<span id="item-count">3</span> artículos)</h5>
                         </div>
                         <div class="card-body p-0" data-carrito-id="@Model.Carrito.CarritoId">
+                            @if (Model.Carrito?.Productos?.Any() ?? false)
+{
                             @foreach (var producto in Model.Carrito.Productos)
                             {
-                                <div class="cart-item border-bottom p-4"
-                                     id="producto-@producto.CarritoProductoId.ToString("d")"
-                                     data-id="@producto.CarritoProductoId.ToString("d")"
-                                     data-productos-id="@producto.ProductosId.ToString("d")">
+                                    <div class="cart-item border-bottom p-4"
+                                         id="producto-@producto.CarritoProductoId.ToString("d")"
+                                         data-id="@producto.CarritoProductoId.ToString("d")"
+                                         data-productos-id="@producto.ProductosId.ToString("d")"
+                                         data-precio-unit="@producto.PrecioUnitario">
                                     <div class="row align-items-center">
                                         <div class="col-md-2">
                                             <img src="@producto.ImagenUrl" alt="@producto.NombreProducto" class="cart-item-img rounded" style="height:80px; width:80px;" />
@@ -88,15 +91,26 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2">
-                                            <div class="input-group input-group-sm">
-                                                <button class="btn btn-outline-secondary btn-decrease" type="button" onclick="cambiarCantidad('@producto.CarritoProductoId.ToString("d")', -1)">
-                                                    <i class="bi bi-dash"></i>
-                                                </button>
-                                                <input type="number" class="form-control quantity-input" value="@producto.Cantidad" min="0" onchange="actualizarCantidad('@producto.CarritoProductoId.ToString("d")', this.value)" />
-                                                <button class="btn btn-outline-secondary btn-increase" type="button" onclick="cambiarCantidad('@producto.CarritoProductoId.ToString("d")', 1)">
-                                                    <i class="bi bi-plus"></i>
-                                                </button>
-                                            </div>
+                                                <form class="needs-validation" novalidate>
+                                                    <div class="input-group input-group-sm">
+                                                        <button class="btn btn-outline-secondary btn-decrease" type="button"
+                                                                onclick="cambiarCantidad('@producto.CarritoProductoId.ToString("d")', -1)">
+                                                            <i class="bi bi-dash"></i>
+                                                        </button>
+
+                                                        <input type="number" class="form-control quantity-input"
+                                                               value="@producto.Cantidad"
+                                                               min="0"
+                                                               max="@(producto.StockDisponible + producto.Cantidad)"
+                                                               required />
+
+                                                        <button class="btn btn-outline-secondary btn-increase" type="button"
+                                                                onclick="cambiarCantidad('@producto.CarritoProductoId.ToString("d")', 1)">
+                                                            <i class="bi bi-plus"></i>
+                                                        </button>
+
+                                                    </div>
+                                                </form>
                                         </div>
                                         <div class="col-md-2 text-center">
                                             <div class="price-text">₡@producto.PrecioUnitario</div>
@@ -111,7 +125,22 @@
                                     </div>
                                 </div>
                             }
-
+                            }
+                            else
+                            {
+                                <div id="empty-cart" class="text-center empty-cart">
+                                    <div class="card shadow-sm">
+                                        <div class="card-body py-5">
+                                            <i class="bi bi-cart-x display-1 text-muted mb-4"></i>
+                                            <h2 class="mb-3">Tu carrito está vacío</h2>
+                                            <p class="text-muted mb-4">¡Agrega algunos productos para comenzar!</p>
+                                            <button class="btn btn-primary btn-lg">
+                                                <i class="bi bi-arrow-left me-2"></i>Ir de Compras
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -126,7 +155,7 @@
                             <hr>
                             <div class="d-flex justify-content-between h5">
                                 <strong>Total:</strong>
-                                <strong id="total" class="text-success">₡@Model.Carrito.Total</strong>
+                                <strong id="total" class="text-success">₡@(Model.Carrito?.Total ?? 0)</strong>
 
 
                             </div>
@@ -170,13 +199,12 @@
     <script>
         window.endpoints = {
             actualizarProducto: '@Model.EndpointActualizarProducto',
-            obtenerCarritoPorId: '@Model.EndpointObtenerCarritoPorId',
             eliminarProducto: '@Model.EndpointEliminarProducto'
         };
     </script>
 
-    <script src="~/js/actualizarCantidad.js"></script>
+    <script src="~/js/carrito.js"></script>
     <script src="~/js/eliminarProducto.js"></script>
 
-    <script src="~/js/cambiarCantidad.js"></script>
+
 }

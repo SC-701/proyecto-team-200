@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos.Carrito;
 using System.Net.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Pages.Carrito
 {
+    [Authorize]
     public class CarritoModel : PageModel
     {
         private readonly IConfiguracion _configuracion;
@@ -25,6 +27,7 @@ namespace Web.Pages.Carrito
             _configuracion = configuracion;
         }
 
+
         public async Task OnGet()
         {
             EndpointActualizarProducto = _configuracion.ObtenerMetodo("ApiEndPointsCarrito", "ActualizarProducto");
@@ -40,14 +43,49 @@ namespace Web.Pages.Carrito
             var cliente = new HttpClient();
             var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
             var respuesta = await cliente.SendAsync(solicitud);
-            respuesta.EnsureSuccessStatusCode();
 
-            if (respuesta.StatusCode == HttpStatusCode.OK)
+            if (respuesta.IsSuccessStatusCode)
             {
                 var resultado = await respuesta.Content.ReadAsStringAsync();
                 var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                Carrito = JsonSerializer.Deserialize<CarritoResponse>(resultado, opciones) ?? new CarritoResponse();
+                Carrito = JsonSerializer.Deserialize<CarritoResponse>(resultado, opciones);
             }
+            else
+            {
+                Carrito = new CarritoResponse { Productos = new List<CarritoProductoResponse>(), Total = 0 };
+            }
+        }
+
+        public async Task<IActionResult> OnGetRefrescarAsync()
+        {
+            string? idUsuario = HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
+
+            string endpointBase = _configuracion.ObtenerMetodo("ApiEndPointsCarrito", "ObtenerCarritoPorUsuario");
+            string endpoint = $"{endpointBase}{idUsuario}";
+
+            var cliente = new HttpClient();
+            var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
+            var respuesta = await cliente.SendAsync(solicitud);
+
+            if (respuesta.IsSuccessStatusCode)
+            {
+                var resultado = await respuesta.Content.ReadAsStringAsync();
+                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                Carrito = JsonSerializer.Deserialize<CarritoResponse>(resultado, opciones);
+
+                return new JsonResult(new
+                {
+                    success = true,
+                    productos = Carrito.Productos.Select(p => new {
+                        id = p.CarritoProductoId,
+                        stock = p.StockDisponible,
+                    }),
+                    total = Carrito.Total
+                });
+            }
+
+            return new JsonResult(new { success = false });
         }
     }
 }

@@ -20,17 +20,22 @@ namespace Web.Pages.Proveedor
 		}
 
 		public async Task OnGet()
-		{
-			string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "ObtenerProveedores");
-			using var http = new HttpClient();
-			var resp = await http.GetAsync(endpoint);
-			resp.EnsureSuccessStatusCode();
-			if (resp.StatusCode == HttpStatusCode.OK)
-			{
-				var json = await resp.Content.ReadAsStringAsync();
-				proveedores = JsonSerializer.Deserialize<List<ProveedoresBase>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<ProveedoresBase>();
-			}
-		}
+{
+    string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "ObtenerProveedores");
+
+    using var http = new HttpClient();
+    var resp = await http.GetAsync(endpoint);
+    resp.EnsureSuccessStatusCode();
+
+    if (resp.StatusCode == HttpStatusCode.OK)
+    {
+        var json = await resp.Content.ReadAsStringAsync();
+        proveedores = JsonSerializer.Deserialize<List<ProveedoresBase>>(json, new JsonSerializerOptions 
+        { 
+            PropertyNameCaseInsensitive = true 
+        }) ?? new List<ProveedoresBase>();
+    }
+}
 
 		
 		public IActionResult OnGetFormularioModal()
@@ -89,7 +94,7 @@ namespace Web.Pages.Proveedor
 		{
 			if (proveedor.PROVEEDOR_ID == Guid.Empty)
 			{
-				ModelState.AddModelError(string.Empty, "Identificador inv·lido.");
+				ModelState.AddModelError(string.Empty, "Identificador inv√°lido.");
 				return Partial("_FormularioEditarProveedor", proveedor);
 			}
 

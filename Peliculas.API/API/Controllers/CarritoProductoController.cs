@@ -29,7 +29,7 @@ namespace API.Controllers
         public async Task<IActionResult> Agregar([FromBody] CarritoProductoRequest carritoProducto)
         {
             string idUsuarioStr = HttpContext.User.Claims
-                          .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
+                          .FirstOrDefault(c => c.Type == "idUsuario")?.Value;
 
             if (string.IsNullOrEmpty(idUsuarioStr))
                 return Unauthorized();
@@ -94,8 +94,8 @@ namespace API.Controllers
 			return Ok(resultado);
 		}
 
-		[HttpPost("validarStock")]
-		public async Task<IActionResult> ValidarStock( Guid productoId, int cantidadSolicitada)
+		[HttpPost("validarStock/{productoId}/{cantidadSolicitada}")]
+		public async Task<IActionResult> ValidarStock( [FromRoute]Guid productoId, [FromRoute] int cantidadSolicitada)
 		{
 			try
 			{

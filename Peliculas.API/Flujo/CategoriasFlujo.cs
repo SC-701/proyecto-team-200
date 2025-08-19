@@ -63,5 +63,33 @@ namespace Flujo
             var categorias = await _categoriasDA.Obtener();
             return _categoriaReglas.ObtenerHijasRecursivo(categorias, idPadre);
         }
+
+        public async Task<IEnumerable<CategoriasResponse>> ObtenerPadres()
+        {
+            return await _categoriasDA.ObtenerPadres();
+        }
+
+        public async  Task<int> VerificarSiEsPadre(Guid IdCategoria)
+        {
+            return await _categoriasDA.TieneHijas(IdCategoria);
+        }
+
+       
+
+        public async Task<Guid> ActivarPadreHijas(Guid idCategoria, bool activarHijas)
+        {
+            return await _categoriasDA.ActivarPadreHijas(idCategoria, activarHijas);
+        }
+
+        public async Task<VerificarCategoriaResponse> ObtenerHijasTotales(Guid IdCategoria)
+        {
+            return await _categoriasDA.ObtenerHijasTotales(IdCategoria);
+        }
+
+        public async Task<Guid> ActivarHijas(Guid idCategoria)
+        {
+            return await _categoriasDA.ActivarHijas(idCategoria);
+        }
     }
+
 }

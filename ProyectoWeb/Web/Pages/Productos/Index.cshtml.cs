@@ -1,4 +1,5 @@
 using Abstracciones.Interfaces.Reglas;
+using Abstracciones.Modelos.Categoria;
 using Abstracciones.Modelos.Productos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,8 +13,8 @@ namespace Web.Pages.Productos
     {
         private IConfiguracion _configuracion;
         public IList<Producto> productos { get; set; } = default!;
+        public IList<Categoria> categorias { get; set; } = new List<Categoria>();
 
-       
         [BindProperty]
         public ProductoPaginado ProductosPaginados { get; set; } = default!;
        
@@ -62,6 +63,36 @@ namespace Web.Pages.Productos
                 productos = ProductosPaginados.Items;
 
             }
+        }
+
+        public async Task<IActionResult> OnGetObtenerCategoriasPadres()
+        {
+            var cliente = new HttpClient();
+            string endpointTodas = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "VerPadres");
+            var respuestaTodas = await cliente.GetAsync(endpointTodas);
+            respuestaTodas.EnsureSuccessStatusCode();
+            var resultadoTodas = await respuestaTodas.Content.ReadAsStringAsync();
+            categorias = JsonSerializer.Deserialize<List<Categoria>>(resultadoTodas,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            return new JsonResult(categorias);
+        }
+        public async Task<IActionResult> OnGetObtenerCategoriasHijas(Guid id)
+        {
+            
+
+            var cliente = new HttpClient();
+            string endpointHijas = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ObtenerHijas");
+
+            var url = string.Format(endpointHijas, id);
+
+            var respuesta = await cliente.GetAsync(url);
+            respuesta.EnsureSuccessStatusCode();
+
+            var resultado = await respuesta.Content.ReadAsStringAsync();
+            var hijas = JsonSerializer.Deserialize<List<Categoria>>(resultado,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<Categoria>();
+
+            return new JsonResult(hijas);
         }
 
 

@@ -10,6 +10,61 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <link href="~/css/tienda.css" rel="stylesheet" />
 
+    <link href="~/css/slider.css" rel="stylesheet" />
+    <link href="~/css/sidebar.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@6.2.4/dist/simplebar.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/simplebar@6.2.4/dist/simplebar.min.js"></script>
+
+   <style>
+        .hijas-container select {
+            display: block;
+            width: 100%;
+            padding: 0.25rem 0.5rem; 
+            font-size: 0.875rem;
+            border-radius: 0.5rem; 
+            border: 1px solid #ccc;
+            background-color: #fff; 
+            color: #333;
+            appearance: none; 
+            cursor: pointer;
+        }
+
+            .hijas-container select:focus {
+                outline: none;
+                border-color: #6f42c1; 
+                box-shadow: 0 0 0 0.2rem rgba(111,66,193,0.25);
+            }
+
+        .sidebar-nav {
+            margin-top: 59px;
+            width: 64px; 
+            overflow-x: hidden;
+            transition: width 0.3s ease;
+        }
+
+            .sidebar-nav:hover {
+                width: 250px;
+            }
+
+            .sidebar-nav nav .nav-text {
+                opacity: 0;
+                display: inline-block;
+                transition: opacity 0.3s ease;
+                margin-left: 10px;
+            }
+
+            .sidebar-nav:hover nav .nav-text {
+                opacity: 1;
+            }
+
+            .sidebar-nav nav .hijas-container {
+                display: none;
+            }
+
+            .sidebar-nav:hover nav .hijas-container {
+                display: block;
+            }
+   </style>
 </head>
 
 <body class="bg-light">
@@ -68,26 +123,40 @@
     </div>
 
 
+    <div class="position-fixed top-0 start-0 sidebar-nav bg-white rounded-4 shadow-lg"
+         style="z-index: 1000; height: 100vh; overflow-x: hidden; overflow-y: auto;">
+        <nav class="px-2">
+        </nav>
+    </div>
+
+    <div class="container py-4">
+        <div class="container-fluid px-4 py-4">
+            <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-5 row-cols-xxl-5 g-3" id="productos">
 
 
-    <div class="container pb-5">
-        <h3 class="fw-bold mb-4 text-center">Nuestros Productos</h3>
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 g-4" id="productos">
-            @if (Model.productos != null && Model.productos.Any())
-            {
-                foreach (var producto in Model.productos)
+                @if (Model.productos != null && Model.productos.Any())
                 {
-                    <div class="col">
-                        <div class="card h-100 text-center shadow-sm border-0">
-                            <img src="@Html.DisplayFor(p => producto.ImagenUrl)" alt="Producto" onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'" style="cursor:pointer;">
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title mb-1">@Html.DisplayFor(p => producto.Nombre)</h6>
-                                <p class="fw-bold text-primary mb-4">$@Html.DisplayFor(p => producto.Precio)</p>
-                                <button class="btn btn-outline-dark mt-auto"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    foreach (var producto in Model.productos)
+                    {
+                        <div class="col">
+                            <div class="card h-100 text-center shadow-sm">
+                                <img src="@Html.DisplayFor(p => producto.ImagenUrl)" alt="..." class="img-hover" onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'" style="cursor:pointer;" />
+
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title mb-1">@Html.DisplayFor(p => producto.Nombre)</h5>
+                                    <p class="card-text fw-bold text-dark mb-4">Precio:$@Html.DisplayFor(p => producto.Precio)</p>
+
+                                    <div class="mt-auto d-flex justify-content-between px-4">
+                                        <button class="btn detalle-btn" onclick="location.href='@Url.Page("./DetalleProducto", new { IdProducto = producto.IdProducto })'">
+                                            ver detalle producto
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    
                 }
+
             }
             else
             {
@@ -97,6 +166,7 @@
                     </div>
                 </div>
             }
+        </div>
         </div>
     </div>
     <div id="btnChat" class="position-fixed bottom-0 end-0 m-4" style="z-index: 1050;">
@@ -167,209 +237,88 @@
 
 
 </body>
-
 @section Scripts {
-    <script>
-        const btnChat = document.getElementById("btnChat");
-        const chatBox = document.getElementById("chatBox");
+    <script src="~/js/chatbox.js"></script>
+    <script src="~/js/busquedasindex.js"></script>
 
-        btnChat.addEventListener("click", () => {
-            chatBox.style.display = "block";
-            btnChat.style.display = "none";
-        });
+<script>
+         document.addEventListener('DOMContentLoaded', async () => {
+        const sidebar = document.querySelector('.sidebar-nav nav');
 
-        function cerrarChat() {
-            chatBox.style.display = "none";
-            btnChat.style.display = "block";
-        }
-    </script>
-    <script>
-                const sidebar = document.getElementById('sidebar');
-        const toggleSidebarBtn = document.getElementById('toggleSidebar');
-        const closeSidebarBtn = document.getElementById('closeSidebar');
+            const rPadres = await fetch('/Productos/Index?handler=ObtenerCategoriasPadres');
+            const padres = await rPadres.json();
+            console.log("Categorías padre:", padres);
 
-        toggleSidebarBtn.addEventListener('click', () => {
-          sidebar.classList.add('show');
-        });
+            padres.forEach(padre => {
+                const padreLink = document.createElement('a');
+                padreLink.className = 'nav-link d-flex align-items-center p-3 rounded-3 mb-1 text-decoration-none text-dark';
+                padreLink.href = '#';
+                padreLink.dataset.padreId = padre.categoriasId;
 
-        closeSidebarBtn.addEventListener('click', () => {
-          sidebar.classList.remove('show');
-        });
-    </script>
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-circle me-2';
+                padreLink.appendChild(icon);
 
-    
-    <script>
-        $(function () {
-            let debounceTimer;
-            let cache = {};
-            let currentRequest = null;
+                const spanText = document.createElement('span');
+                spanText.className = 'nav-text';
+                spanText.textContent = padre.nombre;
+                padreLink.appendChild(spanText);
+                const hijasContainer = document.createElement('div');
+                hijasContainer.className = 'hijas-container mt-1 ps-3';
+                hijasContainer.style.display = 'none';
 
-            $("#buscador").on("input", function () {
-                clearTimeout(debounceTimer);
-                const query = $(this).val().trim();
+                padreLink.addEventListener('click', async (e) => {
+                    e.preventDefault();
 
-                debounceTimer = setTimeout(function () {
-                    buscarProductos(query);
-                }, 300); 
-            });
+                    document.querySelectorAll('.hijas-container').forEach(div => {
+                        if (div !== hijasContainer) div.style.display = 'none';
+                    });
 
-            function buscarProductos(query) {
-                const $resultados = $("#resultadosBusqueda");
+                    if (hijasContainer.style.display === 'none') {
+                        if (!hijasContainer.hasChildNodes()) {
+                            const rHijas = await fetch(`/Productos/Index?handler=ObtenerCategoriasHijas&id=${padre.categoriasId}`);
+                            const hijas = await rHijas.json();
+                            console.log(`Hijas de ${padre.nombre}:`, hijas);
 
-                if (query.length < 2) {
-                    $resultados.addClass("d-none").empty();
-                    return;
-                }
+                            if (hijas.length > 0) {
+                                const select = document.createElement('select');
+                                select.className = 'form-select form-select-sm mb-2';
+                                select.innerHTML = `<option value="" disabled selected>—</option>`;
 
-               
-                if (cache[query]) {
-                    renderResultados(cache[query]);
-                    return;
-                }
+                                hijas.forEach(hija => {
+                                    const option = document.createElement('option');
+                                    option.value = hija.categoriasId;
+                                    option.textContent = hija.nombre;
+                                    select.appendChild(option);
+                                });
 
-                
-                if (currentRequest) {
-                    currentRequest.abort();
-                }
+                                select.addEventListener('change', (e) => {
+                                    const subId = e.target.value;
+                                    if (subId) {
+                                        window.location.href = `/Productos/Filtro?categoriaId=${subId}`;
+                                    }
+                                });
 
-                currentRequest = $.ajax({
-                    url: `https://localhost:7266/api/Productos/Busqueda/${encodeURIComponent(query)}`,
-                    method: "GET",
-                    
-                    dataType: "json",
-                    success: function (productos) {
-                        cache[query] = productos; 
-                        renderResultados(productos);
-                    },
-                    error: function (xhr, status) {
-                        if (status !== "abort") {
-                            $resultados.html('<div class="p-2 text-danger">Error al buscar productos.</div>').removeClass("d-none");
+                                hijasContainer.appendChild(select);
+                            } else {
+                               window.location.href = `/Productos/Filtro?categoriaId=${padre.categoriasId}`;
+                            }
                         }
+                        hijasContainer.style.display = 'block';
+                    } else {
+                        hijasContainer.style.display = 'none';
                     }
                 });
-            }
 
-            function renderResultados(productos) {
-                const $resultados = $("#resultadosBusqueda");
-
-                if (productos.length === 0) {
-                    
-                    return;
-                }
-
-                        const html = productos.slice(0, 5).map(p => `
-            <div class="resultado-item" onclick="window.location='/Productos/DetalleProducto/?IdProducto=${p.idProducto}'">
-                <img src="${p.imagenUrl}" alt="${p.nombre}">
-                <div class="resultado-nombre">${p.nombre}</div>
-                <div class="resultado-precio text-primary">₡${p.precio.toLocaleString()}</div>
-            </div>
-        `).join('') + `
-            <div class="resultado-ver-todos" onclick="window.location='/Productos?busqueda=${encodeURIComponent($('#buscador').val())}'">
-                Ver todos los productos...
-            </div>
-        `;
-
-
-                $resultados.html(html).removeClass("d-none");
-            }
-        });
-    </script>
-
-    <script>
-        $(document).on("submit", "#BusquedaForm", function(e) {
-            e.preventDefault();
-            const $resultados = $("#resultadosBusqueda");
-            $resultados.empty();
-
-            const query = $(this).find("#buscador").val().trim();
-            let $contenedor = $("#productos");
-
-            $.ajax({
-                url: `https://localhost:7266/api/Productos/Busqueda/${encodeURIComponent(query)}`,
-                method: "GET",
-                dataType: "json",
-                success: function(productos) {
-                    renderProductosBuscados(productos);
-                },
-                error: function(xhr, status) {
-                    $contenedor.html('<div class="p-2 text-danger">Error al buscar productos.</div>');
-                }
+                sidebar.appendChild(padreLink);
+                sidebar.appendChild(hijasContainer);
+            });
+            sidebar.addEventListener('mouseleave', () => {
+                document.querySelectorAll('.hijas-container').forEach(div => {
+                    div.style.display = 'none';
+                });
             });
 
-                    function renderProductosBuscados(productos) {
-            let $contenedor=$("#productos");
-            $contenedor.empty();
-            $contenedor.innerHTML = "<div class='col-12 text-center'><span>Cargando...</span></div>";
-
-
-
-                    if (productos.length === 0) {
-        $contenedor.html(`
-            <div class="col-12">
-                <div class="alert alert-warning w-100 text-center" role="alert">
-                    Productos no disponibles
-                </div>
-            </div>
-        `);
-        return;
-                                                }
-
-
-
-                    $.each(productos, function (i, p) {
-        $contenedor.append(`
-            <div class="col">
-                <div class="card h-100 text-center shadow-sm border-0">
-                    <img src="${p.imagenUrl}" alt="Producto"
-                         onclick="window.location='/Productos/DetalleProducto/?IdProducto=${p.idProducto}'"
-                         style="cursor:pointer;">
-                    <div class="card-body d-flex flex-column">
-                        <h6 class="card-title mb-1">${p.nombre}</h6>
-                        <p class="fw-bold text-primary mb-4">$${p.precio}</p>
-                        <button class="btn btn-outline-dark mt-auto">
-                            <i class="fas fa-cart-plus"></i> Agregar
-                        </button>
-                    </div>
-                </div>
-            </div>
-                    `);
-                                                       });
-
-        }
-        });
-                $(document).ready(function () {
-           
-            $(document).on('click', function (event) {
-
-                if (!$(event.target).closest('#buscador, #resultadosBusqueda').length) {
-                    $('#resultadosBusqueda').hide(); 
-                }
-            });
-
-           
-            $('#buscador').on('focus', function () {
-                $('#resultadosBusqueda').show();
-            });
-        });
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-    </script>
-
-
-
-
-
-
+    });
+</script>
 }
