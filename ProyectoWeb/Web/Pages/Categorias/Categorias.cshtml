@@ -77,11 +77,14 @@
     }
 </td>
                         <td>
-                            <div class="d-flex justify-content-center gap-2">
-                                <button class="btn btn-primary btn-rounded" title="Editar">
-                                    <i class="bi bi-pencil-square"></i>
-                                </button>
-                            </div>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button type="button"
+                                            class="btn btn-primary btn-rounded edit-btn"
+                                            data-id="@categoria.categoriasId"
+                                            title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </div>
                         </td>
                     </tr>
                 }
@@ -100,8 +103,9 @@
 
             </tbody>
         </table>
+       
     </div>
-
+  
 
    
     <div class="modal fade" id="agregarCategoriaModal" tabindex="-1" aria-labelledby="agregarCategoriaModalLabel" aria-hidden="true">
@@ -140,8 +144,9 @@
             </div>
         </div>
     </div>
-
+    @await Html.PartialAsync("_EditarModal", new Abstracciones.Modelos.Categoria.Categoria())
     </body>
+
 
 
 @section Scripts {
@@ -150,21 +155,22 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        $(document).ready(function () {
-            $('#tablaCategorias').DataTable({
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
-                },
-                columnDefs: [{
-                    targets: 0,
-                    data: null,
-                    render: function (data, type, row, meta) {
-                        return meta.row + 1;
-                    }
-                }]
-            });
+               $(document).ready(function () {
+            if ($('#tablaCategorias tbody tr').length > 0 && !$('#tablaCategorias tbody tr td').attr('colspan')) {
+                $('#tablaCategorias').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                    },
+                    columnDefs: [{
+                        targets: 0,
+                        data: null,
+                        render: function (data, type, row, meta) {
+                            return meta.row + 1;
+                        }
+                    }]
+                });
+            }
         });
-
         
     </script>
 
@@ -232,11 +238,43 @@
         }
     </script>
     <script>
+               $(document).ready(function () {
+            $('#tablaCategorias').on('click', '.edit-btn', async function () {
+                const categoriaId = $(this).data('id');
+                const modalElement = document.getElementById('editarCategoriaModal');
+
+                const obtenerPorIdUrl = '@Url.Page("/Categorias/Categorias", null, new { handler = "ObtenerPorId" })';
+
+                try {
+                    const response = await fetch(`${obtenerPorIdUrl}&id=${categoriaId}`, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                        const categoria = await response.json();
+
+                        $('#edit-categoriasId').val(categoria.categoriasId);
+                        $('#edit-nombre').val(categoria.nombre);
+                        $('#edit-descripcion').val(categoria.descripcion);
+                        $('#edit-padreId').val(categoria.padreId || '');
+
+                        $('#editarCategoriaModal form').attr('action', `/Categorias/Categorias?handler=EditarCategoria&id=${categoria.categoriasId}`);
+
+                        const modal = new bootstrap.Modal(modalElement);
+                        modal.show();
+
+
+                } catch (error) {
+                    console.error('Error de conexión:', error);
+                    Swal.fire('Error', 'Ocurrió un error en la conexión con el servidor.', 'error');
+                }
+            });
+        });
+    </script>
+    <script>
         async function confirmarActivar(btn) {
             try {
                 const urlVerificar = btn.getAttribute('data-url');
 
-                // 1) Llamar al endpoint que verifica si es padre y cuántas hijas tiene
                 const rVerif = await fetch(urlVerificar, { method: 'GET', headers: { 'Accept': 'application/json' } });
                 const verificar = await rVerif.json();
 
@@ -246,13 +284,12 @@
                 const padreId = verificar.padreId ?? null;
                 const padreActivo = verificar.padreActivo ?? true;
 
-                // 2) Construir mensaje según sea padre o hija
+
                 let mensaje = '¿Desea activar esta categoría?';
                 let activarHijas = false;
                 let activarPadre = false;
 
                 if (esPadre && cantidad > 0) {
-                    // Padre con hijas
                     const result = await Swal.fire({
                         title: 'Confirmar activación',
                         text: `Esta categoría tiene ${cantidad} subcategoría(s). ¿Desea activarlas también?`,
@@ -264,12 +301,11 @@
                         cancelButtonText: 'Cancelar'
                     });
 
-                    if (result.isDismissed) return false; // Canceló
-                    if (result.isConfirmed) activarHijas = true; // Padre + hijas
-                    if (result.isDenied) activarHijas = false; // Solo padre
+                    if (result.isDismissed) return false; 
+                    if (result.isConfirmed) activarHijas = true; 
+                    if (result.isDenied) activarHijas = false; 
 
                 } else if (padreId && !padreActivo) {
-                    // Hija con padre inactivo
                     const result = await Swal.fire({
                         title: 'Activar padre inactivo',
                         text: 'Esta categoría tiene un padre inactivo. ¿Desea activar también al padre?',
@@ -281,10 +317,9 @@
 
                     if (!result.isConfirmed) return false;
 
-                    activarHijas = true;       // activa la hija
-                    activarPadre = true;       // activa el padre
+                    activarHijas = true;     
+                    activarPadre = true;      
                 } else {
-                    // Hija normal o padre sin hijas
                     const result = await Swal.fire({
                         title: 'Confirmar activación',
                         text: mensaje,
@@ -299,32 +334,26 @@
                     if (!result.isConfirmed) return false;
                 }
 
-                // 3) Crear form dinámico para enviar POST al handler correcto
                 const form = document.createElement('form');
                 if (activarPadre) {
-                    // Llama al OnPostActivarHijas que maneja padre+hija
                     form.action = '@Url.Page("./Categorias", "ActivarHijas")';
                 } else {
-                    // Llama al OnPostActivarPadreHijas
                     form.action = '@Url.Page("./Categorias", "ActivarPadreHijas")';
                 }
                 form.method = 'post';
 
-                // Input id
                 const inputId = document.createElement('input');
                 inputId.type = 'hidden';
                 inputId.name = 'id';
                 inputId.value = idCategoria;
                 form.appendChild(inputId);
 
-                // Input activarHijas
                 const inputHijas = document.createElement('input');
                 inputHijas.type = 'hidden';
                 inputHijas.name = 'activarHijas';
                 inputHijas.value = activarHijas;
                 form.appendChild(inputHijas);
 
-                // Input activarPadre (solo si aplica)
                 if (activarPadre) {
                     const inputPadre = document.createElement('input');
                     inputPadre.type = 'hidden';
@@ -333,7 +362,6 @@
                     form.appendChild(inputPadre);
                 }
 
-                // Token antiforgery
                 const tokenValue = document.getElementById('__RequestVerificationToken').value;
                 const tokenInput = document.createElement('input');
                 tokenInput.type = 'hidden';

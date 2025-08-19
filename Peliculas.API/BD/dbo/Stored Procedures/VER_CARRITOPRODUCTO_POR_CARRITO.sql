@@ -13,7 +13,8 @@ BEGIN
     p.NOMBRE AS NombreProducto,
     p.PRECIO AS PrecioUnitario,
     p.IMAGEN_URL AS ImagenUrl,
-    p.DESCRIPCION AS Descripcion
+    p.DESCRIPCION AS Descripcion,
+    p.stock as StockDisponible 
   FROM CARRITO_PRODUCTO cp
   INNER JOIN PRODUCTOS p ON cp.PRODUCTOS_ID = p.PRODUCTOS_ID
   WHERE cp.CARRITO_ID = @CarritoId;
