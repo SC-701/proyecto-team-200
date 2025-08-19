@@ -45,8 +45,23 @@ namespace Web.Pages.Productos
             
             var respuesta = await cliente.PostAsJsonAsync(endpoint, carritoProducto);
             respuesta.EnsureSuccessStatusCode();
-            
-            return RedirectToPage("../Carrito/Carrito");
+            if (respuesta.IsSuccessStatusCode)
+            {
+                
+                return RedirectToPage("../Carrito/Carrito");
+            }
+            else
+            {
+                
+                var json = await respuesta.Content.ReadAsStringAsync();
+                var errorObj = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
+                TempData["ErrorStock"] = errorObj?["mensaje"] ?? "Error al agregar al carrito";
+
+                
+                return RedirectToPage();
+            }
+
+
 
 
 

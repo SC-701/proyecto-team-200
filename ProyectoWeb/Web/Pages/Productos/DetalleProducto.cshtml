@@ -41,7 +41,12 @@
                             </button>
                            
                         </div>
-                        
+                        @if (TempData["ErrorStock"] != null)
+                        {
+                            <div class="alert alert-danger">
+                                @TempData["ErrorStock"]
+                            </div>
+                        }
                     </div>
                     <input asp-for="carritoProducto.productosId" type="hidden" id="idProducto" value="@Model.producto.IdProducto" />
                     
