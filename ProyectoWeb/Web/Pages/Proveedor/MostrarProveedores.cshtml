@@ -153,28 +153,39 @@
                         <td>@proveedor.Telefono</td>
                         <td>@proveedor.Nombre_Contacto</td>
                         <td>
+                            
+                            
                             @if (proveedor.ESTADO_ID == 1)
                             {
-                                <button class="btn btn-success btn-sm btn-rounded">Activo</button>
+                                <button type="button"
+                                        class="btn btn-success rounded-circle toggle-estado"
+                                        title="Activo"
+                                        data-url=''
+                                        onclick="return confirmarEliminar(this)">
+                                    <i class="bi bi-toggle-on"></i>
+                                </button>
                             }
                             else
                             {
-                                <button class="btn btn-warning btn-sm btn-rounded">Inactivo</button>
+                                <button type="button"
+                                        class="btn btn-danger rounded-circle toggle-estado"
+                                        title="Inactivo"
+                                        data-url=''
+                                        onclick="return confirmarActivar(this)">
+                                    <i class="bi bi-toggle-off"></i>
+                                </button>
                             }
                         </td>
                         <td>
                             <div class="d-flex justify-content-center gap-2">
-                                <!-- Aquí después puedes poner el botón Editar con otro modal si quieres -->
-                                <a class="btn btn-danger btn-sm btn-rounded"
-                                   asp-page="./EliminarProveedor"
-                                   asp-route-PROVEEDOR_ID="@proveedor.PROVEEDOR_ID">
-                                    <i class="bi bi-trash"></i>
-                                </a>
-                                <a class="btn btn-primary btn-sm btn-rounded"
-                                   asp-page="./DetalleProveedor"
-                                   asp-route-PROVEEDOR_ID="@proveedor.PROVEEDOR_ID">
-                                    <i class="bi bi-eye"></i>
-                                </a>
+                                <button class="btn btn-primary rounded-pill btn-editar"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEditarProveedor"
+                                        data-id="@proveedor.PROVEEDOR_ID">
+                                    <i class="bi bi-pencil-square"></i> 
+                                </button>
+
+                              
                             </div>
                         </td>
                     </tr>
@@ -183,12 +194,19 @@
         </table>
     </div>
 
-    
+
     <div class="modal fade" id="modalCrearProveedor" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content" id="contentCrearProveedor"></div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalEditarProveedor" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content" id="contentEditarProveedor"></div>
+        </div>
+    </div>
+
 </body>
 
 @section Scripts {
@@ -209,49 +227,86 @@
                 }]
             });
 
-            // Modal crear
+            
             const modalCrear = document.getElementById('modalCrearProveedor');
             const contentCrear = document.getElementById('contentCrearProveedor');
 
             modalCrear.addEventListener('show.bs.modal', async (ev) => {
                 const url = ev.relatedTarget?.getAttribute('data-url');
-                contentCrear.innerHTML = '<div class="p-3">Cargando...</div>';
                 const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' }});
                 contentCrear.innerHTML = await response.text();
+                const formulario = contentCrear.querySelector('#formProveedor');
+                if (!formulario) return;
 
-                // Enlazar submit del form de agregar
-                const form = contentCrear.querySelector('#formProveedor');
-                if (!form) return;
-
-                form.onsubmit = async (e) => {
+                formulario.onsubmit = async (e) => {
                     e.preventDefault();
-                    const fd = new FormData(form);
-                    const token = form.querySelector('[name="__RequestVerificationToken"]')?.value;
+                    const data = new FormData(formulario);
+                    const token = formulario.querySelector('[name="__RequestVerificationToken"]')?.value;
 
-                    const resp = await fetch('?handler=AgregarProveedor', {
+                    const agregarProveedorResponse = await fetch('?handler=AgregarProveedor', {
                         method: 'POST',
                         headers: { 'RequestVerificationToken': token ?? '' },
-                        body: fd
+                        body: data
                     });
-
-                    // Si viene JSON => éxito
-                    if (resp.headers.get('content-type')?.includes('application/json')) {
-                        const data = await resp.json();
+                    if (agregarProveedorResponse.headers.get('content-type')?.includes('application/json')) {
+                        const data = await agregarProveedorResponse.json();
                         if (data.ok) {
                             bootstrap.Modal.getInstance(modalCrear).hide();
                             location.reload();
-                        } else {
-                            alert(data.message || 'No se pudo guardar.');
                         }
                     } else {
-                        // Volvió el partial con validaciones
-                        contentCrear.innerHTML = await resp.text();
-                        // reenganchar de nuevo
+
+                        contentCrear.innerHTML = await agregarProveedorResponse.text();
+                     
                         const form2 = contentCrear.querySelector('#formProveedor');
                         if (form2) form2.onsubmit = form.onsubmit;
                     }
                 };
             });
+
+                   const modalEditar = document.getElementById('modalEditarProveedor');
+          const contentEditar = document.getElementById('contentEditarProveedor');
+
+          modalEditar.addEventListener('show.bs.modal', async (ev) => {
+            const id = ev.relatedTarget?.getAttribute('data-id');
+           
+
+            const url = `?handler=EditarFormulario&PROVEEDOR_ID=${encodeURIComponent(id)}`;
+           
+            const response = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' }});
+            contentEditar.innerHTML = await response.text();
+
+            wireUpEditarForm();
+          });
+
+          function wireUpEditarForm() {
+            const form = contentEditar.querySelector('#formProveedor');
+            if (!form) return;
+
+            form.onsubmit = async (e) => {
+              e.preventDefault();
+              const fd = new FormData(form);
+              const token = form.querySelector('[name="__RequestVerificationToken"]')?.value;
+
+              const resp = await fetch('?handler=EditarProveedor', {
+                method: 'POST', 
+                headers: { 'RequestVerificationToken': token ?? '' },
+                body: fd
+              });
+
+              if (resp.headers.get('content-type')?.includes('application/json')) {
+                const data = await resp.json();
+                if (data.ok) {
+                  bootstrap.Modal.getInstance(modalEditar).hide();
+                  location.reload();
+                } 
+              } else {
+                
+                contentEditar.innerHTML = await resp.text();
+                wireUpEditarForm();
+              }
+            };
+          }
         });
     </script>
-}
+    }

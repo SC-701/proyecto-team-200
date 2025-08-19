@@ -1,6 +1,7 @@
 ﻿@model Abstracciones.Modelos.Proveedores.ProveedoresBase
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+
 <div class="modal-header">
     <h5 class="modal-title">Agregar proveedor</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -50,8 +51,11 @@
             <span asp-validation-for="Nombre_Contacto" class="text-danger"></span>
         </div>
 
-        
-        <input type="hidden" asp-for="ESTADO_ID" value="1" />
+
+        <select asp-for="ESTADO_ID" class="form-control">
+            <option value="1">Activo</option>
+            <option value="2">Inactivo</option>
+        </select>
         <input type="hidden" asp-for="Fecha_Registro" />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -64,4 +68,3 @@
 
 
 
-        

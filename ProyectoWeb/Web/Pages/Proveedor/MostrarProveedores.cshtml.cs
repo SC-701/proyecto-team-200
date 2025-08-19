@@ -12,6 +12,7 @@ namespace Web.Pages.Proveedor
 	{
 		private readonly IConfiguracion _configuracion;
 		public IList<ProveedoresBase> proveedores { get; set; } = new List<ProveedoresBase>();
+		public ProveedoresBase proveedor { get; set; } = new();
 
 		public MostrarProveedoresModel(IConfiguracion configuracion)
 		{
@@ -31,20 +32,19 @@ namespace Web.Pages.Proveedor
 			}
 		}
 
-		// GET: devuelve el partial del modal para crear
+		
 		public IActionResult OnGetFormularioModal()
 		{
-			var m = new ProveedoresBase
+			var nuevoproveedor= new ProveedoresBase
 			{
-				PROVEEDOR_ID = Guid.NewGuid(),   // tu SP necesita ID creado
-				ESTADO_ID = 1,                   // por defecto Activo
-				Fecha_Registro = DateTime.UtcNow // requerido por tu modelo
+				PROVEEDOR_ID = Guid.NewGuid(),   
+				ESTADO_ID = 1,                   
+				Fecha_Registro = DateTime.UtcNow 
 			};
-			return Partial("_FormularioModalProveedor", m);
+			return Partial("_FormularioModalProveedor", nuevoproveedor);
 		}
 
-		// POST: guarda proveedor (llama a la API)
-		[ValidateAntiForgeryToken]
+
 		public async Task<IActionResult> OnPostAgregarProveedor(ProveedoresBase proveedor)
 		{
 			if (!ModelState.IsValid)
@@ -59,10 +59,65 @@ namespace Web.Pages.Proveedor
 			if (resp.IsSuccessStatusCode)
 				return new JsonResult(new { ok = true });
 
-			// si falla, devuelve el partial con error global (se verá en el resumen)
+			
 			var body = await resp.Content.ReadAsStringAsync();
 			ModelState.AddModelError(string.Empty, $"Error API: {body}");
 			return Partial("_FormularioModalProveedor", proveedor);
+		}
+
+
+		public async Task<IActionResult> OnGetEditarFormulario(Guid PROVEEDOR_ID)
+		{
+			var endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "ObtenerProveedor");
+			using var http = new HttpClient();
+
+			var resp = await http.GetAsync(string.Format(endpoint, PROVEEDOR_ID));
+			if (!resp.IsSuccessStatusCode) return NotFound();
+
+			var json = await resp.Content.ReadAsStringAsync();
+			var modelo = JsonSerializer.Deserialize<ProveedoresBase>(json,
+				new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+			if (modelo is null) return NotFound();
+
+			return Partial("_FormularioEditarProveedor", modelo);
+		}
+
+	
+	
+		public async Task<IActionResult> OnPostEditarProveedor(ProveedoresBase proveedor)
+		{
+			if (proveedor.PROVEEDOR_ID == Guid.Empty)
+			{
+				ModelState.AddModelError(string.Empty, "Identificador inválido.");
+				return Partial("_FormularioEditarProveedor", proveedor);
+			}
+
+			if (!ModelState.IsValid)
+				return Partial("_FormularioEditarProveedor", proveedor);
+
+			string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "EditarProveedor");
+			using var http = new HttpClient();
+
+			var resp = await http.PutAsJsonAsync(string.Format(endpoint, proveedor.PROVEEDOR_ID), new ProveedoresRequest
+			{
+				PROVEEDOR_ID = proveedor.PROVEEDOR_ID,
+				Nombre_PROVEEDOR = proveedor.Nombre_PROVEEDOR,
+				Correo_ELECTRONICO = proveedor.Correo_ELECTRONICO,
+				TIPO = proveedor.TIPO,
+				Direccion = proveedor.Direccion,
+				Telefono = proveedor.Telefono,
+				ESTADO_ID = proveedor.ESTADO_ID,
+				Fecha_Registro = proveedor.Fecha_Registro,
+				Nombre_Contacto = proveedor.Nombre_Contacto
+			});
+
+			if (resp.IsSuccessStatusCode)
+				return new JsonResult(new { ok = true });
+
+			var body = await resp.Content.ReadAsStringAsync();
+			ModelState.AddModelError(string.Empty, $"Error API: {body}");
+			return Partial("_FormularioEditarProveedor", proveedor);
 		}
 	}
 }
