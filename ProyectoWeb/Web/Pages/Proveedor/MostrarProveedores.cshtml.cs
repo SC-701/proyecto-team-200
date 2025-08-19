@@ -57,8 +57,9 @@ namespace Web.Pages.Proveedor
 
 			var endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "AgregarProveedor");
 			using var http = new HttpClient();
+            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
 
-			var content = new StringContent(JsonSerializer.Serialize(proveedor), Encoding.UTF8, "application/json");
+            var content = new StringContent(JsonSerializer.Serialize(proveedor), Encoding.UTF8, "application/json");
 			var resp = await http.PostAsync(endpoint, content);
 
 			if (resp.IsSuccessStatusCode)
@@ -75,8 +76,9 @@ namespace Web.Pages.Proveedor
 		{
 			var endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "ObtenerProveedor");
 			using var http = new HttpClient();
+            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
 
-			var resp = await http.GetAsync(string.Format(endpoint, PROVEEDOR_ID));
+            var resp = await http.GetAsync(string.Format(endpoint, PROVEEDOR_ID));
 			if (!resp.IsSuccessStatusCode) return NotFound();
 
 			var json = await resp.Content.ReadAsStringAsync();
@@ -103,8 +105,9 @@ namespace Web.Pages.Proveedor
 
 			string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "EditarProveedor");
 			using var http = new HttpClient();
+            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
 
-			var resp = await http.PutAsJsonAsync(string.Format(endpoint, proveedor.PROVEEDOR_ID), new ProveedoresRequest
+            var resp = await http.PutAsJsonAsync(string.Format(endpoint, proveedor.PROVEEDOR_ID), new ProveedoresRequest
 			{
 				PROVEEDOR_ID = proveedor.PROVEEDOR_ID,
 				Nombre_PROVEEDOR = proveedor.Nombre_PROVEEDOR,
@@ -130,7 +133,8 @@ namespace Web.Pages.Proveedor
 			var endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "EliminarProveedor");
 			var url = string.Format(endpoint, idProveedor);
 			using var http = new HttpClient();
-			var resp = await http.PutAsync(url, new StringContent("")); 
+            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
+            var resp = await http.PutAsync(url, new StringContent("")); 
 
 			resp.EnsureSuccessStatusCode();
 			return RedirectToPage();

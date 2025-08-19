@@ -51,7 +51,8 @@ namespace Web.Pages.Proveedor
 			string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores",
 						"EliminarProveedor");
 			var cliente = new HttpClient();
-			var solicitud = new HttpRequestMessage(HttpMethod.Delete, string.Format(endpoint, PROVEEDOR_ID));
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
+            var solicitud = new HttpRequestMessage(HttpMethod.Delete, string.Format(endpoint, PROVEEDOR_ID));
 
 			var respuesta = await cliente.SendAsync(solicitud);
 			respuesta.EnsureSuccessStatusCode();
