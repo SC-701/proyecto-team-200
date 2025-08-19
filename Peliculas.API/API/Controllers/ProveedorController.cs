@@ -56,7 +56,7 @@ namespace API.Controllers
 			var resultado = await _proveedorFlujo.Editar(IdProveedor, proveedor);
 			return Ok(resultado);
 		}
-        
+
         [Authorize(Roles = "1")]
 		[HttpPut("desactivar-proveedor/{IdProveedor}")]
 		public async Task<IActionResult> Eliminar([FromRoute] Guid IdProveedor)
@@ -66,6 +66,7 @@ namespace API.Controllers
 			var resultado = await _proveedorFlujo.Eliminar(IdProveedor);
             return Ok(resultado);
         }
+
 
 
 		private async Task<bool> VerificarExistenciaProveedor(Guid Id)
