@@ -119,5 +119,18 @@ namespace Web.Pages.Proveedor
 			ModelState.AddModelError(string.Empty, $"Error API: {body}");
 			return Partial("_FormularioEditarProveedor", proveedor);
 		}
+
+		public async Task<IActionResult> OnPostEliminarProveedor(Guid idProveedor)
+		{
+			var endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "EliminarProveedor");
+			var url = string.Format(endpoint, idProveedor);
+			using var http = new HttpClient();
+			var resp = await http.PutAsync(url, new StringContent("")); 
+
+			resp.EnsureSuccessStatusCode();
+			return RedirectToPage();
+		}
+
+
 	}
 }

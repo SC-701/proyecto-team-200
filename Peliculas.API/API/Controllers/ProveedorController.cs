@@ -51,13 +51,13 @@ namespace API.Controllers
 			return Ok(resultado);
 		}
 
-		[HttpDelete("{IdProveedor}")]
+		[HttpPut("desactivar-proveedor/{IdProveedor}")]
 		public async Task<IActionResult> Eliminar([FromRoute] Guid IdProveedor)
 		{
 			if (!await VerificarExistenciaProveedor(IdProveedor))
 				return NotFound("El proveedor no esta registrado");
 			var resultado = await _proveedorFlujo.Eliminar(IdProveedor);
-			return NoContent();
+			return Ok(resultado);
 		}
 
 

@@ -153,28 +153,21 @@
                         <td>@proveedor.Telefono</td>
                         <td>@proveedor.Nombre_Contacto</td>
                         <td>
-                            
-                            
-                            @if (proveedor.ESTADO_ID == 1)
-                            {
-                                <button type="button"
-                                        class="btn btn-success rounded-circle toggle-estado"
-                                        title="Activo"
-                                        data-url=''
-                                        onclick="return confirmarEliminar(this)">
-                                    <i class="bi bi-toggle-on"></i>
-                                </button>
-                            }
-                            else
-                            {
-                                <button type="button"
-                                        class="btn btn-danger rounded-circle toggle-estado"
-                                        title="Inactivo"
-                                        data-url=''
-                                        onclick="return confirmarActivar(this)">
-                                    <i class="bi bi-toggle-off"></i>
-                                </button>
-                            }
+                            <form method="post" asp-page-handler="EliminarProveedor"
+                                  asp-route-idProveedor="@proveedor.PROVEEDOR_ID" class="d-inline">
+                                @if (proveedor.ESTADO_ID == 1)
+                                {
+                                    <button type="submit" class="btn btn-success btn-sm toggle-estado btn-rounded" title="Desactivar">
+                                        <i class="bi bi-toggle-off"></i>
+                                    </button>
+                                }
+                                else if (proveedor.ESTADO_ID == 2)
+                                {
+                                    <button type="submit" class="btn btn-warning btn-sm toggle-estado btn-rounded" title="Activar">
+                                        <i class="bi bi-toggle-on"></i>
+                                    </button>
+                                }
+                            </form>
                         </td>
                         <td>
                             <div class="d-flex justify-content-center gap-2">

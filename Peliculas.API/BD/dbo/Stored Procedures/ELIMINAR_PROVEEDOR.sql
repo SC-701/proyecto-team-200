@@ -1,14 +1,20 @@
-﻿CREATE PROCEDURE ELIMINAR_PROVEEDOR
-    @ProveedorId  UNIQUEIDENTIFIER
+﻿CREATE PROCEDURE ESTADO_PROVEEDOR
+  @IdProveedor UNIQUEIDENTIFIER
 AS
 BEGIN
   SET NOCOUNT ON;
 
   BEGIN TRANSACTION;
+  
+  UPDATE [dbo].[PROVEEDORES]
+  SET ESTADO_ID = CASE 
+                    WHEN ESTADO_ID = 1 THEN 2
+                    WHEN ESTADO_ID = 2 THEN 1
+                    ELSE ESTADO_ID 
+                  END
+  WHERE PROVEEDOR_ID = @IdProveedor;
 
-    DELETE FROM [dbo].[Proveedores]
-        WHERE PROVEEDOR_ID = @ProveedorId;
   COMMIT TRANSACTION;
 
-  SELECT @ProveedorId  AS Eliminado;
+  SELECT @IdProveedor AS ProveedorModificado;
 END;
