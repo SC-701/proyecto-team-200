@@ -35,16 +35,19 @@
                             <button class="btn btn-outline-secondary btn-decrease" type="button">
                                 <i class="bi bi-dash"></i>
                             </button>
-                            <input id="cantidad" asp-for="carritoProducto.cantidad" type="number" class="form-control quantity-input" value="1" min="1" max="@Model.producto.Stock" oninvalid="this.setCustomValidity('El stock maximo del producto es de @Model.producto.Stock asi que ingresa un valor menor')" oninput="this.setCustomValidity('')" />
+                            <input id="cantidad" asp-for="carritoProducto.cantidad" type="number" class="form-control quantity-input" value="1" min="1" max="@Model.producto.Stock"  oninvalid="this.setCustomValidity('El stock maximo del producto es de @Model.producto.Stock asi que ingresa un valor menor')" oninput="this.setCustomValidity('')" />
                             <button class="btn btn-outline-secondary btn-increase" type="button">
                                 <i class="bi bi-plus"></i>
                             </button>
                            
                         </div>
-                        @if (TempData["ErrorStock"] != null)
+                        @{
+                            var errorStock = TempData["ErrorStock"] as string;
+                        }
+                        @if (!string.IsNullOrEmpty(errorStock))
                         {
                             <div class="alert alert-danger">
-                                @TempData["ErrorStock"]
+                                @errorStock
                             </div>
                         }
                     </div>

@@ -4,6 +4,7 @@ using Abstracciones.Modelos.Productos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -44,8 +45,8 @@ namespace Web.Pages.Productos
             var solicitud = new HttpRequestMessage(HttpMethod.Post, endpoint);
             
             var respuesta = await cliente.PostAsJsonAsync(endpoint, carritoProducto);
-            respuesta.EnsureSuccessStatusCode();
-            if (respuesta.IsSuccessStatusCode)
+           
+            if (respuesta.StatusCode == System.Net.HttpStatusCode.Created)
             {
                 
                 return RedirectToPage("../Carrito/Carrito");
@@ -53,12 +54,14 @@ namespace Web.Pages.Productos
             else
             {
                 
-                var json = await respuesta.Content.ReadAsStringAsync();
-                var errorObj = JsonSerializer.Deserialize<Dictionary<string, string>>(json);
-                TempData["ErrorStock"] = errorObj?["mensaje"] ?? "Error al agregar al carrito";
+                TempData["ErrorStock"] = "No hay stock suficiente";
 
-                
-                return RedirectToPage();
+
+                return RedirectToPage(
+                "./DetalleProducto",
+                 new { IdProducto = carritoProducto.productosId }
+                    );
+
             }
 
 
