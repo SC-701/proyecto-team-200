@@ -1,16 +1,18 @@
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos.Categoria;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Web.Pages.Categorias
 {
+    [Authorize(Roles = "1")]
     public class CategoriasModel : PageModel
     {
-
+        
         private IConfiguracion _configuracion;
         public IList<Categoria> categorias { get; set; } = new List<Categoria>();
 
@@ -47,7 +49,7 @@ namespace Web.Pages.Categorias
         {
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "AgregarCategoria");
             var cliente = new HttpClient();
-
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var respuesta = await cliente.PostAsJsonAsync(endpoint, Categoria);
             respuesta.EnsureSuccessStatusCode();
             return RedirectToPage("./Categorias");
@@ -60,7 +62,7 @@ namespace Web.Pages.Categorias
 
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "DesactivarCategorias");
             var cliente = new HttpClient();
-
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var solicitud = new HttpRequestMessage(HttpMethod.Put, string.Format(endpoint, id));
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
@@ -72,6 +74,7 @@ namespace Web.Pages.Categorias
         {
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ContarHijas");
             var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, id));
             var respuesta = await cliente.SendAsync(solicitud);
             respuesta.EnsureSuccessStatusCode();
@@ -105,6 +108,7 @@ namespace Web.Pages.Categorias
 
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ActivarPadreHijas");
             var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var url = string.Format(endpoint, id, activarHijas.ToString().ToLower());
 
             var solicitud = new HttpRequestMessage(HttpMethod.Put, url);
@@ -120,6 +124,7 @@ namespace Web.Pages.Categorias
 
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ActivarHijas");
             var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var url = string.Format(endpoint, id);
 
             var solicitud = new HttpRequestMessage(HttpMethod.Put, url);
@@ -152,6 +157,7 @@ namespace Web.Pages.Categorias
         {
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "EditarCategoria");
             var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var url = string.Format(endpoint, id);
 
             var respuesta = await cliente.PutAsJsonAsync(url, Categoria);

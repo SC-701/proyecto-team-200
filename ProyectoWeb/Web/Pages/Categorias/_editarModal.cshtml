@@ -15,10 +15,12 @@
                         <div class="mb-3">
                             <label asp-for="nombre" class="form-label"></label>
                             <input asp-for="nombre" class="form-control" id="edit-nombre" />
+                            <span asp-validation-for="nombre" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="descripcion" class="form-label"></label>
                             <textarea asp-for="descripcion" class="form-control" id="edit-descripcion"></textarea>
+                            <span asp-validation-for="descripcion" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <input type="hidden" id="edit-padreId" />

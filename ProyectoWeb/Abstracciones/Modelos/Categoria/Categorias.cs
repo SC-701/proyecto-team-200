@@ -13,6 +13,7 @@ namespace Abstracciones.Modelos.Categoria
         public Guid? padreId { get; set; }
 
         public string estado { get; set; }
+
         [Required]
         public string nombre { get; set; }
 

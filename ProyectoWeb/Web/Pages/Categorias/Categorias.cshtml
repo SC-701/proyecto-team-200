@@ -120,10 +120,12 @@
                         <div class="mb-3">
                             <label asp-for="Categoria.nombre" class="form-label"></label>
                             <input asp-for="Categoria.nombre" class="form-control" required />
+                            <span asp-validation-for="Categoria.nombre" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Categoria.descripcion" class="form-label"></label>
                             <textarea asp-for="Categoria.descripcion" class="form-control" rows="3" required></textarea>
+                            <span asp-validation-for="Categoria.descripcion" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label asp-for="Categoria.padreId" class="form-label">Categoría Padre</label>
@@ -147,9 +149,8 @@
     @await Html.PartialAsync("_EditarModal", new Abstracciones.Modelos.Categoria.Categoria())
     </body>
 
-
-
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -211,15 +212,12 @@
                 const form = document.createElement('form');
                 form.method = 'post';
                 form.action = '@Url.Page("./Categorias", "Eliminar")';
-
-                // Input del id
                 const inputId = document.createElement('input');
                 inputId.type = 'hidden';
                 inputId.name = 'id';
                 inputId.value = idCategoria;
                 form.appendChild(inputId);
 
-                // Input del token antiforgery
                 const tokenValue = document.getElementById('__RequestVerificationToken').value;
                 const tokenInput = document.createElement('input');
                 tokenInput.type = 'hidden';

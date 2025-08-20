@@ -9,7 +9,6 @@ using static Abstracciones.Modelos.Categorias;
 
 namespace API.Controllers
 {
-   
     [Route("api/[controller]")]
     [ApiController]
 	public class CategoriasController : ControllerBase, ICategoriasController
@@ -22,7 +21,7 @@ namespace API.Controllers
 			_categoriasFlujo = categoriasFlujo;
 			_logger = logger;
 		}
-
+        [Authorize(Roles = "1")]
         [HttpPost("padre")]
         public async Task<IActionResult> AgregarPadre([FromBody] CategoriasRequestPadre categorias)
 		{
@@ -30,7 +29,7 @@ namespace API.Controllers
 			return CreatedAtAction(nameof(ObtenerPorId), new { IdCategoria = resultado }, null);
 
 		}
-
+        [Authorize(Roles = "1")]
         [HttpPost("hija")]
         public async Task<IActionResult> AgregarHija([FromBody] CategoriasRequestHija categorias)
         {
@@ -40,7 +39,7 @@ namespace API.Controllers
         }
 
 
-
+        [Authorize(Roles = "1")]
         [HttpPut("editar/{IdCategoria}")]
         public async Task<IActionResult> Editar([FromRoute] Guid IdCategoria, [FromBody] CategoriasRequestPadre categoria)
 		{
@@ -50,7 +49,7 @@ namespace API.Controllers
 			return Ok(resultado);
 		}
 
-
+        [Authorize(Roles = "1")]
         [HttpGet("Verificar/{IdCategoria}")]
         public async Task<IActionResult> VerificarCategoria([FromRoute] Guid IdCategoria)
         {
@@ -68,6 +67,7 @@ namespace API.Controllers
             });
         }
 
+        [Authorize(Roles = "1")]
         [HttpPut("Desactivar/{IdCategoria}")]
         public async Task<IActionResult> Desactivar([FromRoute] Guid IdCategoria)
         {
@@ -78,7 +78,7 @@ namespace API.Controllers
         }
 
 
-
+        [AllowAnonymous]
         [HttpGet]
 		public async Task<IActionResult> Obtener()
 		{
@@ -88,14 +88,15 @@ namespace API.Controllers
 			return Ok(resultado);
 		}
 
-		[HttpGet("{IdCategoria}")]
+        [AllowAnonymous]
+        [HttpGet("{IdCategoria}")]
 		public async Task<IActionResult> ObtenerPorId([FromRoute] Guid IdCategoria)
 		{
 			var resultado = await _categoriasFlujo.ObtenerPorId(IdCategoria);
 			return Ok(resultado);
 		}
 
-		private async Task<bool> VerificarExistenciaCategoria(Guid Id)
+        private async Task<bool> VerificarExistenciaCategoria(Guid Id)
 		{
 			var ResultadoValidacion = false;
 			var resultadoCategoriaExiste = await _categoriasFlujo.ObtenerPorId(Id);
@@ -104,6 +105,7 @@ namespace API.Controllers
 			return ResultadoValidacion;
 		}
 
+        [AllowAnonymous]
         [HttpGet("hijas/{idPadre}")]
         public async Task<IActionResult> ObtenerHijas(Guid idPadre)
         {
@@ -112,7 +114,7 @@ namespace API.Controllers
                 return NoContent();
             return Ok(resultado);
         }
-
+        [AllowAnonymous]
         [HttpGet("hijas-recursivo/{idPadre}")]
         public async Task<IActionResult> ObtenerHijasRecursivo(Guid idPadre)
         {
@@ -122,7 +124,7 @@ namespace API.Controllers
             return Ok(resultado);
         }
 
-
+        [AllowAnonymous]
         [HttpGet("padres")]
         public async  Task<IActionResult> ObtenerPadres()
         {
@@ -132,7 +134,7 @@ namespace API.Controllers
             return Ok(resultado);
         }
 
-
+        [AllowAnonymous]
         [HttpGet("hijas-totales/{idPadre}")]
         public async Task<IActionResult> ObtenerHijasTotales(Guid idPadre)
         {
@@ -142,6 +144,7 @@ namespace API.Controllers
             return Ok(resultado);
         }
 
+        [Authorize(Roles = "1")]
         [HttpPut("Activar-padre/{idCategoria}")]
         public async Task<IActionResult> ActivarPadreHijas(Guid idCategoria, bool activarHijas)
         {
@@ -150,7 +153,7 @@ namespace API.Controllers
             var resultado = await _categoriasFlujo.ActivarPadreHijas(idCategoria, activarHijas);
             return Ok(resultado);
         }
-
+        [Authorize(Roles = "1")]
         [HttpPut("Activar-hijas/{idCategoria}")]
         public async Task<IActionResult> ActivarHijas(Guid idCategoria)
         {

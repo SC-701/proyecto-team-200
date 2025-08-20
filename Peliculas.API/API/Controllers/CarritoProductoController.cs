@@ -10,8 +10,7 @@ using static Abstracciones.Modelos.CarritoProducto;
 
 namespace API.Controllers
 {
-
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class CarritoProductoController : ControllerBase, ICarritoProductoController
 	{
@@ -48,8 +47,7 @@ namespace API.Controllers
             }
         }
 
-
-
+		[AllowAnonymous]
         [HttpPut("{CarritoProductoId}")]
         public async Task<IActionResult> Editar([FromRoute] Guid CarritoProductoId, [FromBody] CarritoProductoRequest carritoProducto)
         {
@@ -66,7 +64,7 @@ namespace API.Controllers
 
 
 
-
+        [AllowAnonymous]
         [HttpDelete("{CarritoProductoId}")]
 		public async Task<IActionResult> Eliminar([FromRoute] Guid CarritoProductoId)
 		{
@@ -75,15 +73,15 @@ namespace API.Controllers
 			return NoContent();
 		}
 
-
-		[HttpGet("{CarritoId}")]
+        [AllowAnonymous]
+        [HttpGet("{CarritoId}")]
 		public async Task<IActionResult> ObtenerPorCarrito([FromRoute] Guid CarritoId)
 		{
 			var resultado = await _carritoProductoFlujo.ObtenerPorCarrito(CarritoId);
 			return Ok(resultado);
 		}
-
-		[HttpGet("por-id/{CarritoProductoId}")]
+        [AllowAnonymous]
+        [HttpGet("por-id/{CarritoProductoId}")]
 		public async Task<IActionResult> ObtenerPorID([FromRoute] Guid CarritoProductoId)
 		{
 			var resultado = await _carritoProductoFlujo.ObtenerPorID(CarritoProductoId);
@@ -93,8 +91,7 @@ namespace API.Controllers
 
 			return Ok(resultado);
 		}
-
-		[HttpPost("validarStock/{productoId}/{cantidadSolicitada}")]
+        [HttpPost("validarStock/{productoId}/{cantidadSolicitada}")]
 		public async Task<IActionResult> ValidarStock( [FromRoute]Guid productoId, [FromRoute] int cantidadSolicitada)
 		{
 			try

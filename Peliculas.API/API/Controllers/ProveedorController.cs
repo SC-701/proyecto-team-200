@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProveedorController : ControllerBase, IProveedorController
@@ -39,6 +38,8 @@ namespace API.Controllers
                 return NoContent();
             return Ok(resultado);
         }
+
+
         [Authorize(Roles = "1")]
         [HttpGet("{IdProveedor}")]
 

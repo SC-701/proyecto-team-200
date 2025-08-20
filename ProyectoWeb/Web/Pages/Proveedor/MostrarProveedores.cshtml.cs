@@ -1,5 +1,6 @@
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos.Proveedores;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net;
@@ -8,7 +9,8 @@ using System.Text.Json;
 
 namespace Web.Pages.Proveedor
 {
-	public class MostrarProveedoresModel : PageModel
+    [Authorize(Roles = "1")]
+    public class MostrarProveedoresModel : PageModel
 	{
 		private readonly IConfiguracion _configuracion;
 		public IList<ProveedoresBase> proveedores { get; set; } = new List<ProveedoresBase>();

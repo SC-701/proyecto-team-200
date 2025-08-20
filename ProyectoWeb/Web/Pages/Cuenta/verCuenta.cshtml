@@ -57,12 +57,14 @@
 									<div class="col-md-6">
 										<div class="form-floating">
 											<input type="text" asp-for="usuario.NombreUsuario" class="form-control" id="nombreUsuario" value="@Model.usuario.NombreUsuario">
+											<span asp-validation-for="usuario.NombreUsuario" class="text-danger"></span>
 											<label for="nombreUsuario">Nombre</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating">
 											<input type="text" asp-for="usuario.Apellido" class="form-control" id="apellidos" value="@Model.usuario.Apellido">
+											<span asp-validation-for="usuario.Apellido" class="text-danger"></span>
 											<label for="apellidos">Apellidos</label>
 										</div>
 									</div>
@@ -70,6 +72,7 @@
 									<div class="col-12">
 										<div class="form-floating">
 											<input type="email" asp-for="usuario.CorreoElectronico" class="form-control" id="email" value="@Model.usuario.CorreoElectronico">
+											<span asp-validation-for="usuario.CorreoElectronico" class="text-danger"></span>
 											<label for="email">Correo Electrónico</label>
 										</div>
 									</div>
@@ -77,12 +80,14 @@
 									<div class="col-md-6">
 										<div class="form-floating">
 											<input type="tel" asp-for="usuario.Telefono" class="form-control" id="phone" value="@Model.usuario.Telefono">
+											<span asp-validation-for="usuario.Telefono" class="text-danger"></span>
 											<label for="phone">Teléfono</label>
 										</div>
 									</div>
 									<div class="col-md-6">
 										<div class="form-floating">
 											<input type="tel" asp-for="usuario.Direccion" class="form-control" id="direccion" value="@Model.usuario.Direccion">
+											<span asp-validation-for="usuario.Direccion" class="text-danger"></span>
 											<label for="direccion">Dirección</label>
 										</div>
 									</div>
@@ -128,3 +133,6 @@
 
 	</div>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+	}

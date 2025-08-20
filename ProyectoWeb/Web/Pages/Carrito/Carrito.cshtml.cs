@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Pages.Carrito
 {
-    [Authorize]
     public class CarritoModel : PageModel
     {
         private readonly IConfiguracion _configuracion;
@@ -35,12 +34,13 @@ namespace Web.Pages.Carrito
             EndpointEliminarProducto = _configuracion.ObtenerMetodo("ApiEndPointsCarrito", "EliminarProducto");
 
             string? idUsuario = HttpContext.User.Claims
-                .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
+                .FirstOrDefault(c => c.Type == "idUsuario")?.Value;
 
             string endpointBase = _configuracion.ObtenerMetodo("ApiEndPointsCarrito", "ObtenerCarritoPorUsuario");
             string endpoint = $"{endpointBase}{idUsuario}";
 
             var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
             var respuesta = await cliente.SendAsync(solicitud);
 
@@ -65,6 +65,7 @@ namespace Web.Pages.Carrito
             string endpoint = $"{endpointBase}{idUsuario}";
 
             var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
             var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
             var respuesta = await cliente.SendAsync(solicitud);
 

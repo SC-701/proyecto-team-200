@@ -10,8 +10,7 @@ using static Abstracciones.Modelos.Carrito;
 
 namespace API.Controllers
 {
-
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class CarritoController : ControllerBase, ICarritoController
 	{
@@ -24,7 +23,7 @@ namespace API.Controllers
 			_logger = logger;
 		}
 
-		[HttpPost]
+        [HttpPost]
 		public async Task<IActionResult> Agregar([FromBody] CarritoBase carrito)
 		{
 			var resultado = await _carritoFlujo.Agregar(carrito);
@@ -34,7 +33,7 @@ namespace API.Controllers
 
 
 
-		[HttpPut("{CarritoId}")]
+        [HttpPut("{CarritoId}")]
 		public async Task<IActionResult> Editar([FromRoute] Guid CarritoId, [FromBody] CarritoBase carrito)
 		{
             if (!await VerificarExistenciaCarrito(CarritoId))
@@ -45,8 +44,7 @@ namespace API.Controllers
 
 
 
-
-		[HttpDelete("{CarritoId}")]
+        [HttpDelete("{CarritoId}")]
 		public async Task<IActionResult> Eliminar([FromRoute] Guid CarritoId)
 		{
             if (!await VerificarExistenciaCarrito(CarritoId))
@@ -55,8 +53,8 @@ namespace API.Controllers
 			return NoContent();
 		}
 
-
-		[HttpGet("por-user/{UsuarioId}")]
+        [Authorize]
+        [HttpGet("por-user/{UsuarioId}")]
 		public async Task<IActionResult> ObtenerPorUsuario([FromRoute] Guid UsuarioId)
 		{
 			var resultado = await _carritoFlujo.ObtenerPorUsuario(UsuarioId);
@@ -65,8 +63,7 @@ namespace API.Controllers
             return Ok(resultado);
 		}
 
-
-		[HttpGet("por-id/{CarritoId}")]
+        [HttpGet("por-id/{CarritoId}")]
 		public async Task<IActionResult> ObtenerPorID([FromRoute] Guid CarritoId)
 		{
 			var resultado = await _carritoFlujo.ObtenerPorID(CarritoId);
@@ -85,7 +82,6 @@ namespace API.Controllers
             var resultado = await _carritoFlujo.ActualizarTotal(CarritoId);
             return NoContent();
         }
-
         private async Task<bool> VerificarExistenciaCarrito(Guid Id)
         {
             var ResultadoValidacion = false;
@@ -94,7 +90,6 @@ namespace API.Controllers
                 ResultadoValidacion = true;
             return ResultadoValidacion;
         }
-
 
         [HttpDelete("eliminar-total/{CarritoId}")]
         public async Task<IActionResult> EliminarTotal(Guid CarritoId)
