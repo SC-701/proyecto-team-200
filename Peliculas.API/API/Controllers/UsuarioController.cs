@@ -28,19 +28,19 @@ namespace API.Controllers
                 return BadRequest(new { existeCorreo= true}); 
             return Ok(resultado);
         }
-        [Authorize(Roles = "2")]
+        [Authorize]
         [HttpPost("ObtenerUsuario")]
         public async Task<IActionResult> ObtenerUsuario([FromBody] Usuario usuario)
         {
             return Ok(await _usuarioFlujo.ObtenerUsuario(usuario));
         }
-        [Authorize(Roles = "2")]
+        [Authorize]
         [HttpPut("{idUsuario}")]
         public async Task<IActionResult> EditarUsuario([FromRoute]Guid idUsuario, [FromBody] UsuarioEditar usuario)
         {
             return Ok(await _usuarioFlujo.EditarUsuario(idUsuario,usuario));
         }
-        [Authorize(Roles = "2")]
+        [Authorize]
         [HttpGet("DetalleUsuario/{idUsuario}")]
 
         public async Task<IActionResult> DetalleUsuario(Guid idUsuario)

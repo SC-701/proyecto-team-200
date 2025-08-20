@@ -45,14 +45,17 @@
                 <label asp-for="IdProveedor" class="form-label">Proveedor</label>
                 
                 <select asp-for="IdProveedor" class="form-select" id="proveedorSelect">
-                    <option value="">Seleccione un proveedor</option>
+                    <option value="@Model.IdProveedor">@Html.DisplayFor(p => Model.NombreProveedor)</option>
                 </select>
                 <span asp-validation-for="IdProveedor" class="text-danger"></span>
             </div>
 
             <div class="col-md-4">
-                <label asp-for="IdCategoria" class="form-label">Categoría</label>
-                <input asp-for="IdCategoria" class="form-control input-squarespace" />
+                <label asp-for="IdCategoria" class="form-label">Categorias</label>
+
+                <select asp-for="IdCategoria" class="form-select" id="categoriasSelect">
+                    <option value="@Model.IdCategoria">@Html.DisplayFor(p => Model.Categoria)</option>
+                </select>
                 <span asp-validation-for="IdCategoria" class="text-danger"></span>
             </div>
             <div class="col-md-8">

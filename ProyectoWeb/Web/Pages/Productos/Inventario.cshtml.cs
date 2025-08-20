@@ -1,5 +1,6 @@
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos;
+using Abstracciones.Modelos.Categoria;
 using Abstracciones.Modelos.Productos;
 using Abstracciones.Modelos.Proveedores;
 using Microsoft.AspNetCore.Authorization;
@@ -25,6 +26,7 @@ namespace Web.Pages.Productos
         public IList<Producto> productos { get; set; } = default!;
         [BindProperty]
         public List<SelectListItem> proveedores { get; set; } = default!;
+        public List<SelectListItem> categoriasSelect { get; set; } = default!;
         public ProductoConImagenRequest objetoEnviar { get; set; }
 
 
@@ -55,6 +57,7 @@ namespace Web.Pages.Productos
 
                 productos = ProductosPaginados.Items;
                 await ObtenerProveedoresAsync();
+                await ObtenerCategoriasAsync();
 
 
             }
@@ -73,11 +76,11 @@ namespace Web.Pages.Productos
             if (!respuesta.IsSuccessStatusCode)
             {
                 TempData["CrearProductoExito"] = false;
-                return Page();
+                return RedirectToPage();
             }
 
             TempData["CrearProductoExito"] = true;
-            return Page();
+            return RedirectToPage();
         }
         public async Task ObtenerProveedoresAsync()
         {
@@ -98,6 +101,31 @@ namespace Web.Pages.Productos
                                   {
                                       Value = a.PROVEEDOR_ID.ToString(),
                                       Text = a.Nombre_PROVEEDOR.ToString()
+                                  }).ToList();
+
+
+            }
+        }
+
+        public async Task ObtenerCategoriasAsync()
+        {
+            string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ObtenerCategoriasTotales");
+            var cliente = new HttpClient();
+
+            var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
+
+            var respuesta = await cliente.SendAsync(solicitud);
+            respuesta.EnsureSuccessStatusCode();
+            if (respuesta.StatusCode == HttpStatusCode.OK)
+            {
+                var resultado = await respuesta.Content.ReadAsStringAsync();
+                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var resultadoDeserealizado = JsonSerializer.Deserialize<List<Categoria>>(resultado, opciones);
+                categoriasSelect = resultadoDeserealizado.Select(a =>
+                                  new SelectListItem
+                                  {
+                                      Value = a.categoriasId.ToString(),
+                                      Text = a.nombre.ToString()
                                   }).ToList();
 
 

@@ -1,8 +1,6 @@
 ﻿@page
-@model Web.Pages.Productos.IndexModel
+@model Web.Pages.Productos.ProductosXCategoriaModel
 @{
-
-
 }
 @inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 <head>
@@ -69,67 +67,13 @@
 
 <body class="bg-light">
 
-
-    <div class="container-fluid my-4 top-carusel">
-        <div class="row g-3 top-carusel">
-
-            <div class="col-md-6 ">
-                <div id="carousel1" class="carousel slide modern-carousel" data-bs-ride="carousel" data-bs-interval="3000">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active position-relative">
-                            <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100" alt="">
-                            <div class="overlay"></div>
-                            <div class="carousel-caption text-start text-white">
-                                <h4 class="fw-bold">¡Bienvenido!</h4>
-                                <p>Explorá las mejores ofertas del ecommerce</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item position-relative">
-                            <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100" alt="">
-                            <div class="overlay"></div>
-                            <div class="carousel-caption text-start text-white">
-                                <h4 class="fw-bold">Ofertas semanales</h4>
-                                <p>Grandes descuentos en productos seleccionados</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-6 ">
-                <div id="carousel2" class="carousel slide modern-carousel" data-bs-ride="carousel" data-bs-interval="3000">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active position-relative">
-                            <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100" alt="">
-                            <div class="overlay"></div>
-                            <div class="carousel-caption text-start text-white">
-                                <h4 class="fw-bold">Envíos gratis</h4>
-                                <p>En compras superiores a ₡25.000</p>
-                            </div>
-                        </div>
-                        <div class="carousel-item position-relative">
-                            <img src="https://marshallwebb.com/wp-content/uploads/2024/08/ecommerce1.jpg" class="d-block w-100" alt="">
-                            <div class="overlay"></div>
-                            <div class="carousel-caption text-start text-white">
-                                <h4 class="fw-bold">Nuevo stock</h4>
-                                <p>Lo último en tecnología para vos</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <div class="position-fixed top-0 start-0 sidebar-nav bg-white rounded-4 shadow-lg"
          style="z-index: 1000; height: 100vh; overflow-x: hidden; overflow-y: auto;">
         <nav class="px-2">
         </nav>
     </div>
 
-    <div class="container py-4">
+    <div class="container py-4" style="margin-top:100px; padding:45px;">
         <div class="container-fluid px-4 py-4">
             <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-5 row-cols-xxl-5 g-3" id="productos">
 
@@ -205,33 +149,37 @@
 
 
     <nav aria-label="Paginacion de productos">
-        <ul class="pagination justify-content-center">
-            @if (Model.ProductosPaginados.HasPreviousPage)
-            {
-                <li class="page-item"><a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex - 1)&PageSize=5">Anterior</a></li>
-            }
-            else
-            {
-                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
-            }
+    <ul class="pagination justify-content-center">
+        @if (Model.ProductosPaginados.HasPreviousPage)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?categoriaId=@Model.CategoriaId&PagesIndex=@(Model.ProductosPaginados.PageIndex - 1)&PageSize=5">Anterior</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+        }
 
-            @for (int i = 1; i <= Model.ProductosPaginados.TotalPages; i++)
-            {
-                <li class="page-item @(i == Model.ProductosPaginados.PageIndex ? "active" : "")">
-                    <a class="page-link" href="?PagesIndex=@i&PageSize=5">@i</a>
-                </li>
-            }
+        @for (int i = 1; i <= Model.ProductosPaginados.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.ProductosPaginados.PageIndex ? "active" : "")">
+                <a class="page-link" href="?categoriaId=@Model.CategoriaId&PagesIndex=@i&PageSize=5">@i</a>
+            </li>
+        }
 
-            @if (Model.ProductosPaginados.HasNextPage)
-            {
-                <li class="page-item"><a class="page-link" href="?PagesIndex=@(Model.ProductosPaginados.PageIndex + 1)&PageSize=5">Siguiente</a></li>
-            }
-            else
-            {
-                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
-            }
-        </ul>
-    </nav>
+        @if (Model.ProductosPaginados.HasNextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" href="?categoriaId=@Model.CategoriaId&PagesIndex=@(Model.ProductosPaginados.PageIndex + 1)&PageSize=5">Siguiente</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+        }
+    </ul>
+</nav>
 
 
 
@@ -240,7 +188,7 @@
 @section Scripts {
     <script src="~/js/chatbox.js"></script>
     <script src="~/js/busquedasindex.js"></script>
-<script src="~/js/asidecategorias.js"></script>
-<script src="~/js/navcategorias.js"></script>
+    <script src="~/js/asidecategorias.js"></script>
+    <script src="~/js/navcategorias.js"></script>
 
 }

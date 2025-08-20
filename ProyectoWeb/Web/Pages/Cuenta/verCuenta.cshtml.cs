@@ -8,7 +8,7 @@ using System.Text.Json;
 
 namespace Web.Pages.Cuenta
 {
-    [Authorize(Roles = "2")]
+    [Authorize]
     public class verCuentaModel : PageModel
     {
         [BindProperty]
@@ -21,7 +21,7 @@ namespace Web.Pages.Cuenta
         }
         public async Task OnGet()
         {
-            string idUsuario = HttpContext.User.Claims.Where(c => c.Type == "IdUsuario").FirstOrDefault().Value;
+            string idUsuario = HttpContext.User.Claims.Where(c => c.Type == "idUsuario").FirstOrDefault().Value;
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsSeguridad", "ObtenerUsuario");
             var cliente = new HttpClient();
             cliente.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
@@ -38,7 +38,7 @@ namespace Web.Pages.Cuenta
         }
         public async Task<IActionResult> OnPost()
         {
-            string idUsuario = HttpContext.User.Claims.Where(c => c.Type == "IdUsuario").FirstOrDefault().Value;
+            string idUsuario = HttpContext.User.Claims.Where(c => c.Type == "idUsuario").FirstOrDefault().Value;
             
             string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsSeguridad", "EditarUsuario");
             var cliente = new HttpClient();
