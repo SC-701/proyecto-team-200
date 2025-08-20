@@ -1,11 +1,12 @@
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Text.Json;
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos.Categoria;
+using Azure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Text.Json;
 
 namespace Web.Pages.Categorias
 {
@@ -17,7 +18,8 @@ namespace Web.Pages.Categorias
         public IList<Categoria> categorias { get; set; } = new List<Categoria>();
 
         [BindProperty]
-        public VerificarCategoriaResponse verificar { get; set; } = default!; 
+        public VerificarCategoriaResponse verificar { get; set; } = default!;
+        public bool SinCategorias { get; set; } = false;
 
         [BindProperty]
         public Categoria Categoria { get; set; } = default!;
@@ -26,12 +28,18 @@ namespace Web.Pages.Categorias
         {
             _configuracion = configuracion;
         }
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             var cliente = new HttpClient();
             string endpointTodas = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "ObtenerCategoriasTotales");
             var respuestaTodas = await cliente.GetAsync(endpointTodas);
             respuestaTodas.EnsureSuccessStatusCode();
+            if (respuestaTodas.StatusCode == HttpStatusCode.NoContent)
+            {
+
+                SinCategorias = true;
+                return Page();
+            }
             var resultadoTodas = await respuestaTodas.Content.ReadAsStringAsync();
             categorias = JsonSerializer.Deserialize<List<Categoria>>(resultadoTodas,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
@@ -42,6 +50,7 @@ namespace Web.Pages.Categorias
             var resultadoPadres = await respuestaPadres.Content.ReadAsStringAsync();
             categoriasPadres = JsonSerializer.Deserialize<List<Categoria>>(resultadoPadres,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
+            return Page();
         }
 
 

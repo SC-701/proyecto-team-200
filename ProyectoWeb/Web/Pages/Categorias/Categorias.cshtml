@@ -28,84 +28,94 @@
             <i class="bi bi-plus-lg"></i> Agregar Categoria
         </button>
     </div>
-    <div class="table-responsive">
-        <table id="tablaCategorias" class="table table-striped table-bordered rounded-table text-center">
-            <thead class="table-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Nombre del padre</th>
-                    <th>Descripción</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if(Model.categorias!=null && Model.categorias.Any())
-            {
-                @foreach (var categoria in Model.categorias)
-                {
-                    <tr data-id="@categoria.categoriasId">
-                        <td></td>
-                        <td>@categoria.nombre</td>
-                        <td>
-                            @(string.IsNullOrEmpty(categoria.nombrePadre)
-                                                ? "Es categoría principal"
-                                                : categoria.nombrePadre)
-                </td>
-                <td>@categoria.descripcion</td>
-               <td>
-    @if (categoria.estado == "Activo")
+    @if (Model.SinCategorias)
     {
-        <button type="button"
-                class="btn btn-success rounded-circle toggle-estado"
-                title="Activo"
-                data-url='@Url.Page("./Categorias", "Verificar", new { id = categoria.categoriasId })'
-                onclick="return confirmarEliminar(this)">
-            <i class="bi bi-toggle-on"></i>
-        </button>
+        <div class="alert alert-warning text-center">
+            No hay categorías disponibles.
+        </div>
+
     }
     else
     {
-        <button type="button"
-                class="btn btn-danger rounded-circle toggle-estado"
-                title="Inactivo"
-                data-url='@Url.Page("./Categorias", "ContarHijasTotales", new { id = categoria.categoriasId })'
-                onclick="return confirmarActivar(this)">
-            <i class="bi bi-toggle-off"></i>
-        </button>
-    }
-</td>
-                        <td>
-                                <div class="d-flex justify-content-center gap-2">
-                                    <button type="button"
-                                            class="btn btn-primary btn-rounded edit-btn"
-                                            data-id="@categoria.categoriasId"
-                                            title="Editar">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </button>
-                                </div>
-                        </td>
+        <div class="table-responsive">
+            <table id="tablaCategorias" class="table table-striped table-bordered rounded-table text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Nombre del padre</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
                     </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="6">
-                        <div class="alert alert-warning w-100 text-center" role="alert">
-                            No hay categorías registradas.
-                        </div>
+                </thead>
+                <tbody>
+                    @if (Model.categorias != null && Model.categorias.Any())
+                    {
+                        @foreach (var categoria in Model.categorias)
+                        {
+                            <tr data-id="@categoria.categoriasId">
+                                <td></td>
+                                <td>@categoria.nombre</td>
+                                <td>
+                                    @(string.IsNullOrEmpty(categoria.nombrePadre)
+                                                            ? "Es categoría principal"
+                                                            : categoria.nombrePadre)
                     </td>
-                </tr>
-                
-            }
+                    <td>@categoria.descripcion</td>
+                    <td>
+                        @if (categoria.estado == "Activo")
+                                    {
+                                        <button type="button"
+                                                class="btn btn-success rounded-circle toggle-estado"
+                                                title="Activo"
+                                                data-url='@Url.Page("./Categorias", "Verificar", new { id = categoria.categoriasId })'
+                                                onclick="return confirmarEliminar(this)">
+                                            <i class="bi bi-toggle-on"></i>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button"
+                                                class="btn btn-danger rounded-circle toggle-estado"
+                                                title="Inactivo"
+                                                data-url='@Url.Page("./Categorias", "ContarHijasTotales", new { id = categoria.categoriasId })'
+                                                onclick="return confirmarActivar(this)">
+                                            <i class="bi bi-toggle-off"></i>
+                                        </button>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <button type="button"
+                                                class="btn btn-primary btn-rounded edit-btn"
+                                                data-id="@categoria.categoriasId"
+                                                title="Editar">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6">
+                                <div class="alert alert-warning w-100 text-center" role="alert">
+                                    No hay categorías registradas.
+                                </div>
+                            </td>
+                        </tr>
 
-            </tbody>
-        </table>
-       
-    </div>
-  
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+    }
+
 
    
     <div class="modal fade" id="agregarCategoriaModal" tabindex="-1" aria-labelledby="agregarCategoriaModalLabel" aria-hidden="true">

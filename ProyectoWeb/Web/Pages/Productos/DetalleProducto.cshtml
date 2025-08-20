@@ -56,10 +56,13 @@
                    
 
                     
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-outline-primary w-100">Add to Cart</button>
-                    </div>
-                   
+                    @if (User.IsInRole("2"))
+                    {
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button class="btn btn-outline-primary w-100">Add to Cart</button>
+                        </div>
+                    }
+
                 </form>
                 <input type="hidden" id="maxStock" value="@Model.producto.Stock" />
             </div>

@@ -1,8 +1,4 @@
 ﻿(function () {
-    /**
-     * Retrasa la ejecución de una función hasta que haya pasado un cierto tiempo sin que se vuelva a llamar.
-     * Útil para evitar llamadas excesivas a la API, por ejemplo, al escribir en un campo de texto.
-     */
     function debounce(func, delay) {
         let timer;
         return function (...args) {
@@ -11,10 +7,6 @@
         };
     }
 
-    /**
-     * Recalcula el total de cada producto y el total general del carrito de forma local.
-     * No realiza llamadas a la API.
-     */
     function actualizarTotalesLocal() {
         let totalGeneral = 0;
 
@@ -34,23 +26,13 @@
         if (totalElem) totalElem.textContent = `₡${totalGeneral.toFixed(2)}`;
     }
 
-    /**
-     * Sincroniza el stock de los productos con la información más reciente del servidor.
-     * Actualiza el atributo 'max' de los campos de cantidad.
-     */
     async function refrescarStockGlobal() {
         try {
             const resp = await fetch('/Carrito/Carrito?handler=Refrescar');
-            if (!resp.ok) {
-                console.error('Error al obtener el stock actualizado.');
-                return null;
-            }
+            if (!resp.ok) return null;
             const data = await resp.json();
 
-            if (!data || !data.success || !Array.isArray(data.productos)) {
-                console.error('La respuesta del stock no es válida.');
-                return null;
-            }
+            if (!data || !data.success || !Array.isArray(data.productos)) return null;
 
             document.querySelectorAll('.cart-item').forEach(productoDiv => {
                 const input = productoDiv.querySelector('.quantity-input');
@@ -60,8 +42,10 @@
                 const cantidadAnterior = Number(input.value) || 0;
 
                 const productoApi = data.productos.find(p => {
-                    const cId = carritoProductoId.toString();
-                    return p.id?.toString() === cId || p.carritoProductoId?.toString() === cId;
+                    const pId = p.id != null ? p.id.toString() : null;
+                    const pCarritoId = p.carritoProductoId != null ? p.carritoProductoId.toString() : null;
+                    const cId = carritoProductoId != null ? carritoProductoId.toString() : null;
+                    return pId === cId || pCarritoId === cId;
                 });
 
                 if (!productoApi) return;
@@ -70,9 +54,8 @@
                 const nuevoMax = Math.max(0, stockApi + cantidadAnterior);
                 input.max = nuevoMax;
 
-                // Ajusta el valor del input si la cantidad actual supera el nuevo máximo
-                if (cantidadAnterior > nuevoMax) {
-                    input.value = nuevoMax;
+                if ((Number(input.value) || 0) > nuevoMax) {
+                    input.value = Math.min(cantidadAnterior, nuevoMax);
                 }
             });
 
@@ -84,9 +67,7 @@
         }
     }
 
-    /**
-     * Actualiza la cantidad de un producto en el carrito a través de la API, con un retraso (debounce).
-     */
+
     const actualizarCantidadAPI = debounce(async (carritoProductoId, cantidadNueva, cantidadAnterior) => {
         try {
             const productoDiv = document.getElementById(`producto-${carritoProductoId}`);
@@ -109,13 +90,17 @@
                 try {
                     const errData = await response.json();
                     if (errData && errData.mensaje) errorMsg = errData.mensaje;
-                } catch (e) { /* ignore */ }
+                } catch (e) { }
+
+                input.value = cantidadAnterior;
 
                 const data = await refrescarStockGlobal();
                 if (data && data.success) {
                     const productoApi = data.productos.find(p => {
-                        const cId = carritoProductoId.toString();
-                        return p.id?.toString() === cId || p.carritoProductoId?.toString() === cId;
+                        const pId = p.id != null ? p.id.toString() : null;
+                        const pCarritoId = p.carritoProductoId != null ? p.carritoProductoId.toString() : null;
+                        const cId = carritoProductoId != null ? carritoProductoId.toString() : null;
+                        return pId === cId || pCarritoId === cId;
                     });
 
                     if (productoApi) {
@@ -126,7 +111,6 @@
                         input.setCustomValidity(errorMsg);
                         input.reportValidity();
                     } else {
-                        input.value = cantidadAnterior;
                         input.setCustomValidity(errorMsg);
                         input.reportValidity();
                     }
@@ -142,10 +126,6 @@
             console.error('Error actualizarCantidadAPI:', err);
         }
     }, 300);
-
-    /**
-     * Valida y actualiza la cantidad de un producto, ya sea eliminándolo si es 0 o llamando a la API si el valor es válido.
-     */
     function actualizarCantidad(carritoProductoId, valorInput) {
         const productoDiv = document.getElementById(`producto-${carritoProductoId}`);
         if (!productoDiv) return;
@@ -182,9 +162,6 @@
         actualizarCantidadAPI(carritoProductoId, nuevaCantidad, cantidadAnterior);
     }
 
-    /**
-     * Aumenta o disminuye la cantidad de un producto en el carrito.
-     */
     function cambiarCantidad(carritoProductoId, cambio) {
         const productoDiv = document.getElementById(`producto-${carritoProductoId}`);
         if (!productoDiv) return;
@@ -194,66 +171,6 @@
         actualizarCantidad(carritoProductoId, nuevaCantidad);
     }
 
-    /**
-     * Actualiza el conteo de productos y la vista de "carrito vacío".
-     */
-    function actualizarItemCountYVista() {
-        const items = document.querySelectorAll('.cart-item');
-        const countElem = document.getElementById('item-count');
-        if (countElem) countElem.textContent = items.length;
-
-        const emptyCartElem = document.getElementById('empty-cart');
-        const cartWithItems = document.getElementById('cart-with-items');
-        if (items.length === 0) {
-            if (emptyCartElem) emptyCartElem.classList.remove('d-none');
-            if (cartWithItems) cartWithItems.classList.add('d-none');
-        } else {
-            if (emptyCartElem) emptyCartElem.classList.add('d-none');
-            if (cartWithItems) cartWithItems.classList.remove('d-none');
-        }
-    }
-
-    /**
-     * Elimina un producto del carrito, tanto en el servidor como en la interfaz de usuario.
-     */
-    async function eliminarProducto(carritoProductoId) {
-        const productoDiv = document.getElementById(`producto-${carritoProductoId}`);
-        if (!productoDiv) return;
-
-        const controles = productoDiv.querySelectorAll('button, input');
-        controles.forEach(c => c.disabled = true);
-
-        try {
-            const resp = await fetch(`${window.endpoints.eliminarProducto}${carritoProductoId}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            });
-
-            if (!resp.ok) {
-                console.error('Error al eliminar el producto del carrito.');
-                controles.forEach(c => c.disabled = false);
-                return;
-            }
-
-            productoDiv.remove();
-            actualizarItemCountYVista();
-            if (typeof window.actualizarTotalesLocal === 'function') {
-                window.actualizarTotalesLocal();
-            }
-
-        } catch (err) {
-            console.error('Error en la solicitud de eliminación:', err);
-            const prodDiv = document.getElementById(`producto-${carritoProductoId}`);
-            if (prodDiv) {
-                const botones = prodDiv.querySelectorAll('button, input');
-                botones.forEach(b => b.disabled = false);
-            }
-        }
-    }
-
-    /**
-     * Inicializa las validaciones de los campos de cantidad.
-     */
     function initInputValidation() {
         document.querySelectorAll('.quantity-input').forEach(input => {
             input.addEventListener('input', () => {
@@ -269,14 +186,13 @@
         });
     }
 
-    // Configura las funciones para que estén disponibles globalmente
     document.addEventListener('DOMContentLoaded', () => {
         initInputValidation();
         window.actualizarTotalesLocal = actualizarTotalesLocal;
         window.refrescarStock = refrescarStockGlobal;
         window.actualizarCantidad = actualizarCantidad;
         window.cambiarCantidad = cambiarCantidad;
-        window.eliminarProducto = eliminarProducto;
         window.refrescarStockGlobal = refrescarStockGlobal;
     });
+
 })();
