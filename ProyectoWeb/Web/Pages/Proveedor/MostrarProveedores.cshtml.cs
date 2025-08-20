@@ -26,7 +26,9 @@ namespace Web.Pages.Proveedor
     string endpoint = _configuracion.ObtenerMetodo("ApiEndPointsProveedores", "ObtenerProveedores");
 
     using var http = new HttpClient();
-    var resp = await http.GetAsync(endpoint);
+            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.User.Claims.Where(c => c.Type == "Token").FirstOrDefault().Value);
+
+            var resp = await http.GetAsync(endpoint);
     resp.EnsureSuccessStatusCode();
 
     if (resp.StatusCode == HttpStatusCode.OK)
