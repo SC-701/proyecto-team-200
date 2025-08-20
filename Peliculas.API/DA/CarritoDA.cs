@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abstracciones.Entidades;
 using Abstracciones.Interfaces.DA;
 using Abstracciones.Modelos;
 using Dapper;
@@ -98,6 +100,49 @@ namespace DA
             return resultadoConsulta;
         }
 
+        public async Task<CarritoCorreo> ObtenerParaCorreo(Guid usuarioId)
+        {
+            string query = "sObtenerDatosCarritoPorUsuario";
+
+            var filas = await _sqlConnection.QueryAsync<dynamic>(
+                query,
+                new { UsuarioId = usuarioId },
+                commandType: CommandType.StoredProcedure
+            );
+
+            var carrito = new CarritoCorreo();
+
+            foreach (var fila in filas)
+            {
+                if (carrito.CarritoId == Guid.Empty)
+                {
+                    carrito.UsuarioId = fila.UsuarioId;
+                    carrito.NombreUsuario = fila.NombreUsuario;
+                    carrito.Apellido = fila.Apellido;
+                    carrito.CorreoElectronico = fila.CorreoElectronico;
+                    carrito.Telefono = fila.Telefono;
+                    carrito.Direccion = fila.Direccion;
+
+                    carrito.CarritoId = fila.CarritoId;
+                    carrito.FechaCreacion = fila.FechaCreacion;
+                    carrito.TotalCarrito = fila.TotalCarrito;
+                }
+                carrito.Productos.Add(new ProductoCarritoCorreo
+                {
+                    ProductosId = fila.ProductosId,
+                    NombreProducto = fila.NombreProducto,
+                    Marca = fila.Marca,
+                    Precio = fila.Precio,
+                    Cantidad = fila.Cantidad,
+                    TotalLinea = fila.TotalLinea
+                });
+            }
+
+            if (carrito.CarritoId == Guid.Empty)
+                return null;
+
+            return carrito;
+        }
         public async Task<CarritoResponse> ObtenerPorID(Guid CarritoId)
         {
             string query = @"OBTENER_CARRITO_POR_ID";

@@ -10,6 +10,7 @@ namespace Abstracciones.Interfaces.Flujo
     public interface ICarritoFlujo
     {
         Task<CarritoResponse> ObtenerPorUsuario(Guid UsuarioId);
+        Task<CarritoCorreo> ObtenerParaCorreo(Guid usuarioId);
         Task<CarritoResponse> ObtenerPorID(Guid CarritoId);
 
         Task<Guid> Agregar(CarritoBase carrito);

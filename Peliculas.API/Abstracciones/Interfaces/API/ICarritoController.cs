@@ -13,6 +13,7 @@ namespace Abstracciones.Interfaces.API
     {
 
         Task<IActionResult> ObtenerPorUsuario(Guid usuarioId);
+        Task<IActionResult> ObtenerParaCorreo();
         Task<IActionResult> ObtenerPorID(Guid CarritoId);
 
 

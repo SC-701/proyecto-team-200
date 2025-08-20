@@ -58,5 +58,10 @@ namespace Flujo
         {
             return await _carritoDA.EliminarCarritosExpirados(minutosExpiracion);
         }
+
+        public async  Task<CarritoCorreo> ObtenerParaCorreo(Guid usuarioId)
+        {
+            return await _carritoDA.ObtenerParaCorreo(usuarioId);
+        }
     }
 }

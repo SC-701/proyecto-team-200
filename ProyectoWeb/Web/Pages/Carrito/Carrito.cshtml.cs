@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Web.Pages.Carrito
 {
+    [Authorize]
     public class CarritoModel : PageModel
     {
         private readonly IConfiguracion _configuracion;
@@ -59,7 +60,7 @@ namespace Web.Pages.Carrito
         public async Task<IActionResult> OnGetRefrescarAsync()
         {
             string? idUsuario = HttpContext.User.Claims
-                .FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
+                .FirstOrDefault(c => c.Type == "idUsuario")?.Value;
 
             string endpointBase = _configuracion.ObtenerMetodo("ApiEndPointsCarrito", "ObtenerCarritoPorUsuario");
             string endpoint = $"{endpointBase}{idUsuario}";

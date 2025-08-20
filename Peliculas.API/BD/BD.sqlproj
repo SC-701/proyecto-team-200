@@ -119,5 +119,6 @@
     <Build Include="dbo\Stored Procedures\ACTIVAR_HIJA_Y_PADRE.sql" />
     <Build Include="dbo\Stored Procedures\ESTADO_PRODUCTO.sql" />
     <Build Include="dbo\Stored Procedures\ESTADO_PROVEEDOR.sql" />
+    <Build Include="dbo\Stored Procedures\ObtenerDatosCarritoPorUsuario.sql" />
   </ItemGroup>
 </Project>
