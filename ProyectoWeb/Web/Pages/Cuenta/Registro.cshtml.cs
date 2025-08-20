@@ -39,7 +39,7 @@ namespace Web.Pages.Cuenta
             }
 
             respuesta.EnsureSuccessStatusCode();
-            return RedirectToPage("../index");
+            return RedirectToPage("../Cuenta/Login");
         }
     }
 }

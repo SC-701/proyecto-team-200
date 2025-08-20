@@ -4,30 +4,36 @@
 
     navUl.innerHTML = '';
 
+    
+    async function fetchConRetry(url, intentos = 2) {
+        for (let i = 0; i < intentos; i++) {
+            try {
+                const res = await fetch(url, { cache: 'no-store' });
+                if (res.ok) return await res.json();
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        return null;
+    }
+
     try {
+        const padres = await fetchConRetry('/Productos/Index?handler=ObtenerCategoriasPadres') || [];
 
-        const rPadres = await fetch('/Productos/Index?handler=ObtenerCategoriasPadres');
-        if (!rPadres.ok) throw new Error('Error padres ' + rPadres.status);
-        const padres = await rPadres.json();
+        
+        const padresConHijas = [];
+        for (const padre of padres) {
+            const dataHijas = await fetchConRetry(`/Productos/Index?handler=ObtenerCategoriasHijas&id=${padre.categoriasId}`);
+            if (dataHijas?.tieneHijas && Array.isArray(dataHijas.categorias) && dataHijas.categorias.length > 0) {
+                padresConHijas.push({ padre, hijas: dataHijas.categorias });
+            }
+        }
 
+        
+        const primerosPadresConHijas = padresConHijas.slice(0, 4);
 
-        const checks = await Promise.all(
-            padres.map(async (padre) => {
-                const rH = await fetch(`/Productos/Index?handler=ObtenerCategoriasHijas&id=${padre.categoriasId}`);
-                if (!rH.ok) return null;
-                const data = await rH.json();
-                if (data && data.tieneHijas && Array.isArray(data.categorias) && data.categorias.length > 0) {
-                    return { padre, hijas: data.categorias };
-                }
-                return null;
-            })
-        );
-
-
-        const conHijas = checks.filter(x => !!x).slice(0, 4);
-
-
-        conHijas.forEach(({ padre, hijas }) => {
+        
+        for (const { padre, hijas } of primerosPadresConHijas) {
             const li = document.createElement('li');
             li.className = 'nav-item dropdown';
 
@@ -38,8 +44,9 @@
             a.setAttribute('role', 'button');
             a.setAttribute('data-bs-toggle', 'dropdown');
             a.setAttribute('aria-expanded', 'false');
+            a.innerHTML = `${padre.nombre}`;
 
-            a.innerHTML = `<i class="fas fa-tags me-1 text-white"></i> ${padre.nombre}`;
+            li.appendChild(a);
 
             const ulDrop = document.createElement('ul');
             ulDrop.className = 'dropdown-menu';
@@ -55,17 +62,11 @@
                 ulDrop.appendChild(liH);
             });
 
-            li.appendChild(a);
             li.appendChild(ulDrop);
             navUl.appendChild(li);
-        });
-
-
-        if (navUl.children.length === 0) {
-            navUl.style.display = 'none';
-            console.warn('No hay categorías con hijas para mostrar.');
         }
+
     } catch (err) {
-        console.error('Error construyendo menú de categorías:', err);
+        console.error(err);
     }
 });
