@@ -31,6 +31,35 @@
             const resp = await fetch('/Carrito/Carrito?handler=Refrescar');
             if (!resp.ok) return null;
             const data = await resp.json();
+
+            if (!data || !data.success || !Array.isArray(data.productos)) return null;
+
+            document.querySelectorAll('.cart-item').forEach(productoDiv => {
+                const input = productoDiv.querySelector('.quantity-input');
+                if (!input) return;
+
+                const carritoProductoId = productoDiv.dataset.carritoProductoId || productoDiv.id.replace('producto-', '');
+                const cantidadAnterior = Number(input.value) || 0;
+
+                const productoApi = data.productos.find(p => {
+                    const pId = p.id != null ? p.id.toString() : null;
+                    const pCarritoId = p.carritoProductoId != null ? p.carritoProductoId.toString() : null;
+                    const cId = carritoProductoId != null ? carritoProductoId.toString() : null;
+                    return pId === cId || pCarritoId === cId;
+                });
+
+                if (!productoApi) return;
+
+                const stockApi = Number(productoApi.stock ?? productoApi.stockDisponible ?? productoApi.StockDisponible ?? 0);
+                const nuevoMax = Math.max(0, stockApi + cantidadAnterior); 
+                input.max = nuevoMax;
+
+                if ((Number(input.value) || 0) > nuevoMax) {
+                    input.value = Math.min(cantidadAnterior, nuevoMax);
+                }
+            });
+
+            actualizarTotalesLocal();
             return data;
         } catch (err) {
             console.error('Error refrescando stock global:', err);
@@ -38,28 +67,6 @@
         }
     }
 
-    async function refrescarStock(carritoProductoId, input, cantidadAnterior) {
-        const data = await refrescarStockGlobal();
-        if (!data || !data.success) return 0;
-
-        const producto = data.productos.find(p => {
-            return (p.id && p.id.toString() === carritoProductoId.toString())
-                || (p.carritoProductoId && p.carritoProductoId.toString() === carritoProductoId.toString());
-        });
-
-        if (!producto) return 0;
-        const stockApi = Number(producto.stock ?? producto.stockDisponible ?? producto.StockDisponible ?? 0);
-        const nuevoMax = Math.max(0, stockApi + (Number(cantidadAnterior) || 0));
-
-        input.max = nuevoMax;
-        if ((Number(input.value) || 0) > nuevoMax) {
-            input.value = nuevoMax;
-        }
-
-        input.setCustomValidity('');
-        actualizarTotalesLocal();
-        return nuevoMax;
-    }
 
     const actualizarCantidadAPI = debounce(async (carritoProductoId, cantidadNueva, cantidadAnterior) => {
         try {
@@ -67,6 +74,7 @@
             if (!productoDiv) return;
 
             const input = productoDiv.querySelector('.quantity-input');
+            if (!input) return;
 
             const response = await fetch(`${window.endpoints.actualizarProducto}${carritoProductoId}`, {
                 method: 'PUT',
@@ -82,21 +90,42 @@
                 try {
                     const errData = await response.json();
                     if (errData && errData.mensaje) errorMsg = errData.mensaje;
-                } catch (e) {  }
+                } catch (e) { }
 
+                input.value = cantidadAnterior;
 
+                const data = await refrescarStockGlobal();
+                if (data && data.success) {
+                    const productoApi = data.productos.find(p => {
+                        const pId = p.id != null ? p.id.toString() : null;
+                        const pCarritoId = p.carritoProductoId != null ? p.carritoProductoId.toString() : null;
+                        const cId = carritoProductoId != null ? carritoProductoId.toString() : null;
+                        return pId === cId || pCarritoId === cId;
+                    });
 
-                await refrescarStock(carritoProductoId, input, cantidadAnterior);
+                    if (productoApi) {
+                        const stockApi = Number(productoApi.stock ?? productoApi.stockDisponible ?? productoApi.StockDisponible ?? 0);
+                        const nuevoMax = Math.max(0, stockApi + cantidadAnterior);
+                        input.max = nuevoMax;
+                        input.value = Math.min(cantidadAnterior, nuevoMax);
+                        input.setCustomValidity(errorMsg);
+                        input.reportValidity();
+                    } else {
+                        input.setCustomValidity(errorMsg);
+                        input.reportValidity();
+                    }
+
+                    actualizarTotalesLocal();
+                }
+
                 return;
             }
 
-        
             if (input) input.setCustomValidity('');
         } catch (err) {
             console.error('Error actualizarCantidadAPI:', err);
         }
     }, 300);
-
     function actualizarCantidad(carritoProductoId, valorInput) {
         const productoDiv = document.getElementById(`producto-${carritoProductoId}`);
         if (!productoDiv) return;
@@ -105,7 +134,6 @@
         if (!input) return;
 
         const cantidadAnterior = Number(input.value) || 0;
-
         let nuevaCantidad = Number(valorInput) || 0;
         const max = Number(input.max) || 0;
 
@@ -122,7 +150,6 @@
             if (typeof window.eliminarProducto === 'function') {
                 window.eliminarProducto(carritoProductoId);
             } else {
-
                 productoDiv.remove();
                 actualizarTotalesLocal();
             }
@@ -162,7 +189,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         initInputValidation();
         window.actualizarTotalesLocal = actualizarTotalesLocal;
-        window.refrescarStock = refrescarStock;
+        window.refrescarStock = refrescarStockGlobal;
         window.actualizarCantidad = actualizarCantidad;
         window.cambiarCantidad = cambiarCantidad;
         window.refrescarStockGlobal = refrescarStockGlobal;
