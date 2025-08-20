@@ -12,9 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/cuenta/Login";
-        options.LogoutPath = "/cuenta/Logout";
-        options.AccessDeniedPath = "/cuenta/Accesodenegado";
+        options.LoginPath = "/Cuenta/Login";
+        options.LogoutPath = "/Cuenta/CerrarSession";
+        options.AccessDeniedPath = "/Cuenta/AccesoDenegado";
     });
 //Configuración Autorización
 builder.Services.AddTransient<IRepositorioDapper, RepositorioDapper>();
@@ -44,6 +44,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseAuthentication();
 app.UseClaimsPerfiles();
 

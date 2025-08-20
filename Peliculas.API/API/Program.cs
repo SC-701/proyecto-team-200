@@ -46,6 +46,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
     );
 
+builder.Services.AddSingleton<ICorreoServicio>(sp =>
+    new CorreoServicio(
+        smtpServer: "smtp.gmail.com",
+        smtpPort: 587,
+        usuario: "madrizsebas71@gmail.com",
+        password: "nkkt rrel baqa hiyh",
+        from: "madrizsebas71@gmail.com"
+    )
+);
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

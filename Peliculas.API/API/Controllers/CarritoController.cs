@@ -1,7 +1,9 @@
 ﻿using Abstracciones.Interfaces.API;
 using Abstracciones.Interfaces.DA;
 using Abstracciones.Interfaces.Flujo;
+using Abstracciones.Interfaces.Servicios;
 using Abstracciones.Modelos;
+using DA;
 using Flujo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,21 +12,23 @@ using static Abstracciones.Modelos.Carrito;
 
 namespace API.Controllers
 {
-
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class CarritoController : ControllerBase, ICarritoController
 	{
 		private readonly ICarritoFlujo _carritoFlujo;
 		private readonly ILogger<CarritoController> _logger;
+        private readonly ICorreoServicio _correoServicio;
 
-		public CarritoController(ICarritoFlujo carritoFlujo, ILogger<CarritoController> logger)
+
+        public CarritoController(ICarritoFlujo carritoFlujo, ILogger<CarritoController> logger, ICorreoServicio correoServicio)
 		{
 			_carritoFlujo = carritoFlujo;
 			_logger = logger;
-		}
+            _correoServicio = correoServicio;
+        }
 
-		[HttpPost]
+        [HttpPost]
 		public async Task<IActionResult> Agregar([FromBody] CarritoBase carrito)
 		{
 			var resultado = await _carritoFlujo.Agregar(carrito);
@@ -34,7 +38,7 @@ namespace API.Controllers
 
 
 
-		[HttpPut("{CarritoId}")]
+        [HttpPut("{CarritoId}")]
 		public async Task<IActionResult> Editar([FromRoute] Guid CarritoId, [FromBody] CarritoBase carrito)
 		{
             if (!await VerificarExistenciaCarrito(CarritoId))
@@ -45,8 +49,7 @@ namespace API.Controllers
 
 
 
-
-		[HttpDelete("{CarritoId}")]
+        [HttpDelete("{CarritoId}")]
 		public async Task<IActionResult> Eliminar([FromRoute] Guid CarritoId)
 		{
             if (!await VerificarExistenciaCarrito(CarritoId))
@@ -55,8 +58,8 @@ namespace API.Controllers
 			return NoContent();
 		}
 
-
-		[HttpGet("por-user/{UsuarioId}")]
+        [Authorize]
+        [HttpGet("por-user/{UsuarioId}")]
 		public async Task<IActionResult> ObtenerPorUsuario([FromRoute] Guid UsuarioId)
 		{
 			var resultado = await _carritoFlujo.ObtenerPorUsuario(UsuarioId);
@@ -65,8 +68,7 @@ namespace API.Controllers
             return Ok(resultado);
 		}
 
-
-		[HttpGet("por-id/{CarritoId}")]
+        [HttpGet("por-id/{CarritoId}")]
 		public async Task<IActionResult> ObtenerPorID([FromRoute] Guid CarritoId)
 		{
 			var resultado = await _carritoFlujo.ObtenerPorID(CarritoId);
@@ -85,7 +87,6 @@ namespace API.Controllers
             var resultado = await _carritoFlujo.ActualizarTotal(CarritoId);
             return NoContent();
         }
-
         private async Task<bool> VerificarExistenciaCarrito(Guid Id)
         {
             var ResultadoValidacion = false;
@@ -95,7 +96,6 @@ namespace API.Controllers
             return ResultadoValidacion;
         }
 
-
         [HttpDelete("eliminar-total/{CarritoId}")]
         public async Task<IActionResult> EliminarTotal(Guid CarritoId)
         {
@@ -104,5 +104,47 @@ namespace API.Controllers
             var resultado = await _carritoFlujo.EliminarTotal(CarritoId);
             return NoContent();
         }
+
+
+        [Authorize]
+        [HttpGet("correo")]
+        public async Task<IActionResult> ObtenerParaCorreo()
+        {
+            string idUsuarioStr = HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == "idUsuario")?.Value;
+
+            if (string.IsNullOrEmpty(idUsuarioStr) || !Guid.TryParse(idUsuarioStr, out var usuarioId))
+                return BadRequest("Usuario no válido.");
+
+            var resultado = await _carritoFlujo.ObtenerParaCorreo(usuarioId);
+
+            if (resultado == null)
+                return NotFound("No se encontró un carrito para este usuario.");
+
+            return Ok(resultado);
+        }
+
+
+        [HttpGet("enviar-correo")]
+        public async Task<IActionResult> EnviarCorreoCarrito()
+        {
+            string idUsuarioStr = HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == "idUsuario")?.Value;
+
+            if (string.IsNullOrEmpty(idUsuarioStr) || !Guid.TryParse(idUsuarioStr, out var usuarioId))
+                return BadRequest("Usuario no válido.");
+
+            var carrito = await _carritoFlujo.ObtenerParaCorreo(usuarioId);
+
+            if (carrito == null)
+                return NotFound("No se encontró un carrito para este usuario.");
+
+            await _correoServicio.EnviarCorreoCarritoAsync(carrito);
+
+            return Ok("Correo enviado correctamente.");
+        }
+
+
+
     }
 }

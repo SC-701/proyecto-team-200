@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Abstracciones.Modelos.Seguridad;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Reglas
@@ -40,6 +41,7 @@ namespace Reglas
             var claims = new List<Claim>();
             claims.Add(new Claim("usuario", jwtToken.Claims.First(c => c.Type == "usuario").Value));
             claims.Add(new Claim(ClaimTypes.Name, jwtToken.Claims.First(c => c.Type == "usuario").Value));
+            claims.Add(new Claim(ClaimTypes.Role, jwtToken.Claims.First(c => c.Type == ClaimTypes.Role).Value));
 
             claims.Add(new Claim(ClaimTypes.Email, jwtToken.Claims.First(c => c.Type == "correoElectronico").Value));
             claims.Add(new Claim("idUsuario", jwtToken.Claims.First(c => c.Type == "idUsuario").Value));

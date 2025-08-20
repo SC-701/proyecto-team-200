@@ -13,7 +13,7 @@ namespace Abstracciones.Interfaces.DA
 
 
         Task<CarritoResponse> ObtenerPorUsuario(Guid usuarioId);//para ver si crear o no
-
+        Task<CarritoCorreo> ObtenerParaCorreo(Guid usuarioId);
         Task<CarritoResponse> ObtenerPorID(Guid CarritoId);// para los demas metodos
 
 

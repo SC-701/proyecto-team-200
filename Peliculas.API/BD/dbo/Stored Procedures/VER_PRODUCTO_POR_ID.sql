@@ -15,7 +15,9 @@ BEGIN
     P.FECHA_CREACION AS FechaCreacion,
     pr.Nombre_PROVEEDOR AS NombreProveedor,
     C.NOMBRE AS Categoria,
-    E.TIPO AS Estado
+    E.TIPO AS Estado,
+    P.PROVEEDOR_ID AS IdProveedor,
+    P.CATEGORIAS_ID AS IdCategoria
 
   FROM PRODUCTOS P
   INNER JOIN Proveedores PR ON P.PROVEEDOR_ID = PR.PROVEEDOR_ID

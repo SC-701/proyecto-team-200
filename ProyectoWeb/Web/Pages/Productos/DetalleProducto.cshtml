@@ -1,4 +1,4 @@
-@page
+﻿@page
 @model Web.Pages.Productos.DetalleProductoModel
 @{
 }
@@ -25,28 +25,98 @@
                 <h4 class="text-primary fw-bold mb-4">$@Html.DisplayFor(modelo => modelo.producto.Precio)</h4>
                 
 
-                <form>
+                <form method="post">
 
 
                     
                     <div class="mb-4">
-                        <h6>Quantity</h6>
-                        <div class="input-group" style="max-width: 120px;">
-                            <input type="text" class="form-control text-center" value="1">
-                            <div class="input-group-append d-flex flex-column">
-                                <button class="btn btn-outline-primary py-0" type="button">+</button>
-                                <button class="btn btn-outline-primary py-0" type="button">-</button>
-                            </div>
+                        <h6>Cantidad</h6>
+                        <div class="input-group input-group-sm">
+                            <button class="btn btn-outline-secondary btn-decrease" type="button">
+                                <i class="bi bi-dash"></i>
+                            </button>
+                            <input id="cantidad" asp-for="carritoProducto.cantidad" type="number" class="form-control quantity-input" value="1" min="1" max="@Model.producto.Stock"  oninvalid="this.setCustomValidity('El stock maximo del producto es de @Model.producto.Stock asi que ingresa un valor menor')" oninput="this.setCustomValidity('')" />
+                            <button class="btn btn-outline-secondary btn-increase" type="button">
+                                <i class="bi bi-plus"></i>
+                            </button>
+                           
                         </div>
+                        @{
+                            var errorStock = TempData["ErrorStock"] as string;
+                        }
+                        @if (!string.IsNullOrEmpty(errorStock))
+                        {
+                            <div class="alert alert-danger">
+                                @errorStock
+                            </div>
+                        }
                     </div>
+                    <input asp-for="carritoProducto.productosId" type="hidden" id="idProducto" value="@Model.producto.IdProducto" />
+                    
+                   
 
                     
-                    <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-outline-primary w-100">Add to Cart</button>
-                    </div>
-                   
+                    @if (User.IsInRole("2"))
+                    {
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button class="btn btn-outline-primary w-100">Add to Cart</button>
+                        </div>
+                    }
+
                 </form>
+                <input type="hidden" id="maxStock" value="@Model.producto.Stock" />
             </div>
         </div>
     </div>
 </section>
+@section Scripts {
+    <script src="~/js/busquedasindex.js"></script>
+    <script src="~/js/asidecategorias.js"></script>
+    <script src="~/js/navcategorias.js"></script>
+    <script>
+        const input = document.querySelector(".quantity-input");
+        const btnIncrease = document.querySelector(".btn-increase");
+        const btnDecrease = document.querySelector(".btn-decrease");
+
+        
+        const maxStock = parseInt(document.getElementById("maxStock").value);
+
+        
+        function validarStock() {
+            let cantidad = parseInt(input.value) || 1;
+            let minValue = parseInt(input.min) || 1;
+
+            if (cantidad < minValue) {
+                cantidad = minValue;
+                input.value = cantidad;
+            }
+
+            if (cantidad >= maxStock) {
+                btnIncrease.disabled = true; 
+            } else {
+                btnIncrease.disabled = false; 
+            }
+        }
+
+        
+        btnIncrease.addEventListener("click", () => {
+            input.value = (parseInt(input.value) || 0) + 1;
+            validarStock();
+        });
+
+        btnDecrease.addEventListener("click", () => {
+            let minValue = parseInt(input.min) || 1;
+            input.value = Math.max((parseInt(input.value) || 0) - 1, minValue);
+            validarStock();
+        });
+
+        
+        input.addEventListener("input", validarStock);
+
+        
+        validarStock();
+
+              
+    </script>
+
+}

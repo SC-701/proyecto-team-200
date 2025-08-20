@@ -7,7 +7,8 @@
     
     <link href="~/css/modales.css" rel="stylesheet" />
 <link href="~/css/inventario.css" rel="stylesheet" />
-</head>    
+</head>
+<input type="hidden" id="__RequestVerificationToken" value="@Antiforgery.GetAndStoreTokens(HttpContext).RequestToken" />
         <div class="modal fade" id="modalFormulario" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content" id="contenidoModal">
@@ -19,52 +20,50 @@
                     <div class="modal-body">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label asp-for="productoCrear.Nombre" class="form-label">Nombre</label>
-                                <input asp-for="productoCrear.Nombre" class="form-control input-squarespace" placeholder="nombre del producto" />
-                                <span asp-validation-for="productoCrear.Nombre" class="text-danger"></span>
+                                <label asp-for="productoRequest.Nombre" class="form-label">Nombre</label>
+                                <input asp-for="productoRequest.Nombre" class="form-control input-squarespace" placeholder="nombre del producto" />
+                                <span asp-validation-for="productoRequest.Nombre" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
-                                <label asp-for="productoCrear.Marca" class="form-label">Marca</label>
-                                <input asp-for="productoCrear.Marca" class="form-control input-squarespace" placeholder="marca"/>
-                                <span asp-validation-for="productoCrear.Marca" class="text-danger"></span>
+                                <label asp-for="productoRequest.Marca" class="form-label">Marca</label>
+                                <input asp-for="productoRequest.Marca" class="form-control input-squarespace" placeholder="marca"/>
+                                <span asp-validation-for="productoRequest.Marca" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoCrear.Precio" class="form-label">Precio</label>
-                                <input type="number" asp-for="productoCrear.Precio" class="form-control input-squarespace " placeholder="precio"/>
-                                <span asp-validation-for="productoCrear.Precio" class="text-danger"></span>
+                                <label asp-for="productoRequest.Precio" class="form-label">Precio</label>
+                                <input type="number" asp-for="productoRequest.Precio" class="form-control input-squarespace " placeholder="precio"/>
+                                <span asp-validation-for="productoRequest.Precio" class="text-danger"></span>
                             </div>
                             <div class="col-md-8">
-                                <label asp-for="productoCrear.Descripcion" class="form-label">Descripción</label>
-                                <input asp-for="productoCrear.Descripcion" class="form-control input-squarespace" placeholder="descripcion"/>
-                                <span asp-validation-for="productoCrear.Descripcion" class="text-danger"></span>
+                                <label asp-for="productoRequest.Descripcion" class="form-label">Descripción</label>
+                                <input asp-for="productoRequest.Descripcion" class="form-control input-squarespace" placeholder="descripcion"/>
+                                <span asp-validation-for="productoRequest.Descripcion" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoCrear.Stock" class="form-label">Stock</label>
-                                <input asp-for="productoCrear.Stock" class="form-control input-squarespace" placeholder="1"/>
-                                <span asp-validation-for="productoCrear.Stock" class="text-danger"></span>
+                                <label asp-for="productoRequest.Stock" class="form-label">Stock</label>
+                                <input asp-for="productoRequest.Stock" class="form-control input-squarespace" placeholder="1"/>
+                                <span asp-validation-for="productoRequest.Stock" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoCrear.IdProveedor" class="form-label">Proveedor</label>
-                                <select asp-for="productoCrear.IdProveedor" class="form-select" asp-items="Model.proveedores">
+                                <label asp-for="productoRequest.IdProveedor" class="form-label">Proveedor</label>
+                                <select asp-for="productoRequest.IdProveedor" class="form-select" asp-items="Model.proveedores">
                                     <option value="">Seleccione un proveedor</option>
                                 </select>
-                                <span asp-validation-for="productoCrear.IdProveedor" class="text-danger"></span>
+                                <span asp-validation-for="productoRequest.IdProveedor" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoCrear.IdCategoria" class="form-label">Categoría</label>
-                                <input asp-for="productoCrear.IdCategoria" class="form-control input-squarespace" value="E3B0C442-98FC-4D2F-A5D6-42FE3D3D7CB1" />
-                                <span asp-validation-for="productoCrear.IdCategoria" class="text-danger"></span>
+                                <label asp-for="productoRequest.IdCategoria" class="form-label">Categoria</label>
+                                <select asp-for="productoRequest.IdCategoria" class="form-select" asp-items="Model.categoriasSelect">
+                                    <option value="">Seleccione una categoria</option>
+                                </select>
+                                <span asp-validation-for="productoRequest.IdCategoria" class="text-danger"></span>
                             </div>
 
-                            <div class="col-md-4">
-                                <label asp-for="productoCrear.IdEstado" class="form-label">Estado</label>
-                                <input asp-for="productoCrear.IdEstado" class="form-control input-squarespace" value="1" />
-                                <span asp-validation-for="productoCrear.IdEstado" class="text-danger"></span>
-                            </div>
+                            
 
                             <div class="col-md-8">
                                 <label for="imagen" class="form-label">Imagen</label>
@@ -100,22 +99,12 @@
                 Crear producto
             </button>
 
-            <form class="d-flex align-items-center position-relative" style="max-width: 350px;">
-                <input type="text"
-                       class="form-control rounded-pill ps-4 pe-5"
-                       placeholder="Buscar productos..."
-                       aria-label="Buscar productos" />
-                <button type="submit"
-                        class="btn btn-primary position-absolute end-0 me-1 top-50 translate-middle-y rounded-pill px-3 shadow-sm"
-                        aria-label="Buscar">
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
+
         </div>
 
 
 
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" id="productosInventario">
              @if (Model.productos != null && Model.productos.Any())
         {
             foreach (var producto in Model.productos)
@@ -132,11 +121,22 @@
                         <p class="card-text fw-bold text-primary mb-1">$@Html.DisplayFor(p => producto.Precio)</p>
                         <p class="text-muted mb-3 stock-info" >Stock: @Html.DisplayFor(p => producto.Stock)</p>
                         <div class="mt-auto d-flex justify-content-between gap-2">
-                            <form method="post" asp-page-handler="EliminarProducto" asp-route-idProducto="@producto.IdProducto" class="d-inline">
-                                <button type="submit" class="btn btn-outline-danger rounded-circle p-2 shadow-sm" title="Eliminar">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
+                           <form method="post" asp-page-handler="EliminarProducto"
+                                              asp-route-idProducto="@producto.IdProducto" class="d-inline">
+
+                                            @if (producto.Estado?.Trim().ToLower() == "inactivo")
+                                            {
+                                                <button type="submit" class="btn btn-outline-danger rounded-circle" title="Desactivar">
+                                                    <i class="bi bi-toggle-off"></i>
+                                                </button>
+                                            }
+                                            else if (producto.Estado?.Trim().ToLower() == "activo")
+                                            {
+                                                <button type="submit" class="btn btn-outline-success rounded-circle" title="Activar">
+                                                    <i class="bi bi-toggle-on"></i>
+                                                </button>
+                                            }
+                                        </form>
                             <button data-bs-toggle="modal" data-bs-target="#modalFormularioEditar" data-url="/Productos/Inventario?handler=FormularioModalEditar&idProducto=@producto.IdProducto" class="btn btn-outline-secondary rounded-circle">
                                         <i class="bi bi-pencil"></i>
                             </button>
@@ -208,22 +208,47 @@
         </ul>
     </nav>
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/editarproducto.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('#imagen').change(function() {
-            var file = this.files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#preview').attr('src', e.target.result).show();
-                }
-                reader.readAsDataURL(file);
-            } else {
-                $('#preview').attr('src', '#').hide();
-            }
-        });
-    });
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<partial name="_ValidationScriptsPartial" />
+<script src="~/js/editarproducto.js"></script>
+<script src="~/js/mostrarpreviewimg.js"></script>
+<script src="~/js/validacionesmodalinventario.js"></script>
+<script src="~/js/llenarselectproveedores.js"></script>
+<script src="~/js/busquedasinventario.js"></script>
+<script src="~/js/validacioneliminar.js"></script>
+<script src="~/js/llenarselectcategorias.js"></script>
+<script>
+    window.crearProductoExito = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["CrearProductoExito"] ?? null));
 </script>
+<script > document.addEventListener("DOMContentLoaded", function () {
+    console.log(window.crearProductoExito);
+    if (window.crearProductoExito === true) {
+        Swal.fire({
+                    title: "<strong>Producto agregado</strong>",
+                    icon: "success",
+                    html: `
+    <p>¡El producto fue agregado correctamente!</p>
+    <img src="/img/aprobado.jpg" alt="Producto agregado" style="width: 150px; margin-top: 10px;" />
+  `,
+                    showCloseButton: true,
+                    showCancelButton: false,
+                    focusConfirm: false,
+                    confirmButtonText: `
+    <i class="fa fa-thumbs-up"></i> ¡Volver!
+  `,
+                    
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+    } else if (window.crearProductoExito === false) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo crear el producto',
+            showConfirmButton: true
+        });
+    }
+});</script>
 }

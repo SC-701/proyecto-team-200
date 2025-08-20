@@ -6,8 +6,8 @@
   @Descripcion NVARCHAR(255),
   @Stock INT,
   @ImagenUrl NVARCHAR(255),
-  @FechaCreacion DATE,
-  @IdEstado INT
+  @ProveedorID UNIQUEIDENTIFIER,
+  @CategoriasId UNIQUEIDENTIFIER
 AS
 BEGIN
   SET NOCOUNT ON;
@@ -22,8 +22,8 @@ BEGIN
     DESCRIPCION = @Descripcion,
     STOCK = @Stock,
     IMAGEN_URL = @ImagenUrl,
-    FECHA_CREACION = @FechaCreacion,
-    ESTADO_ID = @IdEstado
+    PROVEEDOR_ID=@ProveedorID,
+    CATEGORIAS_ID=@CategoriasId
   WHERE PRODUCTOS_ID = @IdProducto;
 
   COMMIT TRANSACTION;
