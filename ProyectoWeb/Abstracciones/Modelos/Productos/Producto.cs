@@ -41,6 +41,9 @@ namespace Abstracciones.Modelos.Productos
 
        
         public string? ImagenUrl { get; set; }
+        public Guid? IdCategoria { get; set; }
+        public Guid? IdProveedor { get; set; }
+
     }
 
     public class ProductosRequest
@@ -82,6 +85,8 @@ namespace Abstracciones.Modelos.Productos
         [Required(ErrorMessage = "La fecha de creación es requerida.")]
         public DateTime? FechaCreacion { get; set; }
         public Guid? IdProducto { get; set; }
+        public string? NombreProveedor { get; set; }
+        public string? Categoria { get; set; }
     }
 
     

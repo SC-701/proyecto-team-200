@@ -56,8 +56,10 @@
                             </div>
 
                             <div class="col-md-4">
-                                <label asp-for="productoRequest.IdCategoria" class="form-label">Categoría</label>
-                                <input asp-for="productoRequest.IdCategoria" class="form-control input-squarespace" value="E3B0C442-98FC-4D2F-A5D6-42FE3D3D7CB1" />
+                                <label asp-for="productoRequest.IdCategoria" class="form-label">Categoria</label>
+                                <select asp-for="productoRequest.IdCategoria" class="form-select" asp-items="Model.categoriasSelect">
+                                    <option value="">Seleccione una categoria</option>
+                                </select>
                                 <span asp-validation-for="productoRequest.IdCategoria" class="text-danger"></span>
                             </div>
 
@@ -206,6 +208,7 @@
         </ul>
     </nav>
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <partial name="_ValidationScriptsPartial" />
 <script src="~/js/editarproducto.js"></script>
 <script src="~/js/mostrarpreviewimg.js"></script>
@@ -213,8 +216,39 @@
 <script src="~/js/llenarselectproveedores.js"></script>
 <script src="~/js/busquedasinventario.js"></script>
 <script src="~/js/validacioneliminar.js"></script>
+<script src="~/js/llenarselectcategorias.js"></script>
 <script>
-    window.crearProductoExito = @((TempData["CrearProductoExito"] ?? "null").ToString().ToLower());
+    window.crearProductoExito = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(TempData["CrearProductoExito"] ?? null));
 </script>
-<script src="~/js/confirmacionagregarproducto.js"></script>
+<script > document.addEventListener("DOMContentLoaded", function () {
+    console.log(window.crearProductoExito);
+    if (window.crearProductoExito === true) {
+        Swal.fire({
+                    title: "<strong>Producto agregado</strong>",
+                    icon: "success",
+                    html: `
+    <p>¡El producto fue agregado correctamente!</p>
+    <img src="/img/aprobado.jpg" alt="Producto agregado" style="width: 150px; margin-top: 10px;" />
+  `,
+                    showCloseButton: true,
+                    showCancelButton: false,
+                    focusConfirm: false,
+                    confirmButtonText: `
+    <i class="fa fa-thumbs-up"></i> ¡Volver!
+  `,
+                    
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+    } else if (window.crearProductoExito === false) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo crear el producto',
+            showConfirmButton: true
+        });
+    }
+});</script>
 }

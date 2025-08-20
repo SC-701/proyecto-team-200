@@ -44,8 +44,13 @@ namespace Web.Pages.Cuenta
                     await establecerAutenticacion(claims);
                     
                 }
+                else
+                {
+                    return Page();
+                }
             }
-            return Page();
+            
+            return RedirectToPage("../Cuenta/verCuenta");
         }
 
         private async Task establecerAutenticacion(List<Claim> claims)

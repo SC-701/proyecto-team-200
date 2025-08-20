@@ -71,6 +71,11 @@ namespace Web.Pages.Productos
             string endpointTodas = _configuracion.ObtenerMetodo("ApiEndPointsCategorias", "VerPadres");
             var respuestaTodas = await cliente.GetAsync(endpointTodas);
             respuestaTodas.EnsureSuccessStatusCode();
+            if (respuestaTodas.StatusCode == HttpStatusCode.NoContent)
+            {
+
+                return new JsonResult(new { padres = false });
+            }
             var resultadoTodas = await respuestaTodas.Content.ReadAsStringAsync();
             categorias = JsonSerializer.Deserialize<List<Categoria>>(resultadoTodas,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!;
@@ -87,12 +92,16 @@ namespace Web.Pages.Productos
 
             var respuesta = await cliente.GetAsync(url);
             respuesta.EnsureSuccessStatusCode();
+            if (respuesta.StatusCode == HttpStatusCode.NoContent)
+            {
 
+                return new JsonResult(new { tieneHijas = false });
+            }
             var resultado = await respuesta.Content.ReadAsStringAsync();
             var hijas = JsonSerializer.Deserialize<List<Categoria>>(resultado,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<Categoria>();
 
-            return new JsonResult(hijas);
+            return new JsonResult(new { tieneHijas = true, categorias = hijas });
         }
 
 

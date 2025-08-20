@@ -39,6 +39,7 @@ namespace Abstracciones.Modelos
 
         
         public DateTime? FechaCreacion { get; set; }
+        
     }
 
     public class ProductosRequest : ProductosBase
@@ -49,6 +50,8 @@ namespace Abstracciones.Modelos
         [Required(ErrorMessage = "La categoría es requerida.")]
         public Guid IdCategoria { get; set; }
         public Guid? IdProducto { get; set; }
+        public string? NombreProveedor { get; set; }
+        public string? Categoria { get; set; }
 
 
         public int? IdEstado { get; set; }
@@ -66,6 +69,8 @@ namespace Abstracciones.Modelos
 
         [Required(ErrorMessage = "El estado es requerido.")]
         public string Estado { get; set; }
+        public Guid? IdCategoria { get; set; }
+        public Guid? IdProveedor { get; set; }
     }
 
     public class ProductoConImagenRequest

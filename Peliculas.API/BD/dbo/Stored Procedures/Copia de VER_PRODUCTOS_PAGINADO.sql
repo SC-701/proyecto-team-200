@@ -8,7 +8,7 @@ BEGIN
 
     DECLARE @Offset INT = (@PageIndex - 1) * @PageSize;
 
-    -- Datos paginados
+    
     SELECT 
     P.PRODUCTOS_ID AS IdProducto,
     P.NOMBRE AS Nombre,
@@ -31,6 +31,6 @@ BEGIN
     OFFSET @Offset ROWS
     FETCH NEXT @PageSize ROWS ONLY;
 
-    -- Total
-    SELECT COUNT(*) AS TotalRegistros FROM Productos;
+    
+    SELECT COUNT(*) AS TotalRegistros FROM Productos WHERE CATEGORIAS_ID=@idCategoria;
 END
