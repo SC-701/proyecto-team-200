@@ -7,6 +7,7 @@ using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos.Carrito;
 using System.Net.Http;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Web.Pages.Carrito
 {
@@ -89,5 +90,55 @@ namespace Web.Pages.Carrito
 
             return new JsonResult(new { success = false });
         }
+
+
+        public async Task<IActionResult> OnPostEnviarCorreoAsync(Guid carritoId)
+        {
+            var tokenClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "Token")?.Value;
+
+            if (string.IsNullOrEmpty(tokenClaim))
+            {
+                return new JsonResult(new { success = false, message = "Usuario no autorizado" });
+            }
+
+            using var cliente = new HttpClient();
+            cliente.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenClaim);
+
+            try
+            {
+                // 1. Enviar correo
+                string endpointCorreo = _configuracion.ObtenerMetodo("ApiEndPointsCarrito", "EnviarCorreo");
+                var solicitudCorreo = new HttpRequestMessage(HttpMethod.Get, endpointCorreo);
+                var respuestaCorreo = await cliente.SendAsync(solicitudCorreo);
+
+                if (!respuestaCorreo.IsSuccessStatusCode)
+                {
+                    var errorCorreo = await respuestaCorreo.Content.ReadAsStringAsync();
+                    return new JsonResult(new { success = false, message = $"Error al enviar correo: {errorCorreo}" });
+                }
+
+                string endpointEliminarBase = _configuracion.ObtenerMetodo("ApiEndPointsCarrito", "Eliminartotal");
+                string endpointEliminar = string.Format(endpointEliminarBase, carritoId);
+
+                var solicitudEliminar = new HttpRequestMessage(HttpMethod.Delete, endpointEliminar);
+                var respuestaEliminar = await cliente.SendAsync(solicitudEliminar);
+
+                if (respuestaEliminar.IsSuccessStatusCode)
+                {
+                    return Redirect("/Productos/Index");
+                }
+                else
+                {
+                    var errorEliminar = await respuestaEliminar.Content.ReadAsStringAsync();
+                    return Redirect("/Productos/Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new { success = false, message = ex.Message });
+            }
+        }
+
     }
 }
